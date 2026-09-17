@@ -23,10 +23,13 @@ const BASE_KEY = 'novagon.apiBase'
 
 export function apiBase(): string {
   try {
-    return localStorage.getItem(BASE_KEY) || DEFAULT_BASE
+    const saved = localStorage.getItem(BASE_KEY) || ''
+    // a plain-http override on an https site is blocked as mixed content: ignore it
+    if (saved && !(saved.startsWith('http:') && window.location.protocol === 'https:')) return saved
   } catch {
-    return DEFAULT_BASE
+    /* no storage */
   }
+  return DEFAULT_BASE
 }
 
 export function setApiBase(url: string) {

@@ -109,8 +109,18 @@ export default function OverviewPage() {
             >
               Simpan
             </button>
+            <button
+              type="button"
+              className="btn-outline h-[56px] min-h-0 text-[16px]"
+              onClick={() => {
+                setApiBase('')
+                location.reload()
+              }}
+            >
+              Reset
+            </button>
           </div>
-          <p className="mt-2 text-[13px] font-medium text-grey-text">Container gratis atau laptop twin: gambar Docker yang sama, ganti alamat di sini bila salah satunya dingin.</p>
+          <p className="mt-2 text-[13px] font-medium text-grey-text">Default <code>/api/v1</code> diproxy Vercel ke endpoint di instance Cloudeka. Isi alamat lain hanya untuk uji lokal (https, atau http saat app juga http); Reset mengembalikan default.</p>
           {err && <p className="mt-2 text-[14px] font-semibold text-bad">{err}</p>}
           {health && (
             <p className="mt-2 text-[13px] font-medium text-grey-text">

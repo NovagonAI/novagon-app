@@ -1,17 +1,17 @@
-/** 270° arc gauge: grey track, coloured progress, serif value in the centre. */
-export function Gauge({ value, label, color = '#00a120', size = 137 }: { value: number; label?: string; color?: string; size?: number }) {
-  const r = 40
-  const c = 2 * Math.PI * r
-  const arc = c * 0.75
+/** Half-ring gauge as in the Figma "Stabilitas Emulsi" card: grey track, coloured progress, serif value inside. */
+export function Gauge({ value, label, color = '#009d1f', width = 146 }: { value: number; label?: string; color?: string; width?: number }) {
+  const r = 68
+  const cx = 73
+  const cy = 77
+  const half = Math.PI * r
   const v = Math.max(0, Math.min(1, value))
+  const arc = `M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${cx + r} ${cy}`
   return (
     <div className="flex flex-col items-center" role="img" aria-label={`${label ?? ''} ${Math.round(v * 100)}%`}>
-      <svg width={size} height={size * 0.62} viewBox="0 0 100 62">
-        <g transform="translate(50 50) rotate(135)">
-          <circle r={r} cx="0" cy="0" fill="none" stroke="#d9d9d9" strokeWidth="9" strokeLinecap="round" strokeDasharray={`${arc} ${c}`} />
-          <circle r={r} cx="0" cy="0" fill="none" stroke={color} strokeWidth="9" strokeLinecap="round" strokeDasharray={`${arc * v} ${c}`} />
-        </g>
-        <text x="50" y="50" textAnchor="middle" fontSize="22" fontWeight="700" fontStyle="italic" fill="#003369" fontFamily="var(--font-libre), serif">
+      <svg width={width} height={width * 0.6} viewBox="0 0 146 88">
+        <path d={arc} fill="none" stroke="#a1a1a1" strokeWidth="9" strokeLinecap="round" />
+        <path d={arc} fill="none" stroke={color} strokeWidth="9" strokeLinecap="round" strokeDasharray={`${half * v} ${half}`} />
+        <text x={cx} y={cy + 4} textAnchor="middle" fontSize="32" fontWeight="700" fontStyle="italic" fill="#003369" fontFamily="var(--font-libre), serif">
           {Math.round(v * 100)}%
         </text>
       </svg>

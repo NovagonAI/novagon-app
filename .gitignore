@@ -2,3 +2,5 @@ node_modules/
 .next/
 .serena/
 tsconfig.tsbuildinfo
+.vercel
+.env*

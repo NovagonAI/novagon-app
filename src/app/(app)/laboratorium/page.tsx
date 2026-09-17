@@ -20,8 +20,9 @@ export default function LabPage() {
     router.push('/analisis')
   }
   return (
-    <div className="mx-auto w-full max-w-[1150px] px-4 lg:px-12 pb-16">
+    <div className="pb-16">
       <BandHeader title="Laboratorium" />
+      <div className="mx-auto w-full max-w-[1150px] px-4 lg:px-12">
       <p className="-mt-[70px] text-[16px] font-bold text-navy">Akses formulasi Anda yang tersimpan sebelumnya</p>
       <ul className="mt-[70px] grid gap-[26px] sm:grid-cols-2 lg:grid-cols-3">
         {store.ready &&
@@ -62,6 +63,7 @@ export default function LabPage() {
           Belum ada formulasi tersimpan. <Link href="/analisis" className="text-blue underline">Mulai analisis</Link>.
         </p>
       )}
+      </div>
     </div>
   )
 }

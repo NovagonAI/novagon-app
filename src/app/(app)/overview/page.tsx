@@ -42,8 +42,9 @@ export default function OverviewPage() {
   const available = heads?.heads.filter((h) => h.available).length ?? 0
 
   return (
-    <div className="mx-auto w-full max-w-[1150px] px-4 lg:px-12 pb-16">
+    <div className="pb-16">
       <BandHeader title="Overview" subtitle={health ? `endpoint ${health.status} · core ${health.core_tag}` : err ? 'endpoint tidak terhubung' : 'menghubungi endpoint…'} />
+      <div className="mx-auto w-full max-w-[1150px] px-4 lg:px-12">
       <div className="mt-[37px] grid gap-[13px] sm:grid-cols-3">
         <Stat label="Workspace" value={store.workspaces.length} hint="formulasi tersimpan" />
         <Stat label="Sudah diprediksi" value={analysed} hint="formula dengan hasil model" />
@@ -151,6 +152,7 @@ export default function OverviewPage() {
           Head di bawah gerbang tetap dilayani; nilainya ditampilkan bersama interval dan catatan asal data. Head tanpa artefak menjawab 503 dan dua belas lainnya tetap berjalan.
         </Box>
       </Panel>
+      </div>
     </div>
   )
 }

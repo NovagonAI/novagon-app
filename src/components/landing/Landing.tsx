@@ -9,26 +9,46 @@ const H = 1024
 const NAV = ['Service', 'About Us', 'Brands', 'Innovation']
 
 /**
- * The Figma "dashboard" frame reproduced as a 1440×1024 stage and scaled to
- * the viewport width, which keeps every offset the designer placed.
+ * The Figma "dashboard" frame as a 1440×1024 stage scaled to the full
+ * viewport width, so it always bleeds edge to edge. Scrolling drives a
+ * parallax: the product grows and lifts, the cards slide inward and fade,
+ * the dotted rings fade, the headline drifts up.
  */
 export function Landing() {
-  const ref = useRef<HTMLDivElement>(null)
+  const wrap = useRef<HTMLDivElement>(null)
   const [scale, setScale] = useState(1)
+  const [t, setT] = useState(0) // 0 at top, 1 once the hero has scrolled past
 
   useEffect(() => {
-    const el = ref.current?.parentElement
+    const el = wrap.current
     if (!el) return
-    const ro = new ResizeObserver(([e]) => setScale(Math.min(1, e.contentRect.width / W)))
+    const ro = new ResizeObserver(([e]) => setScale(e.contentRect.width / W))
     ro.observe(el)
-    return () => ro.disconnect()
+    const onScroll = () => {
+      const { top, height } = el.getBoundingClientRect()
+      setT(Math.min(1, Math.max(0, -top / height)))
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+    return () => {
+      ro.disconnect()
+      window.removeEventListener('scroll', onScroll)
+    }
   }, [])
 
+  const ease = t * t * (3 - 2 * t)
+  const jar = { transform: `translateY(${ease * -80}px) scale(${1 + ease * 0.45})`, transformOrigin: '50% 50%' }
+  const fade = { opacity: Math.max(0, 1 - ease * 1.6) }
+  const leftCard = { ...fade, transform: `translateX(${ease * 220}px)` }
+  const rightCard = { ...fade, transform: `translateX(${ease * -220}px)` }
+  const rings = { opacity: Math.max(0, 1 - ease * 2) }
+  const head = { transform: `translateY(${ease * -40}px)` }
+
   return (
-    <div className="hidden w-full justify-center overflow-hidden bg-white md:flex" style={{ height: H * scale }}>
-      <div ref={ref} className="relative origin-top-left bg-white" style={{ width: W, height: H, transform: `scale(${scale})` }}>
-        {/* hero photo, 20% */}
-        <div className="absolute left-0 top-0 h-[638px] w-[1440px] overflow-hidden opacity-20">
+    <div ref={wrap} className="hidden w-full overflow-hidden bg-white md:block" style={{ height: H * scale }}>
+      <div className="relative origin-top-left bg-white" style={{ width: W, height: H, transform: `scale(${scale})` }}>
+        {/* hero photo, 20%, with a light scroll drift */}
+        <div className="absolute left-0 top-0 h-[638px] w-[1440px] overflow-hidden opacity-20" style={{ transform: `translateY(${ease * 60}px)` }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="" src="/figma/hero-bg.png" className="absolute max-w-none" style={{ height: '288.98%', width: '128.04%', left: '-2.88%', top: '-109.76%' }} />
         </div>
@@ -37,11 +57,13 @@ export function Landing() {
         <img alt="" src="/figma/gradient-map.png" className="absolute left-[-221px] top-[64px] size-[677px] max-w-none object-cover" />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img alt="" src="/figma/gradient-map.png" className="absolute left-[981px] top-[299px] size-[677px] max-w-none object-cover" />
-        {/* dotted circles */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="" src="/figma/dotted-circle.png" width={383} height={383} className="absolute left-[224px] top-[569px]" />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="" src="/figma/dotted-circle.png" width={383} height={383} className="absolute left-[836px] top-[425px]" />
+        {/* dotted rings */}
+        <div style={rings}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt="" src="/figma/dotted-circle.png" width={383} height={383} className="absolute left-[224px] top-[569px]" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt="" src="/figma/dotted-circle.png" width={383} height={383} className="absolute left-[836px] top-[425px]" />
+        </div>
 
         <p className="absolute left-[66px] top-[64px] font-serif text-[36px] font-bold italic leading-none text-navy">Novagon</p>
 
@@ -63,27 +85,31 @@ export function Landing() {
           <span className="text-gradient">Sign In</span>
         </Link>
 
-        <h1 className="absolute left-[420px] top-[174px] w-[600px] text-center font-serif text-[48px] font-bold italic leading-[1.25] text-blue">
-          Innovating Goods
-          <br />
-          for The Greater Good
-        </h1>
-        <p className="absolute left-0 top-[319px] w-[1440px] text-center text-[20px] font-bold text-blue">
-          Feel good, be good and do good are things that are connected within ourselves.
-        </p>
+        <div style={head}>
+          <h1 className="absolute left-[420px] top-[174px] w-[600px] text-center font-serif text-[48px] font-bold italic leading-[1.25] text-blue">
+            Innovating Goods
+            <br />
+            for The Greater Good
+          </h1>
+          <p className="absolute left-0 top-[319px] w-[1440px] text-center text-[20px] font-bold text-blue">
+            Feel good, be good and do good are things that are connected within ourselves.
+          </p>
+        </div>
 
         {/* product hero: gradient disc, jar in a circular mask, bubbles on top */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="" src="/figma/hero-ellipse.svg" width={357} height={357} className="absolute left-[553px] top-[459px]" />
-        <div className="absolute left-[519px] top-[425px] size-[425px] overflow-hidden rounded-full">
+        <div className="absolute left-[504px] top-[383px] size-[487px]" style={jar}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="Produk pelembab dengan niacinamide" src="/figma/hero-jar.png" className="absolute max-w-none object-cover" style={{ width: 471.645, height: 589.163, left: -14.59, top: -105.79 }} />
+          <img alt="" src="/figma/hero-ellipse.svg" width={357} height={357} className="absolute left-[49px] top-[76px]" />
+          <div className="absolute left-[15px] top-[42px] size-[425px] overflow-hidden rounded-full">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img alt="Produk pelembab dengan niacinamide" src="/figma/hero-jar.png" className="absolute max-w-none object-cover" style={{ width: 471.645, height: 589.163, left: -14.59, top: -105.79 }} />
+          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt="" src="/figma/hero-bubbles.png" className="pointer-events-none absolute left-0 top-0 size-[487px] max-w-none object-cover" />
         </div>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="" src="/figma/hero-bubbles.png" className="pointer-events-none absolute left-[504px] top-[383px] size-[487px] max-w-none object-cover" />
 
         {/* ingredient cards */}
-        <article className="absolute left-[103px] top-[512px] h-[295px] w-[258px] overflow-hidden rounded-[20px] bg-white text-center text-blue shadow-hero">
+        <article className="absolute left-[103px] top-[512px] h-[295px] w-[258px] overflow-hidden rounded-[20px] bg-white text-center text-blue shadow-hero" style={leftCard}>
           <div className="absolute left-[10px] top-[11px] h-[207px] w-[238px] overflow-hidden rounded-[20px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img alt="" src="/figma/card-niacinamide.png" className="absolute max-w-none" style={{ height: '164.25%', width: '142.86%', left: '-32.35%', top: '-31.4%' }} />
@@ -91,7 +117,7 @@ export function Landing() {
           <p className="absolute left-0 top-[230px] w-full text-[20px] font-bold">Niacinamide</p>
           <p className="absolute left-0 top-[258px] w-full text-[16px] font-semibold">Pencerah &amp; penguat barrier</p>
         </article>
-        <article className="absolute left-[1088px] top-[604px] h-[295px] w-[258px] overflow-hidden rounded-[20px] bg-white text-center text-blue shadow-hero">
+        <article className="absolute left-[1088px] top-[604px] h-[295px] w-[258px] overflow-hidden rounded-[20px] bg-white text-center text-blue shadow-hero" style={rightCard}>
           <div className="absolute left-[13px] top-[12px] h-[211px] w-[232px] overflow-hidden rounded-[20px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img alt="" src="/figma/card-ceramide.png" className="absolute max-w-none" style={{ height: '184.49%', width: '167.6%', left: '-36.31%', top: '-42.04%' }} />
@@ -99,6 +125,15 @@ export function Landing() {
           <p className="absolute left-0 top-[234px] w-full text-[20px] font-bold">Ceramide</p>
           <p className="absolute left-0 top-[262px] w-full text-[16px] font-semibold">Pemulih skin barrier</p>
         </article>
+
+        {/* scroll hint */}
+        <div aria-hidden="true" className="absolute bottom-[40px] left-1/2 flex -translate-x-1/2 flex-col items-center gap-1 transition-opacity duration-500" style={{ opacity: t < 0.04 ? 1 : 0 }}>
+          <svg width="24" height="36" viewBox="0 0 24 36" fill="none" className="animate-bounce" style={{ animationDuration: '1.6s' }}>
+            <rect x="1" y="1" width="22" height="34" rx="11" stroke="#1A5BA1" strokeWidth="2" />
+            <rect x="10" y="7" width="4" height="8" rx="2" fill="#1A5BA1" />
+          </svg>
+          <span className="text-[12px] font-semibold text-blue/70">Scroll</span>
+        </div>
       </div>
     </div>
   )

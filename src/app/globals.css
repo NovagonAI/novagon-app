@@ -83,3 +83,45 @@ body {
   main { padding: 0 !important; }
   .panel, .panel-white { break-inside: avoid; }
 }
+
+/* Figma slider: white pill track, light-blue pill thumb with a navy centre line. */
+.range-pill {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  margin: 0;
+  background: transparent;
+  cursor: grab;
+}
+.range-pill:active { cursor: grabbing; }
+.range-pill[readonly] { cursor: default; pointer-events: none; }
+.range-pill::-webkit-slider-runnable-track {
+  height: var(--track-h, 49px);
+  border-radius: 25px;
+  background: #ffffff;
+  border: 1px solid #aad3ff;
+}
+.range-pill::-moz-range-track {
+  height: var(--track-h, 49px);
+  border-radius: 25px;
+  background: #ffffff;
+  border: 1px solid #aad3ff;
+}
+.range-pill::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--thumb-w, 210px);
+  height: var(--track-h, 49px);
+  border: 0;
+  border-radius: 25px;
+  background: linear-gradient(#003369, #003369) center / 4px var(--thumb-h, 30px) no-repeat, #aad3ff;
+  margin-top: -1px;
+}
+.range-pill::-moz-range-thumb {
+  width: var(--thumb-w, 210px);
+  height: var(--track-h, 49px);
+  border: 0;
+  border-radius: 25px;
+  background: linear-gradient(#003369, #003369) center / 4px var(--thumb-h, 30px) no-repeat, #aad3ff;
+}
+.range-pill:focus-visible::-webkit-slider-thumb { outline: 3px solid #1a5ba1; outline-offset: 2px; }

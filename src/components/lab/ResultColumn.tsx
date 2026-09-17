@@ -1,6 +1,7 @@
 'use client'
 
 import { Gauge } from '@/components/charts/Gauge'
+import { RangeBar } from '@/components/charts/RangeBar'
 import { TsiChart } from '@/components/charts/TsiChart'
 import { Box } from '@/components/ui/Panel'
 import { fmt, type Level, parseRange, qtppMatches } from '@/lib/insight'
@@ -72,10 +73,7 @@ export function ResultColumn({ ws }: { ws: Workspace }) {
         <p className="text-[11px] font-semibold text-grey-text">Viskositas pada 10 s⁻¹</p>
         {visc ? (
           <>
-            <div className="relative mt-[7px] h-[19px] w-full rounded-[25px] border border-line bg-white" role="img" aria-label={`Viskositas ${fmt(visc.value, 0)} cP, interval ${fmt(visc.lo, 0)} sampai ${fmt(visc.hi, 0)} cP`}>
-              <span className="absolute top-[3px] h-[11px] rounded-[25px] bg-line" style={{ left: pos(visc.lo), width: `calc(${pos(visc.hi)} - ${pos(visc.lo)})` }} />
-              <span className="absolute top-[3px] h-[11px] w-[4px] -translate-x-1/2 rounded-full bg-navy" style={{ left: pos(visc.value) }} />
-            </div>
+            <RangeBar value={visc.value} min={lo} max={hi} height={19} thumb={82} labels={false} ariaLabel="Viskositas prediksi" className="mt-[7px]" />
             <div className="relative mt-[6px] h-[13px] text-[11px] font-semibold text-grey-text">
               <span className="absolute left-0">{fmt(visc.lo, 0)} cP</span>
               <span className="absolute left-1/2 -translate-x-1/2 text-navy">{fmt(visc.value, 0)} cP</span>

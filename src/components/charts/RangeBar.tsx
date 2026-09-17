@@ -1,15 +1,50 @@
+'use client'
+
 import { fmt } from '@/lib/insight'
 
-/** The "Nilai Prediksi" track: interval band in light blue, navy tick at the value. */
-export function RangeBar({ value, lo, hi, min, max, height = 49, labels = true }: { value: number; lo: number; hi: number; min: number; max: number; height?: number; labels?: boolean }) {
-  const span = max - min || 1
-  const p = (x: number) => `${Math.max(0, Math.min(100, ((x - min) / span) * 100))}%`
+/**
+ * The Figma slider: white track, a light-blue pill thumb with a navy line
+ * through its centre. A native range input underneath, so it drags, takes
+ * keyboard arrows and reads to screen readers. Read-only when no onChange.
+ */
+export function RangeBar({
+  value,
+  min,
+  max,
+  onChange,
+  height = 49,
+  thumb = 210,
+  labels = true,
+  ariaLabel = 'Nilai',
+  className = '',
+}: {
+  value: number
+  min: number
+  max: number
+  onChange?: (v: number) => void
+  height?: number
+  thumb?: number
+  labels?: boolean
+  ariaLabel?: string
+  className?: string
+}) {
+  const step = max - min > 10 ? 0.1 : 0.01
   return (
-    <div>
-      <div className="relative w-full rounded-[25px] border border-line bg-white" style={{ height }} role="img" aria-label={`Nilai ${fmt(value)}, interval ${fmt(lo)} sampai ${fmt(hi)}`}>
-        <span className="absolute top-0 h-full rounded-[25px] bg-line" style={{ left: p(lo), width: `calc(${p(hi)} - ${p(lo)})` }} />
-        <span className="absolute top-1/2 h-[61%] w-[4px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-navy" style={{ left: p(value) }} />
-      </div>
+    <div className={className}>
+      <input
+        type="range"
+        className="range-pill"
+        style={{ height, ['--thumb-w' as string]: `${thumb}px`, ['--track-h' as string]: `${height}px`, ['--thumb-h' as string]: `${Math.round(height * 0.6)}px` }}
+        min={min}
+        max={max}
+        step={step}
+        value={Math.max(min, Math.min(max, value))}
+        aria-label={ariaLabel}
+        aria-valuetext={fmt(value)}
+        readOnly={!onChange}
+        onChange={(e) => onChange?.(Number(e.target.value))}
+        onPointerDown={onChange ? undefined : (e) => e.preventDefault()}
+      />
       {labels && (
         <div className="mt-2 flex justify-between text-[20px] font-semibold text-grey-text">
           <span>{fmt(min)}</span>

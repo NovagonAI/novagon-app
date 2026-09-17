@@ -194,22 +194,16 @@ function DatasetPicker({ onAdd, onExample }: { onAdd: (l: LineUI) => void; onExa
 /** ing_id for a name the server resolves itself: truthy so it never reads as unmatched, empty so it is never sent. */
 const SERVER_RESOLVES = ''
 
-/** Registry rows whose name is only a parenthesised alias, e.g. "(AQUA)", rank last. */
-const isAlias = (s: string) => /^\(.*\)$/.test(s.trim())
 const SYNONYM: Record<string, string[]> = { AQUA: ['WATER', 'AQUA (WATER)', 'WATER (AQUA)'], WATER: ['AQUA'] }
 
-/** Exact name first, then a synonym, then a name that starts with the query, then the shortest containing it. */
+/** Exact registry name, else a synonym, else the same name behind a prefix like "(ORGANIC)". Anything looser mislabels. */
 function bestMatch(q: string, items: Ingredient[]): Ingredient | undefined {
   const Q = q.toUpperCase()
-  const clean = (s: string) => s.toUpperCase().replace(/[()]/g, '').trim()
-  const real = items.filter((i) => !isAlias(i.inci_name))
-  const pool = real.length ? real : items
+  const clean = (s: string) => s.toUpperCase().replace(/[()]/g, '').replace(/^(INCI|ORGANIC|VEGETABLE)\s+/, '').trim()
   return (
-    pool.find((i) => i.inci_name.toUpperCase() === Q) ??
-    pool.find((i) => (SYNONYM[Q] ?? []).includes(i.inci_name.toUpperCase())) ??
-    pool.find((i) => clean(i.inci_name) === Q) ??
-    [...pool].filter((i) => clean(i.inci_name).startsWith(Q)).sort((a, b) => a.inci_name.length - b.inci_name.length)[0] ??
-    [...pool].sort((a, b) => a.inci_name.length - b.inci_name.length)[0]
+    items.find((i) => i.inci_name.toUpperCase() === Q) ??
+    items.find((i) => (SYNONYM[Q] ?? []).includes(i.inci_name.toUpperCase())) ??
+    items.find((i) => clean(i.inci_name) === Q && !/^\d/.test(i.inci_name))
   )
 }
 
@@ -258,10 +252,11 @@ function IngredientInput({ line, index, disabled, onChange }: { line: LineUI; in
       return
     }
     try {
-      const page = await api.ingredients(q, 60)
+      const page = await api.ingredients(q, 200)
       const best = bestMatch(q, page.items)
       if (best) apply(best, (SYNONYM[Q] ?? []).includes(best.inci_name.toUpperCase()) ? titleCase(q) : undefined)
-      else onChange({ ing_id: null })
+      // no exact row: keep the typed name, the server's five-step cascade resolves it
+      else onChange({ inci_name: titleCase(q), ing_id: SERVER_RESOLVES })
     } catch {
       /* offline: keep the free text, the server resolves names itself */
     }

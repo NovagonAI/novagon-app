@@ -22,7 +22,7 @@ export function StepQtpp({ ws, update, next, back }: StepProps) {
       }}
     >
       <Panel title="Spesifikasi Mutu & Kualitas Produk" bodyClassName="pt-[20px] pb-[26px]">
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
           <fieldset className="space-y-[18px]">
             <legend className="sr-only">Parameter QTPP utama</legend>
             {QTPP_FIELDS.filter((f) => f.group === 'utama').map((f) => (

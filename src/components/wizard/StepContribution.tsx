@@ -67,7 +67,7 @@ export function StepContribution({ ws, update, next, back }: StepProps) {
         ) : null}
       </Panel>
 
-      <div className="mt-[18px] grid gap-[21px] lg:grid-cols-[minmax(0,734px)_295px]">
+      <div className="mt-[18px] grid gap-[21px] xl:grid-cols-[minmax(0,1fr)_295px]">
         <Panel title="Analisis Keamanan Komposisi Formulasi" right={<OrbitalLegend />} bodyClassName="py-6">
           <OrbitalMap active={active} nodes={nodes} />
         </Panel>

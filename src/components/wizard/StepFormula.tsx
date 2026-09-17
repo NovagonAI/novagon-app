@@ -7,6 +7,7 @@ import { Icon } from '@/components/ui/Icon'
 import { Panel } from '@/components/ui/Panel'
 import { fmt, headline, titleCase, totalPct } from '@/lib/insight'
 import { type LineUI, newLine, useStore } from '@/lib/store'
+import dataset from '@/lib/dataset.json'
 import type { StepProps } from './Wizard'
 import { runAnalysis } from './analysis'
 
@@ -48,6 +49,7 @@ export function StepFormula({ ws, update, next, back }: StepProps) {
         else predict()
       }}
     >
+      {!confirmed && <DatasetPicker onAdd={(l) => update((w) => ({ formula: [...w.formula.filter((x) => x.inci_name.trim()), l], confirmed: false }))} onExample={(ls) => update({ formula: ls, confirmed: false })} />}
       <Panel title={confirmed ? 'Konfirmasi Bahan Formula' : 'Daftar Bahan Aktif'} bodyClassName="pt-[16px] pb-[26px]">
         <div className="grid grid-cols-[minmax(0,1fr)_190px_36px] items-center gap-x-[18px] text-[20px] font-bold text-navy">
           <span>Nama Bahan (Inci)</span>
@@ -126,6 +128,66 @@ export function StepFormula({ ws, update, next, back }: StepProps) {
         </button>
       </div>
     </form>
+  )
+}
+
+/**
+ * The 18 raw materials the H1/H2 artefacts were trained on (BASF shampoo
+ * study, 812 samples) and six measured formulas from that table. Picking
+ * from here guarantees the model recognises every line.
+ */
+function DatasetPicker({ onAdd, onExample }: { onAdd: (l: LineUI) => void; onExample: (ls: LineUI[]) => void }) {
+  const byTrade = new Map(dataset.ingredients.map((i) => [i.trade, i]))
+  const toLine = (trade: string, wt: number): LineUI => {
+    const i = byTrade.get(trade)!
+    return { ...newLine(i.inci, wt), ing_id: i.ing_id, function_class: [i.function, i.type].filter(Boolean) }
+  }
+  return (
+    <Panel title="Pilih dari dataset model" className="mb-[18px]" bodyClassName="pt-[14px] pb-[20px]">
+      <p className="text-[14px] font-semibold text-grey-text">
+        H1 (stabilitas) dan H2 (viskositas) dilatih pada 812 formula sampo dengan 18 bahan baku ini. Bahan di luar daftar tetap bisa diinput, tetapi model mengabaikannya.
+      </p>
+      <div className="mt-3 grid gap-3 sm:grid-cols-2">
+        <label className="block">
+          <span className="label">Tambah bahan dataset:</span>
+          <select
+            className="field text-[16px]"
+            value=""
+            onChange={(e) => {
+              if (e.target.value) onAdd(toLine(e.target.value, 5))
+            }}
+          >
+            <option value="">— pilih bahan baku —</option>
+            {dataset.ingredients.map((i) => (
+              <option key={i.trade} value={i.trade}>
+                {titleCase(i.inci)} · {i.trade} ({i.type ?? i.function})
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="block">
+          <span className="label">Muat contoh formula terukur:</span>
+          <select
+            className="field text-[16px]"
+            value=""
+            onChange={(e) => {
+              const ex = dataset.examples.find((x) => String(x.sample_id) === e.target.value)
+              if (!ex) return
+              const lines = ex.lines.map((l) => toLine(l.trade, l.wt))
+              const used = lines.reduce((a, l) => a + (l.wt_pct as number), 0)
+              onExample([{ ...newLine('Aqua', +(100 - used).toFixed(2)), ing_id: SERVER_RESOLVES, function_class: ['solvent'] }, ...lines])
+            }}
+          >
+            <option value="">— pilih sampel dataset —</option>
+            {dataset.examples.map((x) => (
+              <option key={x.sample_id} value={x.sample_id}>
+                Sampel #{x.sample_id} · {x.stable ? 'stabil' : 'tidak stabil'}{x.viscosity_class !== 'nan' && x.viscosity_class !== 'None' ? ` · viskositas ${x.viscosity_class.toLowerCase()}` : ''} · {x.lines.length} bahan
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+    </Panel>
   )
 }
 

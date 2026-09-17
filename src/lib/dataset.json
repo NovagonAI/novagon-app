@@ -1,0 +1,270 @@
+{
+ "ingredients": [
+  {
+   "trade": "Texapon SB 3 KC",
+   "inci": "Disodium Laureth Sulfosuccinate",
+   "function": "surfactant",
+   "type": "anionic",
+   "ing_id": "ING008390"
+  },
+  {
+   "trade": "Plantapon ACG 50",
+   "inci": "Disodium Cocoyl Glutamate",
+   "function": "surfactant",
+   "type": "anionic",
+   "ing_id": "ING008362"
+  },
+  {
+   "trade": "Plantapon LC 7",
+   "inci": "Laureth-7 Citrate",
+   "function": "surfactant",
+   "type": "anionic",
+   "ing_id": "ING012794"
+  },
+  {
+   "trade": "Plantacare 818",
+   "inci": "Coco-Glucoside",
+   "function": "surfactant",
+   "type": "non-ionic",
+   "ing_id": "ING006726"
+  },
+  {
+   "trade": "Plantacare 2000",
+   "inci": "Decyl-Glucoside",
+   "function": "surfactant",
+   "type": "non-ionic",
+   "ing_id": "ING007818"
+  },
+  {
+   "trade": "Dehyton MC",
+   "inci": "Sodium Cocoamphoacetate",
+   "function": "surfactant",
+   "type": "amphoteric",
+   "ing_id": "ING022543"
+  },
+  {
+   "trade": "Dehyton PK 45",
+   "inci": "Cocamidopropyl Betaine",
+   "function": "surfactant",
+   "type": "amphoteric",
+   "ing_id": "ING006631"
+  },
+  {
+   "trade": "Dehyton ML",
+   "inci": "Sodium Lauroamphoacetate",
+   "function": "surfactant",
+   "type": "amphoteric",
+   "ing_id": "ING022740"
+  },
+  {
+   "trade": "Dehyton AB 30",
+   "inci": "Coco-Betaine",
+   "function": "surfactant",
+   "type": "amphoteric",
+   "ing_id": "ING006716"
+  },
+  {
+   "trade": "Plantapon Amino SCG-L",
+   "inci": "Sodium Cocoyl Glutamate",
+   "function": "surfactant",
+   "type": "amino-acid",
+   "ing_id": "ING022571"
+  },
+  {
+   "trade": "Plantapon Amino KG-L",
+   "inci": "Potassium Cocoyl Glycinate",
+   "function": "surfactant",
+   "type": "amino-acid",
+   "ing_id": "ING019652"
+  },
+  {
+   "trade": "Dehyquart A-CA",
+   "inci": "Cetrimonium Chloride",
+   "function": "surfactant",
+   "type": "cationic",
+   "ing_id": "ING005174"
+  },
+  {
+   "trade": "Luviquat Excellence",
+   "inci": "Polyquaternium-16",
+   "function": "conditioning_polymer",
+   "type": "cationic",
+   "ing_id": "ING019450"
+  },
+  {
+   "trade": "Dehyquart CC6",
+   "inci": "Polyquaternium-6",
+   "function": "conditioning_polymer",
+   "type": "cationic",
+   "ing_id": "ING019469"
+  },
+  {
+   "trade": "Dehyquart CC7 Benz",
+   "inci": "Polyquaternium-7",
+   "function": "conditioning_polymer",
+   "type": "cationic",
+   "ing_id": "ING019473"
+  },
+  {
+   "trade": "Salcare Super 7",
+   "inci": "Polyquaternium-7",
+   "function": "conditioning_polymer",
+   "type": "cationic",
+   "ing_id": "ING019473"
+  },
+  {
+   "trade": "Arlypon F",
+   "inci": "Laureth-2",
+   "function": "thickener",
+   "type": "non-ionic",
+   "ing_id": "ING012781"
+  },
+  {
+   "trade": "Arlypon TT",
+   "inci": "PEG/PPG-120/10 Trimethylolpropane Trioleate",
+   "function": "thickener",
+   "type": "non-ionic",
+   "ing_id": "ING018269"
+  }
+ ],
+ "examples": [
+  {
+   "sample_id": 7,
+   "stable": true,
+   "viscosity_class": "HIGH",
+   "lines": [
+    {
+     "trade": "Plantacare 818",
+     "wt": 11.53
+    },
+    {
+     "trade": "Dehyquart A-CA",
+     "wt": 9.53
+    },
+    {
+     "trade": "Luviquat Excellence",
+     "wt": 1.52
+    },
+    {
+     "trade": "Arlypon TT",
+     "wt": 2.69
+    }
+   ]
+  },
+  {
+   "sample_id": 8,
+   "stable": true,
+   "viscosity_class": "HIGH",
+   "lines": [
+    {
+     "trade": "Plantacare 818",
+     "wt": 11.64
+    },
+    {
+     "trade": "Dehyquart A-CA",
+     "wt": 11.79
+    },
+    {
+     "trade": "Luviquat Excellence",
+     "wt": 2.66
+    },
+    {
+     "trade": "Arlypon TT",
+     "wt": 2.75
+    }
+   ]
+  },
+  {
+   "sample_id": 11,
+   "stable": true,
+   "viscosity_class": "MEDIUM",
+   "lines": [
+    {
+     "trade": "Plantacare 818",
+     "wt": 9.99
+    },
+    {
+     "trade": "Dehyquart A-CA",
+     "wt": 8.18
+    },
+    {
+     "trade": "Luviquat Excellence",
+     "wt": 1.78
+    },
+    {
+     "trade": "Arlypon TT",
+     "wt": 1.66
+    }
+   ]
+  },
+  {
+   "sample_id": 1,
+   "stable": false,
+   "viscosity_class": "nan",
+   "lines": [
+    {
+     "trade": "Texapon SB 3 KC",
+     "wt": 6.52
+    },
+    {
+     "trade": "Dehyton ML",
+     "wt": 8.63
+    },
+    {
+     "trade": "Luviquat Excellence",
+     "wt": 0.98
+    },
+    {
+     "trade": "Arlypon TT",
+     "wt": 3.35
+    }
+   ]
+  },
+  {
+   "sample_id": 2,
+   "stable": false,
+   "viscosity_class": "nan",
+   "lines": [
+    {
+     "trade": "Texapon SB 3 KC",
+     "wt": 7.7
+    },
+    {
+     "trade": "Dehyton ML",
+     "wt": 8.55
+    },
+    {
+     "trade": "Luviquat Excellence",
+     "wt": 1.88
+    },
+    {
+     "trade": "Arlypon TT",
+     "wt": 4.0
+    }
+   ]
+  },
+  {
+   "sample_id": 3,
+   "stable": false,
+   "viscosity_class": "nan",
+   "lines": [
+    {
+     "trade": "Texapon SB 3 KC",
+     "wt": 12.23
+    },
+    {
+     "trade": "Dehyton ML",
+     "wt": 10.13
+    },
+    {
+     "trade": "Luviquat Excellence",
+     "wt": 1.0
+    },
+    {
+     "trade": "Arlypon TT",
+     "wt": 2.62
+    }
+   ]
+  }
+ ]
+}

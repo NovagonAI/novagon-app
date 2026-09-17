@@ -159,7 +159,7 @@ export default function WorkspacePage() {
                 Nilai positif menandakan kontribusi meningkatkan performa prediksi; nilai negatif menurunkan. Dihitung dengan permutation importance pada model {ws.analysis?.explain?.head ?? 'H1'}.
               </Box>
             </Panel>
-            <div className="mt-[18px] grid gap-[21px] lg:grid-cols-[minmax(0,734px)_295px]">
+            <div className="mt-[18px] grid gap-[21px] xl:grid-cols-[minmax(0,1fr)_295px]">
               <Panel title="Analisis Formulasi" right={<OrbitalLegend />} bodyClassName="py-6">
                 <OrbitalMap active={compositionNodes(lines, ws.analysis).find((n) => n.line === active)} nodes={compositionNodes(lines, ws.analysis)} />
               </Panel>

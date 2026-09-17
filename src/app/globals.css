@@ -2,19 +2,84 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --navy: #003369;
+  --blue: #1a5ba1;
+  --sky: #78b9ff;
+  --mist: #e2f0ff;
+}
+
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 24px;
 }
 
 body {
-  background-color: #F5F9FD;
+  background-color: #ffffff;
+  color: #000000;
 }
 
 ::selection {
-  background: #A6CEEF;
-  color: #12263D;
+  background: #aad3ff;
+  color: #003369;
 }
 
-* {
-  box-sizing: border-box;
+:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 2px;
+}
+
+@layer components {
+  /* The Figma card: 4px stroke that fades #78b9ff -> #1a5ba1 top to bottom,
+     drawn with two backgrounds so the fill stays flat and the corner radius
+     applies to both. */
+  .panel {
+    border: 4px solid transparent;
+    border-radius: 20px;
+    background:
+      linear-gradient(#e2f0ff, #e2f0ff) padding-box,
+      linear-gradient(to bottom, #78b9ff, #1a5ba1) border-box;
+  }
+  .panel-white {
+    border: 4px solid transparent;
+    border-radius: 20px;
+    background:
+      linear-gradient(#ffffff, #ffffff) padding-box,
+      linear-gradient(to bottom, #78b9ff, #1a5ba1) border-box;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center whitespace-nowrap rounded-[50px] bg-btn-gradient px-8 text-[20px] font-bold text-white transition;
+    min-height: 62px;
+  }
+  .btn-primary:hover { filter: brightness(1.06); }
+  .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; filter: none; }
+  .btn-outline {
+    @apply inline-flex items-center justify-center whitespace-nowrap rounded-[50px] bg-white px-6 text-[20px] font-semibold text-navy transition;
+    min-height: 56px;
+    border: 1px solid #003369;
+  }
+  .btn-outline:hover { background: #f2f8ff; }
+  .field {
+    @apply w-full rounded-[10px] border border-navy bg-white px-4 text-[20px] font-semibold text-black;
+    min-height: 56px;
+  }
+  .field::placeholder { color: #a1a1a1; font-weight: 500; }
+  .field:user-invalid { border-color: #ba0000; }
+  .chip {
+    @apply inline-flex h-8 items-center rounded-[5px] border border-line bg-pale px-4 text-[14px] font-semibold text-black;
+  }
+  .chip-muted { @apply chip bg-grey-chip; }
+  .label { @apply mb-2 block text-[16px] font-bold text-navy; }
+  .text-gradient {
+    background: linear-gradient(to bottom, #78b9ff, #1a5ba1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+@media print {
+  aside, nav, .no-print { display: none !important; }
+  main { padding: 0 !important; }
+  .panel, .panel-white { break-inside: avoid; }
 }

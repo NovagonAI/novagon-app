@@ -1,47 +1,45 @@
 import type { Config } from 'tailwindcss'
 
+// Tokens lifted from the Figma file "Bridge" (section "fix"). Names describe
+// the role, values are the exact hex used in the design.
 const config: Config = {
-  content: ['./src/**/*.{ts,tsx,js,jsx}'],
+  content: ['./src/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
-        paper: '#F5F9FD',
-        card: '#FFFFFF',
-        ink: '#12263D',
-        ocean: {
-          50: '#EAF3FB',
-          100: '#D2E7F7',
-          200: '#A6CEEF',
-          300: '#78B3E3',
-          400: '#4A93D1',
-          500: '#1F6BB0',
-          600: '#155691',
-          700: '#114674',
-          800: '#0D3760',
+        navy: '#003369',
+        blue: '#1a5ba1',
+        sky: '#78b9ff',
+        mist: '#e2f0ff',
+        pale: '#f2f8ff',
+        line: '#aad3ff',
+        ink: '#000000',
+        grey: {
+          text: '#606060',
+          bar: '#a1a1a1',
+          nav: '#a8a8a8',
+          track: '#d9d9d9',
+          chip: '#f3f3f3',
+          fade: '#dfdfdf',
         },
-        slate: '#DCE6F0',
-        slate2: '#EEF4FA',
-        success: {
-          100: '#DEEFE2',
-          500: '#2F7D52',
-          600: '#25623F',
-          700: '#1E4F33',
-        },
-        danger: {
-          100: '#F6DEDA',
-          500: '#B14432',
-          600: '#8F362A',
-        },
-        amber: {
-          100: '#F7ECD6',
-          500: '#B4863C',
-          600: '#8F6A2E',
-        },
+        ok: { DEFAULT: '#00a120', dark: '#007417', bg: '#eefff2', border: '#009d1f', bar: '#54d16d' },
+        warn: { DEFAULT: '#f68300', dark: '#a05500', deep: '#9c5300', bg: '#fffeee' },
+        bad: { DEFAULT: '#ba0000', dark: '#7e0000', bg: '#ffeeee' },
       },
       fontFamily: {
-        serif: ['var(--font-fraunces)', 'ui-serif', 'serif'],
-        sans: ['var(--font-ibm-plex-sans)', 'ui-sans-serif', 'sans-serif'],
-        mono: ['var(--font-ibm-plex-mono)', 'ui-monospace', 'monospace'],
+        serif: ['var(--font-libre)', 'Georgia', 'serif'],
+        sans: ['var(--font-montserrat)', 'ui-sans-serif', 'sans-serif'],
+      },
+      boxShadow: {
+        card: '0px 5px 19.4px 0px rgba(0,0,0,0.25)',
+        tile: '0px 4px 4px 0px rgba(0,0,0,0.25)',
+        nav: '0px 3px 31.1px 0px rgba(0,0,0,0.14)',
+        hero: '0px 4px 25.6px 0px rgba(0,0,0,0.25)',
+      },
+      backgroundImage: {
+        'btn-gradient': 'linear-gradient(to bottom, #78b9ff, #1a5ba1)',
+        'sidebar-gradient': 'linear-gradient(to bottom, #003369 0%, #1a5ba1 50%, #78b9ff 100%)',
+        'header-fade': 'linear-gradient(to right, #ffffff, #dfdfdf)',
       },
     },
   },

@@ -10,7 +10,11 @@ const nextConfig = {
   async rewrites() {
     const upstream = (process.env.API_UPSTREAM ?? 'http://localhost:8000').replace(/\/+$/, '')
     const token = process.env.API_UPSTREAM_TOKEN
-    return [{ source: '/api/v1/:path*', destination: `${upstream}/v1/:path*${token ? `?token=${token}` : ''}` }]
+    const skin = (process.env.SKIN_UPSTREAM ?? 'http://localhost:8010').replace(/\/+$/, '')
+    return [
+      { source: '/api/v1/:path*', destination: `${upstream}/v1/:path*${token ? `?token=${token}` : ''}` },
+      { source: '/api/skin/:path*', destination: `${skin}/v1/skin/:path*${token ? `?token=${token}` : ''}` },
+    ]
   },
 }
 module.exports = nextConfig

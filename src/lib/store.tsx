@@ -18,6 +18,8 @@ export interface LineUI {
 
 export interface SkinReport {
   image?: string
+  /** Verdict from the skin-vision service (skin type + Fitzpatrick with confidences). */
+  verdict?: import('./skin').SkinVerdict
   concerns?: Array<{ name: string; p: number }>
   tone?: { label: string; p: number }
   type?: 'oily' | 'dry' | 'sensitive' | 'normal'

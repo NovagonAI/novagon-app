@@ -8,7 +8,7 @@ export function RangeBar({ value, lo, hi, min, max, height = 49, labels = true }
     <div>
       <div className="relative w-full rounded-[25px] border border-line bg-white" style={{ height }} role="img" aria-label={`Nilai ${fmt(value)}, interval ${fmt(lo)} sampai ${fmt(hi)}`}>
         <span className="absolute top-0 h-full rounded-[25px] bg-line" style={{ left: p(lo), width: `calc(${p(hi)} - ${p(lo)})` }} />
-        <span className="absolute top-1/2 h-[60%] w-[3px] -translate-x-1/2 -translate-y-1/2 rounded bg-navy" style={{ left: p(value) }} />
+        <span className="absolute top-1/2 h-[61%] w-[4px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-navy" style={{ left: p(value) }} />
       </div>
       {labels && (
         <div className="mt-2 flex justify-between text-[20px] font-semibold text-grey-text">

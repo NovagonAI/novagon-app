@@ -74,8 +74,7 @@ export function ResultColumn({ ws }: { ws: Workspace }) {
           <>
             <div className="relative mt-[7px] h-[19px] w-full rounded-[25px] border border-line bg-white" role="img" aria-label={`Viskositas ${fmt(visc.value, 0)} cP, interval ${fmt(visc.lo, 0)} sampai ${fmt(visc.hi, 0)} cP`}>
               <span className="absolute top-[3px] h-[11px] rounded-[25px] bg-line" style={{ left: pos(visc.lo), width: `calc(${pos(visc.hi)} - ${pos(visc.lo)})` }} />
-              {target && <span className="absolute top-[3px] h-[11px] rounded-[25px] border border-dashed border-navy/40" style={{ left: pos(target[0]), width: `calc(${pos(target[1])} - ${pos(target[0])})` }} title="Target QTPP" />}
-              <span className="absolute top-[3px] h-[11px] w-[2px] -translate-x-1/2 bg-navy" style={{ left: pos(visc.value) }} />
+              <span className="absolute top-[3px] h-[11px] w-[4px] -translate-x-1/2 rounded-full bg-navy" style={{ left: pos(visc.value) }} />
             </div>
             <div className="relative mt-[6px] h-[13px] text-[11px] font-semibold text-grey-text">
               <span className="absolute left-0">{fmt(visc.lo, 0)} cP</span>

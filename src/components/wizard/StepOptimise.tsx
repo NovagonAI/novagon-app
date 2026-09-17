@@ -63,11 +63,6 @@ export function StepOptimise({ ws, update, back }: StepProps) {
                   <p className="flex items-center gap-[9px] text-[20px] font-bold text-black">
                     <span className="size-[14px] rounded-full bg-blue" aria-hidden="true" /> C{i + 1}
                     {c.highlighted && <span className="ml-2 rounded-[24px] bg-blue px-3 text-[13px] text-white">disarankan</span>}
-                    {ws.targetScore != null && s && (
-                      <span className={`ml-2 rounded-[24px] px-3 text-[13px] text-white ${s.value * scale >= ws.targetScore ? 'bg-ok' : 'bg-grey-nav'}`}>
-                        {s.value * scale >= ws.targetScore ? 'capai target' : `target ${fmt(ws.targetScore)}`}
-                      </span>
-                    )}
                   </p>
                   <p className="text-right">
                     <span className="block text-[13px] font-bold text-black">Prediksi</span>

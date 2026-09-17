@@ -134,7 +134,7 @@ export default function WorkspacePage() {
                     <span className="text-[20px] font-semibold text-grey-text">CI {Math.round(h.raw.uncertainty.level * 100)}%: [{fmt(h.lo)} – {fmt(h.hi)}]</span>
                   </p>
                   <div className="mt-[14px]">
-                    <RangeBar value={ws.targetScore ?? h.value} min={h.scale[0]} max={h.scale[1]} onChange={(v) => store.update(ws.id, { targetScore: +v.toFixed(1) })} ariaLabel="Target nilai prediksi" />
+                    <RangeBar value={h.value} min={h.scale[0]} max={h.scale[1]} ariaLabel="Nilai prediksi" />
                   </div>
                   <Box muted className="mt-[18px] px-4 py-4 text-[16px] font-semibold text-grey-text">
                     {provenanceLine(h.raw)}

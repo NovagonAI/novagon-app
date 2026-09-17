@@ -47,19 +47,8 @@ export function StepPrediction({ ws, update, next, back }: StepProps) {
               </span>
             </p>
             <div className="mt-[14px]">
-              <RangeBar value={ws.targetScore ?? h.value} min={h.scale[0]} max={h.scale[1]} onChange={(v) => update({ targetScore: +v.toFixed(1) })} ariaLabel="Target nilai prediksi" />
+              <RangeBar value={h.value} min={h.scale[0]} max={h.scale[1]} ariaLabel="Nilai prediksi" />
             </div>
-            <p className="mt-2 text-[14px] font-semibold text-grey-text">
-              Geser pil biru untuk menetapkan target skor: <span className="font-bold text-navy">{fmt(ws.targetScore ?? h.value)}</span>
-              {ws.targetScore != null && ws.targetScore !== +h.value.toFixed(1) && (
-                <>
-                  {' '}· prediksi saat ini {fmt(h.value)} ({h.value >= ws.targetScore ? 'target tercapai' : `selisih ${fmt(ws.targetScore - h.value)}`}) ·{' '}
-                  <button type="button" className="underline" onClick={() => update({ targetScore: undefined })}>
-                    reset
-                  </button>
-                </>
-              )}
-            </p>
             <Box muted className="mt-[18px] flex min-h-[56px] items-center px-4 text-[16px] font-semibold text-grey-text">
               {provenanceLine(h.raw)}
             </Box>

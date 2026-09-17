@@ -59,8 +59,6 @@ export interface Workspace {
   candidates?: AskCandidate[]
   optimiserState?: string | null
   candidateSummary?: string[]
-  /** Score the formulator aims for, set by dragging the prediction slider. */
-  targetScore?: number
 }
 
 export interface HistoryEntry {

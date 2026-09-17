@@ -68,7 +68,7 @@ export default function WorkspacePage() {
   }
 
   return (
-    <div className="max-w-[1150px] px-4 lg:pl-14 lg:pr-[44px] pb-16">
+    <div className="mx-auto w-full max-w-[1150px] px-4 lg:px-12 pb-16">
       <BandHeader title={ws.name} subtitle={`Diubah terakhir ${relativeDate(ws.updatedAt).toLowerCase()}`} chips={pt.forms} />
       <div className="mt-[37px]">
         <OverviewCard ws={ws} />

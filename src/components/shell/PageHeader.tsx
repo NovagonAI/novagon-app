@@ -17,7 +17,7 @@ export function WizardHeader({ title, step, reached, onSelect }: { title: string
 /** Laboratorium heading: the white-to-grey band with title, subtitle and chips. */
 export function BandHeader({ title, subtitle, chips = [], right }: { title: string; subtitle?: string; chips?: string[]; right?: React.ReactNode }) {
   return (
-    <div className="-mx-4 flex min-h-[152px] items-start justify-between bg-header-fade px-4 pt-[37px] lg:-ml-[56px] lg:mr-0 lg:pl-[54px] lg:pr-[44px]">
+    <div className="-mx-4 flex min-h-[152px] items-start justify-between rounded-b-[20px] bg-header-fade px-4 pt-[37px] lg:-mx-12 lg:px-12">
       <div>
         <h1 className="font-serif text-[36px] font-bold italic leading-none text-navy">
           {title}

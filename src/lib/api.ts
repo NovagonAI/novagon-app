@@ -17,7 +17,8 @@ import type {
  * at the venue, so it can be switched to the laptop twin from the browser
  * without a rebuild (localStorage key `novagon.apiBase`).
  */
-const DEFAULT_BASE = process.env.NEXT_PUBLIC_API_BASE ?? 'http://localhost:8000/v1'
+// Same-origin path by default: next.config.js rewrites it to API_UPSTREAM.
+const DEFAULT_BASE = process.env.NEXT_PUBLIC_API_BASE ?? '/api/v1'
 const BASE_KEY = 'novagon.apiBase'
 
 export function apiBase(): string {
@@ -51,7 +52,8 @@ export class ApiError extends Error {
 }
 
 async function call<T>(path: string, init: RequestInit = {}, timeoutMs = 180_000): Promise<T> {
-  const res = await fetch(`${apiBase()}${path}`, {
+  const base = apiBase()
+  const res = await fetch(`${base.startsWith('/') && typeof window !== 'undefined' ? window.location.origin + base : base}${path}`, {
     ...init,
     headers: { 'content-type': 'application/json', ...(init.headers ?? {}) },
     signal: AbortSignal.timeout(timeoutMs),

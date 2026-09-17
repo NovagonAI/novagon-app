@@ -25,7 +25,7 @@ export function Landing() {
   }, [])
 
   return (
-    <div className="hidden w-full overflow-hidden bg-white md:block" style={{ height: H * scale }}>
+    <div className="hidden w-full justify-center overflow-hidden bg-white md:flex" style={{ height: H * scale }}>
       <div ref={ref} className="relative origin-top-left bg-white" style={{ width: W, height: H, transform: `scale(${scale})` }}>
         {/* hero photo, 20% */}
         <div className="absolute left-0 top-0 h-[638px] w-[1440px] overflow-hidden opacity-20">

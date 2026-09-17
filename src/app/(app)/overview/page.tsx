@@ -42,7 +42,7 @@ export default function OverviewPage() {
   const available = heads?.heads.filter((h) => h.available).length ?? 0
 
   return (
-    <div className="max-w-[1150px] px-4 lg:pl-14 lg:pr-[44px] pb-16">
+    <div className="mx-auto w-full max-w-[1150px] px-4 lg:px-12 pb-16">
       <BandHeader title="Overview" subtitle={health ? `endpoint ${health.status} · core ${health.core_tag}` : err ? 'endpoint tidak terhubung' : 'menghubungi endpoint…'} />
       <div className="mt-[37px] grid gap-[13px] sm:grid-cols-3">
         <Stat label="Workspace" value={store.workspaces.length} hint="formulasi tersimpan" />
@@ -98,7 +98,7 @@ export default function OverviewPage() {
             Base URL API
           </label>
           <div className="flex gap-2">
-            <input id="api-base" className="field text-[16px]" value={base} onChange={(e) => setBase(e.target.value)} placeholder="http://localhost:8000/v1" />
+            <input id="api-base" className="field text-[16px]" value={base} onChange={(e) => setBase(e.target.value)} placeholder="/api/v1 (proxy Vercel) atau https://…/v1" />
             <button
               type="button"
               className="btn-outline h-[56px] min-h-0 text-[16px]"

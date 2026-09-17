@@ -13,7 +13,7 @@ const TONE = { pass: 'ok', warn: 'warn', fail: 'bad' } as const
 export default function HistoryPage() {
   const store = useStore()
   return (
-    <div className="max-w-[1150px] px-4 lg:pl-14 lg:pr-[44px] pb-16">
+    <div className="mx-auto w-full max-w-[1150px] px-4 lg:px-12 pb-16">
       <BandHeader title="Riwayat" subtitle="setiap prediksi yang pernah dijalankan" />
       <Panel className="mt-[37px]" bodyClassName="py-2">
         {store.ready && store.history.length === 0 && <p className="py-4 text-[16px] font-semibold text-grey-text">Belum ada riwayat prediksi.</p>}

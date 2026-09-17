@@ -29,7 +29,7 @@ export function Wizard() {
   const props = { ws, update: (p: Parameters<typeof store.update>[1]) => store.update(ws.id, p), next: () => go(step + 1), back: () => go(step - 1) }
 
   return (
-    <div className="max-w-[1150px] px-4 lg:pl-14 lg:pr-[44px] pb-16">
+    <div className="mx-auto w-full max-w-[1150px] px-4 lg:px-12 pb-16">
       <WizardHeader title={TITLES[step - 1]} step={step} reached={reached} onSelect={go} />
       <div className="mt-[19px]">
         {step === 1 && <StepProductType {...props} />}

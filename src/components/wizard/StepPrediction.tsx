@@ -7,9 +7,25 @@ import { HEAD_LABEL } from '@/lib/catalog'
 import type { HeadId } from '@/lib/api-types'
 import { complianceRisks, fmt, headline, provenanceLine, type Risk, safetyRisks, stabilityRisks } from '@/lib/insight'
 import type { StepProps } from './Wizard'
+import { useState } from 'react'
+import { runAnalysis } from './analysis'
+import { describeError } from '@/lib/api'
 
 /** Step 4: the headline number with its interval, then the three risk cards. */
-export function StepPrediction({ ws, next, back }: StepProps) {
+export function StepPrediction({ ws, update, next, back }: StepProps) {
+  const [busy, setBusy] = useState(false)
+  const [err, setErr] = useState<string | null>(null)
+  const rerun = async () => {
+    setBusy(true)
+    setErr(null)
+    try {
+      update({ analysis: await runAnalysis(ws), candidates: undefined, candidateSummary: undefined, optimiserState: null })
+    } catch (e) {
+      setErr(describeError(e))
+    } finally {
+      setBusy(false)
+    }
+  }
   const a = ws.analysis
   const h = headline(a, ws.productType)
   const lines = ws.formula.filter((l) => l.inci_name)
@@ -21,7 +37,13 @@ export function StepPrediction({ ws, next, back }: StepProps) {
   return (
     <div>
       <Panel title="Hasil Prediksi" bodyClassName="pt-[16px] pb-[26px]">
-        <p className="text-[20px] font-bold text-navy">Nilai Prediksi{h ? ` · ${h.label}` : ''}</p>
+        <div className="flex items-start justify-between gap-4">
+          <p className="text-[20px] font-bold text-navy">Nilai Prediksi{h ? ` · ${h.label}` : ''}</p>
+          <button type="button" onClick={rerun} disabled={busy} className="btn-primary h-[45px] min-h-0 min-w-[190px] text-[18px]">
+            {busy ? 'Memprediksi…' : 'Prediksi Ulang'}
+          </button>
+        </div>
+        {err && <p role="alert" className="mt-2 text-[14px] font-semibold text-bad">{err}</p>}
         {h ? (
           <>
             <p className="mt-2 flex flex-wrap items-baseline gap-x-6">

@@ -1,5 +1,6 @@
 'use client'
 
+import { Logo } from '@/components/ui/Logo'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { SignInLink } from './Motion'
@@ -73,7 +74,7 @@ export function Landing() {
 
       <div className="relative mx-auto max-w-[1440px] px-4 pb-[clamp(40px,6vw,90px)] pt-[clamp(20px,3.8vw,55px)] sm:px-8 lg:px-[66px]">
         <header className="flex flex-wrap items-center justify-between gap-4">
-          <p className="font-serif text-[clamp(26px,2.5vw,36px)] font-bold italic leading-none text-navy">Novagon</p>
+          <Logo size={32} className="text-navy" />
           <nav aria-label="Navigasi utama" className="order-3 flex w-full flex-wrap items-center justify-center gap-x-[clamp(16px,4.5vw,65px)] gap-y-2 rounded-[100px] bg-white px-4 py-2 shadow-nav md:order-2 md:w-auto md:py-[6px] md:pl-[6px] md:pr-[52px]">
             <Link href="/" aria-current="page" className="flex h-[44px] items-center justify-center rounded-[50px] bg-btn-gradient px-6 text-[clamp(14px,1.1vw,16px)] font-bold text-white md:h-[50px] md:w-[140px]">
               Home

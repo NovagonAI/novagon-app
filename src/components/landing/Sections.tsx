@@ -1,3 +1,4 @@
+import { Logo } from '@/components/ui/Logo'
 import Link from 'next/link'
 import { Reveal, Wave, SignInLink } from './Motion'
 
@@ -149,7 +150,7 @@ export function Footer() {
     <footer className="bg-navy text-white">
       <div className={`${container} flex flex-wrap items-center justify-between gap-4 py-8`}>
         <div>
-          <p className="font-serif text-[28px] font-bold italic">Novagon</p>
+          <Logo size={28} />
           <p className="text-[13px] font-medium text-white/70">Innovating Goods for The Greater Good</p>
         </div>
         <nav aria-label="Tautan footer" className="flex flex-wrap gap-x-6 gap-y-2 text-[14px] font-bold">

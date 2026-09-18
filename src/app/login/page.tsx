@@ -1,5 +1,6 @@
 'use client'
 
+import { Logo } from '@/components/ui/Logo'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useState } from 'react'
@@ -104,8 +105,8 @@ function LoginForm() {
 export default function LoginPage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-mist to-white px-4 py-10">
-      <Link href="/" className="font-serif text-[40px] font-bold italic text-navy">
-        Novagon
+      <Link href="/" aria-label="Novagon" className="text-navy">
+        <Logo size={40} />
       </Link>
       <p className="mb-8 mt-2 text-center text-[16px] font-semibold text-grey-text">Platform riset dan prediksi formulasi kosmetik</p>
       <Suspense fallback={<div className="text-[16px] font-semibold text-grey-text">Memuat…</div>}>

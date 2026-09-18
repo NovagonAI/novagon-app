@@ -131,7 +131,7 @@ export function BrandsSection() {
             style={{ '--marquee': anim } as React.CSSProperties}
             aria-hidden={anim === 'marquee-left' || undefined}
           >
-            {[...BRANDS, ...BRANDS].map(([name, src], i) => (
+            {[...BRANDS, ...BRANDS, ...BRANDS, ...BRANDS].map(([name, src], i) => (
               <li key={i} aria-hidden={i >= BRANDS.length || undefined} className="shrink-0 pr-[clamp(40px,6vw,96px)]">
                 <img src={src} alt={i < BRANDS.length && anim === 'marquee-right' ? name : ''} className="h-12 w-auto object-contain sm:h-16" loading="lazy" />
               </li>

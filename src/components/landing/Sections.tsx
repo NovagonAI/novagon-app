@@ -24,13 +24,13 @@ const VALUES = [
 ] as const
 
 const BRANDS = [
-  ['Wardah', 'Halal beauty yang lembut dan aman untuk pemakaian harian.'],
-  ['Make Over', 'Makeup profesional dengan shade luas dan daya tahan tinggi.'],
-  ['Emina', 'Formula ringan dan playful untuk kulit remaja.'],
-  ['Kahf', 'Personal care pria berbasis bahan alami dan halal.'],
-  ['Crystallure', 'Prestige skincare dengan Gold Peptide Crystals.'],
-  ['LABORE', 'Dermaskincare kulit sensitif iklim tropis tanpa SLS dan parfum.'],
-  ['TAVI', 'Vegan skincare berbasis bahan aktif yang transparan.'],
+  ['Wardah', '/brands/wardah.png'],
+  ['Make Over', '/brands/make-over.png'],
+  ['Emina', '/brands/emina.png'],
+  ['Kahf', '/brands/kahf.png'],
+  ['Crystallure', '/brands/crystallure.png'],
+  ['LABORE', '/brands/labore.png'],
+  ['TAVI', '/brands/tavi.png'],
 ] as const
 
 const container = 'mx-auto max-w-[1150px] px-4 sm:px-8'
@@ -123,11 +123,10 @@ export function BrandsSection() {
           <h2 className="mt-2 font-serif text-[clamp(28px,3vw,40px)] font-bold italic text-navy">Aturan tiap brand ikut diperiksa</h2>
         </Reveal>
         <ul className="mt-[clamp(20px,3vw,40px)] grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {BRANDS.map(([name, text], i) => (
+          {BRANDS.map(([name, src], i) => (
             <Reveal key={name} delay={i * 50}>
-              <li className="panel h-full p-5">
-                <p className="font-serif text-[22px] font-bold italic text-navy">{name}</p>
-                <p className="mt-1 text-[14px] font-medium text-black">{text}</p>
+              <li className="panel flex h-full items-center justify-center p-6">
+                <img src={src} alt={name} className="max-h-16 w-auto object-contain" loading="lazy" />
               </li>
             </Reveal>
           ))}

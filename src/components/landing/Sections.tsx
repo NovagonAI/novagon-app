@@ -148,9 +148,8 @@ export function AboutSection() {
       <div className="mt-[clamp(28px,4vw,56px)]">
         {VALUES.map(([title, text, tone], i) => (
           <Reveal key={title} delay={i * 80} className={`relative ${['z-30', 'z-20', 'z-10'][i]} ${i ? '-mt-6' : ''}`}>
-            <div className={`rounded-t-[32px] pb-11 pt-6 shadow-card ${tone}`}>
+            <div className={`rounded-t-[32px] pb-11 shadow-card ${i ? 'pt-14' : 'pt-8'} ${tone}`}>
               <div className={container}>
-                <p className="text-[12px] font-bold uppercase tracking-[0.2em] opacity-80">Nilai kami</p>
                 <p className="font-serif text-[clamp(22px,2.4vw,30px)] font-bold italic">{title}</p>
                 <p className="text-[15px] font-medium">{text}</p>
               </div>

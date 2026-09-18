@@ -8,6 +8,8 @@ import type {
   PredictResponse,
   Scoreboard,
   Verdict,
+  EmulsionAssessment,
+  Finding,
 } from './api-types'
 
 /**
@@ -127,6 +129,26 @@ export interface AskOut {
   acceleration_factor?: number | null
 }
 
+export interface RecommendChange {
+  action: 'add' | 'adjust' | 'remove'
+  inci_name: string
+  wt_pct: number
+  current_pct?: number | null
+  reason: string
+  source: string
+}
+
+export interface RecommendOut {
+  before: EmulsionAssessment
+  changes: RecommendChange[]
+  candidate: { formula: { lines: Array<{ inci_name: string; wt_pct: number; ing_id?: string | null }> }; assessment: EmulsionAssessment; verdict?: Verdict } | null
+  pharmacy: Finding[]
+  narrative: string
+  llm: { used: boolean; model: string | null; error: string | null }
+  method: string
+  verdict_before?: Verdict
+}
+
 export const api = {
   health: () => call<Health>('/health', {}, 10_000),
   heads: () => call<Scoreboard>('/heads', {}, 20_000),
@@ -135,8 +157,10 @@ export const api = {
   predict: (head: HeadId, body: PredictRequest) => post<PredictResponse>(`/predict/${head}`, body),
   explain: (head: HeadId, body: { formula: PredictRequest['formula']; product_type?: string; limit?: number }) =>
     post<ExplainOut>(`/explain/${head}`, body),
-  constraints: (body: { formula: PredictRequest['formula']; product_type?: string; claims?: string[] }) =>
+  constraints: (body: { formula: PredictRequest['formula']; product_type?: string; claims?: string[]; ph?: number | null }) =>
     post<Verdict & { certifiable?: boolean }>('/constraints/check', body),
+  recommend: (body: { formula: PredictRequest['formula']; product_type?: string; ph?: number | null; language?: string; use_llm?: boolean }) =>
+    call<RecommendOut>('/recommend', { method: 'POST', body: JSON.stringify(body) }, 120_000),
   cost: (body: { formula: PredictRequest['formula'] }) => post<CostResponse>('/cost', body),
   ask: (body: AskIn) => post<AskOut>('/optimize/ask', body),
 }

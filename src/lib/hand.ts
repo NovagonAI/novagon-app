@@ -45,6 +45,8 @@ const RULES: Array<{ match: string[]; sat: number; effects: Partial<Record<Effec
   { match: ['UREA'], sat: 5, effects: { lembap: 0.8, halus: 0.5 } },
   { match: ['=BETAINE', 'SODIUM PCA', 'TREHALOSE', 'PROPANEDIOL', 'BUTYLENE GLYCOL'], sat: 3, effects: { lembap: 0.5 } },
   { match: ['ALOE'], sat: 2, effects: { lembap: 0.5, tenang: 0.6 } },
+  { match: ['PROPYLENE GLYCOL', 'PENTYLENE GLYCOL', 'SORBITOL'], sat: 5, effects: { lembap: 0.7 } },
+  { match: ['MINERAL OIL', 'PARAFFINUM LIQUIDUM', 'PETROLATUM', 'LANOLIN', 'THEOBROMA', 'COCOA BUTTER'], sat: 10, effects: { lembap: 0.8, halus: 0.3 } },
   { match: ['CAPRYLIC/CAPRIC', 'CETEARYL ALCOHOL', 'CETYL ALCOHOL', 'ISOPROPYL', 'DICAPRYLYL'], sat: 4, effects: { lembap: 0.3, halus: 0.3 } },
   { match: ['DIMETHICONE', 'CYCLOPENTASILOXANE'], sat: 3, effects: { halus: 0.8, matte: 0.2 } },
   { match: ['SALICYLIC'], sat: 2, effects: { halus: 0.8, matte: 0.8 } },

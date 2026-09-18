@@ -56,7 +56,7 @@ export const PRODUCT_TYPES: ProductType[] = [
     apiType: 'face_leave_on',
     heads: ['H1', 'H2', 'H4'],
     forms: ['Krim', 'Gel-Cream', 'Lotion'],
-    qtpp: { bentuk: 'Krim / gel-cream / lotion', warna: 'Cairan jernih, berwarna kuning pucat', viskositas: '1.000-2.000 cPs', ph: '5.5-6.5', stabilitas: '1 tahun' },
+    qtpp: { bentuk: 'Krim / gel-cream / lotion', warna: 'Emulsi putih homogen', viskositas: '5.000-15.000 cPs', ph: '5.5-6.5', stabilitas: '1 tahun' },
   },
   {
     id: 'shampoo',

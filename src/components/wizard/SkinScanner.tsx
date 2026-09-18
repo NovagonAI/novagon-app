@@ -60,7 +60,7 @@ export function SkinScanner({ ws, update }: { ws: Workspace; update: (p: Partial
         } catch {
           /* tracking is cosmetic; the scan itself reports errors */
         }
-      }, 700)
+      }, 450)
     } catch (e) {
       setError(`Kamera tidak tersedia: ${e instanceof Error ? e.message : String(e)}`)
     }
@@ -140,9 +140,16 @@ export function SkinScanner({ ws, update }: { ws: Workspace; update: (p: Partial
               <video ref={video} autoPlay playsInline muted className="aspect-video w-full object-cover" />
               {face && (
                 <div
-                  className="pointer-events-none absolute rounded-[12px] border-[3px] border-ok shadow-[0_0_0_2000px_rgba(0,0,0,0.25)] transition-all duration-200"
+                  className="pointer-events-none absolute transition-all duration-200"
                   style={{ left: `${face.x * 100}%`, top: `${face.y * 100}%`, width: `${face.w * 100}%`, height: `${face.h * 100}%` }}
-                />
+                  aria-hidden="true"
+                >
+                  <span className="absolute left-0 top-0 h-[26%] w-[26%] rounded-tl-[10px] border-l-[4px] border-t-[4px] border-ok" />
+                  <span className="absolute right-0 top-0 h-[26%] w-[26%] rounded-tr-[10px] border-r-[4px] border-t-[4px] border-ok" />
+                  <span className="absolute bottom-0 left-0 h-[26%] w-[26%] rounded-bl-[10px] border-b-[4px] border-l-[4px] border-ok" />
+                  <span className="absolute bottom-0 right-0 h-[26%] w-[26%] rounded-br-[10px] border-b-[4px] border-r-[4px] border-ok" />
+                  <span className="absolute left-1/2 top-1/2 size-[6px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-ok" />
+                </div>
               )}
               <Corner className="left-4 top-4" />
               <Corner className="right-4 top-4 rotate-90" />
@@ -220,7 +227,7 @@ export function SkinScanner({ ws, update }: { ws: Workspace; update: (p: Partial
         {v ? (
           <SkinResult v={v} image={ws.skin.image} />
         ) : (
-          <p className="text-[16px] font-semibold text-grey-text">Pindai wajah dengan kamera atau unggah minimal {MIN_UPLOAD} foto; hasil klasifikasi jenis kulit dan tipe Fitzpatrick tampil di sini.</p>
+          <p className="text-[16px] font-semibold text-grey-text">Pindai wajah dengan kamera atau unggah minimal {MIN_UPLOAD} foto, hasil klasifikasi jenis kulit dan tipe Fitzpatrick tampil di sini.</p>
         )}
         <label htmlFor="skin-detail" className="label mt-[18px]">
           Detail Permasalahan Kulit:
@@ -231,10 +238,10 @@ export function SkinScanner({ ws, update }: { ws: Workspace; update: (p: Partial
 
       <Panel title="3D Skin Model" className="mt-[18px]" bodyClassName="pt-[18px] pb-[26px]">
         <p className="text-[20px] font-semibold text-navy">
-          {v ? `Warna model mengikuti tipe Fitzpatrick ${v.fitzpatrick.label} (${v.fitzpatrick.hex}). Putar untuk melihat dari berbagai sisi.` : 'Interaksi langsung dengan model 3D untuk mengecek area fokus kulitmu dari berbagai sisi!'}
+          {v ? `Warna model ${v.skin_hex_measured ? 'diukur langsung dari wajah pada pindaian' : `mengikuti tipe Fitzpatrick ${v.fitzpatrick.label}`} (${v.skin_hex ?? v.fitzpatrick.hex}). Putar untuk melihat dari berbagai sisi.` : 'Interaksi langsung dengan model 3D untuk mengecek area fokus kulitmu dari berbagai sisi!'}
         </p>
         <div className="mx-auto mt-[24px] max-w-[420px]">
-          <HeadModel3D hex={v?.fitzpatrick.hex ?? '#E0C9B4'} />
+          <HeadModel3D hex={v?.skin_hex ?? v?.fitzpatrick.hex ?? '#E0C9B4'} />
         </div>
       </Panel>
     </>
@@ -279,6 +286,7 @@ function SkinResult({ v, image }: { v: SkinVerdict; image?: string }) {
             <p className="text-[11px] font-bold uppercase tracking-wide text-grey-text">Tipe Fitzpatrick</p>
             <p className="flex items-center gap-2 text-[24px] font-bold text-navy">
               <span className="inline-block size-6 rounded-full border border-navy" style={{ background: v.fitzpatrick.hex }} /> Tipe {v.fitzpatrick.label}
+              {v.skin_hex_measured && <span className="inline-block size-6 rounded-full border border-navy" style={{ background: v.skin_hex }} title="Warna kulit terukur dari wajah" />}
             </p>
             <p className="text-[14px] font-semibold text-black">
               Confidence {pct(v.fitzpatrick.confidence)} · {pct(v.fitzpatrick.agreement)} frame setuju

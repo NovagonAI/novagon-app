@@ -9,6 +9,7 @@ import { complianceRisks, fmt, headline, provenanceLine, type Risk, safetyRisks,
 import type { StepProps } from './Wizard'
 import { useState } from 'react'
 import { runAnalysis } from './analysis'
+import { HandViz } from './HandViz'
 import { describeError } from '@/lib/api'
 
 /** Step 4: the headline number with its interval, then the three risk cards. */
@@ -43,7 +44,7 @@ export function StepPrediction({ ws, update, next, back }: StepProps) {
             <p className="mt-2 flex flex-wrap items-baseline gap-x-4">
               <span className="font-serif text-[70px] font-bold italic leading-none text-navy">{fmt(h.value)}</span>
               <span className="text-[20px] font-semibold text-grey-text">
-                CI {Math.round(h.raw.uncertainty.level * 100)}%: [{fmt(h.lo)} - {fmt(h.hi)}]{h.unit !== 'skor 0–100' ? ` ${h.unit}` : ''}
+                CI {Math.round(h.raw.uncertainty.level * 100)}%: [{fmt(h.lo)} - {fmt(h.hi)}]{h.unit !== 'skor 0-100' ? ` ${h.unit}` : ''}
               </span>
             </p>
             <div className="mt-[14px]">
@@ -60,6 +61,15 @@ export function StepPrediction({ ws, update, next, back }: StepProps) {
         )}
       </Panel>
 
+      {a && (
+        <Panel title="Visualisasi Efek pada Kulit" className="mt-[22px]" bodyClassName="pt-[16px] pb-[22px]">
+          <p className="mb-3 text-[14px] font-semibold text-grey-text">
+            Model tangan memainkan profil efek formula: tekstur kasar melebur ke halus sesuai skor penghalusan, titik tengah punggung tangan mencerah sesuai skor pencerahan, warna dasar meredup sesuai skor penenang. Skor berasal dari kadar bahan aktif dan diredam oleh probabilitas stabilitas model.
+          </p>
+          <HandViz ws={ws} />
+        </Panel>
+      )}
+
       {a && (others.length > 0 || (h?.raw.warnings.length ?? 0) > 0 || Object.keys(a.problems).length > 0) && (
         <Panel title="Catatan Model" className="mt-[22px]" bodyClassName="pt-[16px] pb-[22px]">
           {h && (
@@ -72,7 +82,7 @@ export function StepPrediction({ ws, update, next, back }: StepProps) {
               {others.map(([k, r]) => {
                 const p = r.prediction
                 const text =
-                  p.kind === 'scalar' ? `${fmt(p.value)} ${p.unit} (${fmt(p.lo)}–${fmt(p.hi)})` : p.kind === 'class' ? `${p.label} · p=${Math.round(p.p * 100)}%` : p.kind
+                  p.kind === 'scalar' ? `${fmt(p.value)} ${p.unit} (${fmt(p.lo)}-${fmt(p.hi)})` : p.kind === 'class' ? `${p.label} · p=${Math.round(p.p * 100)}%` : p.kind
                 return (
                   <Box key={k} muted className="px-4 py-3">
                     <dt className="text-[14px] font-bold text-navy">{HEAD_LABEL[k as HeadId]}</dt>
@@ -105,7 +115,7 @@ export function StepPrediction({ ws, update, next, back }: StepProps) {
 
       <RiskPanel title="Berisiko Mengganggu Stabilitas Produk" color="text-warn-deep" risks={stability} empty="Tidak ada risiko stabilitas yang terdeteksi dari pasangan bahan maupun aturan R5/R6." />
       <RiskPanel title="Berpotensi Membahayakan Keamanan Konsumen" color="text-warn" risks={safety} empty="Tidak ada bahan yang melampaui batas regulasi atau penanda iritan." />
-      <RiskPanel title="Kepatuhan Regulasi & Halal" color="text-navy" risks={compliance} empty="Semua bahan dikenali registry; tidak ada catatan halal atau aturan brand." />
+      <RiskPanel title="Kepatuhan Regulasi & Halal" color="text-navy" risks={compliance} empty="Semua bahan dikenali registry, tidak ada catatan halal atau aturan brand." />
 
       {err && <p role="alert" className="mt-3 text-[14px] font-semibold text-bad">{err}</p>}
       <div className="mt-[18px] flex flex-wrap items-center justify-between gap-3">

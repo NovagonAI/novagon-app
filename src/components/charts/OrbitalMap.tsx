@@ -1,5 +1,9 @@
+'use client'
+
+import { useState } from 'react'
 import type { Node } from '@/lib/insight'
 import { fmt, pct } from '@/lib/insight'
+import { MoleculeViewer } from './MoleculeViewer'
 
 const STYLE = {
   ok: 'bg-ok-bg border-ok-border text-ok',
@@ -18,12 +22,15 @@ const R = 127
 const pc = (v: number, of: number) => `${(v / of) * 100}%`
 
 /**
- * The composition map: the main active in a disc at the centre, every other
- * ingredient in a coloured tile on an ellipse around it, dashed spokes between.
- * Every offset is a percentage of the 680×560 stage so it scales with its panel.
+ * The composition map: the selected ingredient in a disc at the centre as an
+ * interactive 3D conformer (PubChem via 3Dmol), every other ingredient in a
+ * coloured tile on an ellipse around it. Click a tile to bring it to the
+ * centre. Every offset is a percentage of the 680x560 stage so it scales.
  */
-export function OrbitalMap({ active, nodes, image = '/figma/molecule-niacinamide.png' }: { active?: Node; nodes: Node[]; image?: string }) {
-  const others = nodes.filter((n) => n !== active)
+export function OrbitalMap({ active, nodes }: { active?: Node; nodes: Node[]; image?: string }) {
+  const [picked, setPicked] = useState<string | null>(null)
+  const centre = nodes.find((n) => n.line.id === picked) ?? active
+  const others = nodes.filter((n) => n !== centre)
   const n = others.length || 1
   const angle = (i: number) => -Math.PI / 2 + (i / n) * 2 * Math.PI
   return (
@@ -36,23 +43,26 @@ export function OrbitalMap({ active, nodes, image = '/figma/molecule-niacinamide
         <circle cx={CX} cy={CY} r={R} fill="#f5f5f5" />
       </svg>
       <div className="absolute flex flex-col items-center justify-center" style={{ left: pc(CX - R, W), top: pc(CY - R, H), width: pc(2 * R, W), height: pc(2 * R, H) }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="" src={image} className="h-[52%] w-auto rounded-full object-contain" />
-        <p className={`mt-1 max-w-[94%] truncate font-bold leading-tight text-navy ${(active?.line.inci_name.length ?? 0) > 13 ? 'text-[18px]' : 'text-[24px]'}`} title={active?.line.inci_name}>
-          {active?.line.inci_name ?? '—'}
+        <div className="relative flex h-[62%] w-full items-center justify-center">
+          {centre ? <MoleculeViewer name={centre.line.inci_name} size={150} /> : null}
+        </div>
+        <p className={`mt-1 max-w-[94%] truncate font-bold leading-tight text-navy ${(centre?.line.inci_name.length ?? 0) > 13 ? 'text-[18px]' : 'text-[24px]'}`} title={centre?.line.inci_name}>
+          {centre?.line.inci_name ?? 'Belum ada bahan'}
         </p>
-        <p className="text-[20px] font-semibold leading-tight text-navy">{active ? `${fmt(pct(active.line))}%` : ''}</p>
+        <p className="text-[20px] font-semibold leading-tight text-navy">{centre ? `${fmt(pct(centre.line))}%` : ''}</p>
       </div>
       {others.map((node, i) => (
-        <div
+        <button
+          type="button"
           key={node.line.id}
-          title={node.reason}
-          className={`absolute flex h-[79px] w-[104px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-[10px] border shadow-tile ${STYLE[node.level]}`}
+          title={node.reason ? `${node.reason} (klik untuk lihat molekul)` : 'Klik untuk lihat molekul'}
+          onClick={() => setPicked(node.line.id)}
+          className={`absolute flex h-[79px] w-[104px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-[10px] border shadow-tile transition hover:scale-105 ${STYLE[node.level]}`}
           style={{ left: pc(CX + RX * Math.cos(angle(i)), W), top: pc(CY + RY * Math.sin(angle(i)), H) }}
         >
           <span className="max-w-[92px] truncate text-[11px] font-semibold">{node.line.inci_name}</span>
           <span className="text-[28px] font-bold leading-none">{fmt(pct(node.line))}%</span>
-        </div>
+        </button>
       ))}
     </div>
   )

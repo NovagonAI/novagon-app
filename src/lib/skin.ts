@@ -13,6 +13,9 @@ export interface SkinVerdict {
   aggregation: 'mean' | 'cf'
   skin_type: { label: SkinTypeLabel; confidence: number; agreement: number; probs: Record<string, number> }
   fitzpatrick: { label: string; index: number; confidence: number; agreement: number; probs: Record<string, number>; hex: string }
+  /** Median skin colour measured on the face crops, else the Fitzpatrick band colour. */
+  skin_hex?: string
+  skin_hex_measured?: boolean
   per_image: Array<{ skin: string; fitz: string; face: { x: number; y: number; w: number; h: number } | null }>
   seconds: number
   note: string
@@ -82,7 +85,7 @@ export const SKIN_TYPE_TEXT: Record<SkinTypeLabel, { title: string; text: string
   },
   Normal: {
     title: 'Normal',
-    text: 'Produksi sebum seimbang, tekstur halus, pori tidak menonjol. Toleran terhadap sebagian besar bahan aktif; fokus pada perawatan dan perlindungan.',
+    text: 'Produksi sebum seimbang, tekstur halus, pori tidak menonjol. Toleran terhadap sebagian besar bahan aktif, fokus pada perawatan dan perlindungan.',
   },
   Combination: {
     title: 'Combination',
@@ -90,15 +93,15 @@ export const SKIN_TYPE_TEXT: Record<SkinTypeLabel, { title: string; text: string
   },
   Sensitive: {
     title: 'Sensitive',
-    text: 'Mudah bereaksi terhadap rangsangan luar: kemerahan, perih, gatal. Hindari alkohol, parfum, dan iritan; pH mendekati fisiologis dan bahan penenang.',
+    text: 'Mudah bereaksi terhadap rangsangan luar: kemerahan, perih, gatal. Hindari alkohol, parfum, dan iritan, pH mendekati fisiologis dan bahan penenang.',
   },
 }
 
 export const FITZ_TEXT: Record<string, string> = {
-  I: 'Sangat cerah; selalu terbakar, tidak pernah menjadi cokelat.',
-  II: 'Cerah; mudah terbakar, jarang menjadi cokelat.',
-  III: 'Cerah-sedang; kadang terbakar, perlahan menjadi cokelat.',
-  IV: 'Sedang (zaitun); jarang terbakar, mudah menjadi cokelat.',
-  V: 'Cokelat; sangat jarang terbakar.',
-  VI: 'Cokelat tua; tidak pernah terbakar.',
+  I: 'Sangat cerah, selalu terbakar, tidak pernah menjadi cokelat.',
+  II: 'Cerah, mudah terbakar, jarang menjadi cokelat.',
+  III: 'Cerah-sedang, kadang terbakar, perlahan menjadi cokelat.',
+  IV: 'Sedang (zaitun), jarang terbakar, mudah menjadi cokelat.',
+  V: 'Cokelat, sangat jarang terbakar.',
+  VI: 'Cokelat tua, tidak pernah terbakar.',
 }

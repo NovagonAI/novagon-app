@@ -10,19 +10,19 @@ import { Reveal, Wave } from './Motion'
 const HEADS: HeadId[] = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'H7', 'H8', 'H9', 'H10', 'H11', 'H12', 'H13']
 
 const ABOUT: Record<HeadId, string> = {
-  H1: 'Probabilitas sediaan tetap homogen dan tidak memisah.',
-  H2: 'Kekentalan sediaan pada laju geser 10 per detik.',
-  H3: 'Nilai SPF dari kombinasi filter UV.',
-  H4: 'Kesan spreadability dan rasa di kulit.',
-  H5: 'Mengenali jenis sediaan dari komposisinya.',
-  H6: 'Prior misel dan keseimbangan surfaktan.',
-  H7: 'Kandidat bahan aktif dari sinyal transkriptomik.',
-  H8: 'Kelas khasiat bahan alam dan jamu.',
-  H9: 'Kondisi kulit yang terlihat dari foto wajah.',
-  H10: 'Kelas warna kulit ITA dari gambar dan spektrum.',
-  H11: 'Tanda pemisahan fase dari foto mikroskop.',
-  H12: 'Membaca tabel formula dari dokumen.',
-  H13: 'Model cepat dari tabel yang diunggah sendiri.',
+  H1: 'Probabilitas sistem dispersi tetap termodinamik stabil tanpa creaming, koalesensi, atau pemisahan fase.',
+  H2: 'Viskositas dinamis (mPa·s) pada laju geser 10 s⁻¹ sebagai penanda profil reologi sediaan.',
+  H3: 'Prediksi in silico faktor proteksi surya dari spektrum absorpsi dan konsentrasi filter UV.',
+  H4: 'Atribut sensorik: spreadability, koefisien gesek kulit, dan residu pasca aplikasi.',
+  H5: 'Klasifikasi bentuk sediaan (emulsi o/w, w/o, gel, serum) dari profil komposisi.',
+  H6: 'Konsentrasi misel kritis dan nilai HLB campuran surfaktan sebagai prior fisikokimia.',
+  H7: 'Kandidat bahan aktif dari tanda tangan ekspresi gen dan jalur biologis target.',
+  H8: 'Kelas aktivitas farmakologis bahan alam dan jamu berdasarkan profil fitokimia.',
+  H9: 'Klasifikasi kondisi dermatologis dari citra wajah: komedo, eritema, hiperpigmentasi.',
+  H10: 'Klasifikasi Individual Typology Angle dari citra dan reflektansi spektral kulit.',
+  H11: 'Deteksi flokulasi, ostwald ripening, dan koalesensi droplet dari mikrograf emulsi.',
+  H12: 'Ekstraksi tabel formulasi (INCI, fase, persen b/b) dari dokumen teknis.',
+  H13: 'Regresi cepat pada data eksperimen sendiri: uji stabilitas, reologi, atau DoE.',
 }
 
 /** Metrics where a smaller number is better, so the gauge compares threshold to value. */
@@ -83,7 +83,7 @@ export function HeadModels() {
           <p className="text-[13px] font-bold uppercase tracking-[0.2em] text-blue">Innovation</p>
           <h2 className="mt-2 font-serif text-[clamp(28px,3vw,40px)] font-bold italic text-navy">13 Head Model</h2>
           <p className="mx-auto mt-2 max-w-[720px] text-[15px] font-medium text-black">
-            Satu endpoint, tiga belas kepala prediksi. Tiap kartu menunjukkan metrik model saat ini terhadap ambang yang ditetapkan.
+            Satu endpoint inferensi, tiga belas kepala prediksi fisikokimia dan dermatologis. Tiap kartu menampilkan metrik validasi model terhadap ambang penerimaan.
           </p>
         </Reveal>
         <ul

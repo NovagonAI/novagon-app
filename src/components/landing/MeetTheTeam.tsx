@@ -110,7 +110,7 @@ export function MeetTheTeam() {
         </Reveal>
         <Reveal className="relative mt-[clamp(20px,3vw,40px)]">
           <div ref={viewportRef} className="overflow-hidden" aria-roledescription="carousel">
-            <div className="flex touch-pan-y py-12">
+            <div className="flex touch-pan-y py-[clamp(48px,6vw,110px)]">
               {[...TEAM, ...TEAM].map((m, i) => (
                 <div key={i} className="min-w-0 shrink-0 basis-[85vw] px-3 md:basis-1/3 md:px-5 xl:basis-1/5 xl:px-6">
                   <div data-card className="transition-[transform,opacity] duration-300 ease-out will-change-transform">
@@ -138,7 +138,7 @@ function TeamCard({ member }: { member: Member }) {
     <div className="flex w-full flex-col items-center gap-4">
       <div
         className="flex w-full flex-col items-center gap-5 rounded-xl border border-sky/40 p-6 text-center text-white backdrop-blur-md"
-        style={{ boxShadow: '0px 2px 7px 0px rgba(255,255,255,0.15)', backgroundImage: 'linear-gradient(180deg, #78b9ff 0%, #1a5ba1 49.24%, #003369 99.94%)' }}
+        style={{ boxShadow: '0px 2px 7px 0px rgba(255,255,255,0.15)', backgroundImage: 'linear-gradient(180deg, #a5cfff 0%, #4d8fd6 49.24%, #1a5ba1 99.94%)' }}
       >
         <div className="relative aspect-square w-full shrink-0 overflow-hidden rounded-lg bg-sky/20">
           {/* eslint-disable-next-line @next/next/no-img-element */}

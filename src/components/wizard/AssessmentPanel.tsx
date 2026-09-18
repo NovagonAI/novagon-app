@@ -50,15 +50,80 @@ export function AssessmentPanel({ a }: { a: EmulsionAssessment }) {
           </p>
         </Box>
       </div>
-      {a.phases.hlb_blend != null && a.phases.hlb_required != null && (
-        <p className="mt-3 text-[13px] font-semibold text-grey-text">
-          HLB pengemulsi {fmt(a.phases.hlb_blend, 1)} terhadap HLB yang dibutuhkan fase minyak {fmt(a.phases.hlb_required, 1)}
-          {a.phases.emulsifiers?.length ? `, sistem: ${a.phases.emulsifiers.join(', ')}` : ''}
-        </p>
-      )}
+      {a.phases.hlb_rows && a.phases.hlb_rows.length > 0 && <HlbTable rows={a.phases.hlb_rows} blend={a.phases.hlb_blend ?? null} required={a.phases.hlb_required ?? null} source={a.phases.hlb_source} />}
+      <p className="mt-2 text-[12px] font-medium text-grey-text">Viskositas: {a.phases.viscosity_source}</p>
       {a.phases.unclassified?.length ? (
         <p className="mt-2 text-[13px] font-semibold text-warn-deep">Belum dikenali kelas fungsinya, tidak dihitung: {a.phases.unclassified.join(', ')}</p>
       ) : null}
     </Panel>
+  )
+}
+
+type HlbRow = NonNullable<EmulsionAssessment['phases']['hlb_rows']>[number]
+
+/**
+ * The HLB arithmetic shown, not asserted: every emulsifier with its HLB and
+ * every oil with its required HLB, weighted by concentration.
+ * HLB_campuran = sum(w_i x HLB_i) / sum(w_i), HLB_dibutuhkan = sum(w_j x rHLB_j) / sum(w_j).
+ */
+function HlbTable({ rows, blend, required, source }: { rows: HlbRow[]; blend: number | null; required: number | null; source?: string }) {
+  const em = rows.filter((r) => r.role === 'emulsifier')
+  const oil = rows.filter((r) => r.role === 'oil')
+  const sum = (xs: HlbRow[], k: 'hlb' | 'required_hlb') => xs.reduce((t, r) => t + r.wt_pct * (r[k] ?? 0), 0)
+  const w = (xs: HlbRow[]) => xs.reduce((t, r) => t + r.wt_pct, 0)
+  const Row = ({ r, k }: { r: HlbRow; k: 'hlb' | 'required_hlb' }) => (
+    <tr className="border-t border-line">
+      <td className="py-1 pr-2">{r.name}</td>
+      <td className="py-1 pr-2 text-right">{fmt(r.wt_pct)}%</td>
+      <td className="py-1 pr-2 text-right">{r[k] != null ? fmt(r[k] as number, 1) : 'tidak ada data'}</td>
+      <td className="py-1 text-right">{r[k] != null ? fmt(r.wt_pct * (r[k] as number), 1) : '-'}</td>
+    </tr>
+  )
+  return (
+    <div className="mt-3 overflow-x-auto rounded-[10px] border border-line bg-white px-4 py-3 text-[13px] text-black">
+      <p className="text-[14px] font-bold text-navy">Perhitungan HLB (Griffin, tertimbang konsentrasi)</p>
+      <table className="mt-1 w-full">
+        <thead>
+          <tr className="text-left text-[12px] font-bold text-grey-text">
+            <th className="pr-2">Pengemulsi</th>
+            <th className="pr-2 text-right">w (%)</th>
+            <th className="pr-2 text-right">HLB</th>
+            <th className="text-right">w x HLB</th>
+          </tr>
+        </thead>
+        <tbody>
+          {em.map((r, i) => <Row key={i} r={r} k="hlb" />)}
+          <tr className="border-t border-navy font-bold">
+            <td className="py-1 pr-2">HLB campuran</td>
+            <td className="py-1 pr-2 text-right">{fmt(w(em))}%</td>
+            <td className="py-1 pr-2 text-right">{blend != null ? fmt(blend, 1) : '-'}</td>
+            <td className="py-1 text-right">{fmt(sum(em, 'hlb'), 1)} / {fmt(w(em))}</td>
+          </tr>
+        </tbody>
+        <thead>
+          <tr className="text-left text-[12px] font-bold text-grey-text">
+            <th className="pr-2 pt-2">Fase minyak</th>
+            <th className="pr-2 pt-2 text-right">w (%)</th>
+            <th className="pr-2 pt-2 text-right">HLB dibutuhkan</th>
+            <th className="pt-2 text-right">w x rHLB</th>
+          </tr>
+        </thead>
+        <tbody>
+          {oil.map((r, i) => <Row key={i} r={r} k="required_hlb" />)}
+          <tr className="border-t border-navy font-bold">
+            <td className="py-1 pr-2">HLB dibutuhkan fase minyak</td>
+            <td className="py-1 pr-2 text-right">{fmt(w(oil))}%</td>
+            <td className="py-1 pr-2 text-right">{required != null ? fmt(required, 1) : '-'}</td>
+            <td className="py-1 text-right">{fmt(sum(oil, 'required_hlb'), 1)} / {fmt(w(oil))}</td>
+          </tr>
+        </tbody>
+      </table>
+      {blend != null && required != null && (
+        <p className="mt-2 text-[13px] font-semibold text-navy">
+          Selisih {fmt(Math.abs(blend - required), 1)}. Di bawah 1.5 dianggap seimbang, di atas 3 emulsi cenderung pecah.
+        </p>
+      )}
+      {source && <p className="mt-1 text-[11px] font-medium text-grey-text">Sumber nilai: tabel data/regulatory/hlb.csv, tiap baris bersumber ({source}).</p>}
+    </div>
   )
 }

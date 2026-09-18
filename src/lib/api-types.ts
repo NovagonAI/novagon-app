@@ -319,7 +319,17 @@ export interface EmulsionAssessment {
   hi: number;
   method: string;
   factors: EmulsionFactor[];
-  phases: Record<string, unknown> & { emulsifiers?: string[]; unclassified?: string[]; hlb_blend?: number | null; hlb_required?: number | null; hlb_mismatch?: number | null };
+  phases: Record<string, unknown> & {
+    emulsifiers?: string[];
+    unclassified?: string[];
+    hlb_blend?: number | null;
+    hlb_required?: number | null;
+    hlb_mismatch?: number | null;
+    /** Every line behind the two HLB numbers, with weight, value and source. */
+    hlb_rows?: Array<{ name: string; inci: string; wt_pct: number; role: 'emulsifier' | 'oil'; hlb?: number | null; required_hlb?: number | null; source?: string | null }>;
+    hlb_source?: string;
+    viscosity_source?: string;
+  };
   missing: string[];
   viscosity_class: string;
   viscosity_cp: { value: number; lo: number; hi: number };

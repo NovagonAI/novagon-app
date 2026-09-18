@@ -1,13 +1,14 @@
 import { Badge, LEVEL_LABEL } from '@/components/ui/Badge'
+import { Icon } from '@/components/ui/Icon'
 import { Panel } from '@/components/ui/Panel'
 import { pickActive, safetyScreen } from '@/lib/insight'
 import type { Workspace } from '@/lib/store'
 import { Note } from './SummaryPanel'
 
 const CONCLUSION = {
-  ok: { bg: 'bg-ok-bg border-ok-dark', text: 'text-ok-dark', mark: '✅' },
-  warn: { bg: 'bg-warn-bg border-warn-dark', text: 'text-warn-dark', mark: '⚠️' },
-  bad: { bg: 'bg-bad-bg border-bad-dark', text: 'text-bad', mark: '⛔' },
+  ok: { bg: 'bg-ok-bg border-ok-dark', text: 'text-ok-dark', mark: 'tick-square' },
+  warn: { bg: 'bg-warn-bg border-warn-dark', text: 'text-warn-dark', mark: 'danger' },
+  bad: { bg: 'bg-bad-bg border-bad-dark', text: 'text-bad', mark: 'close-circle' },
 }
 
 /** "Uji Keamanan": in silico screen, one card per test, the disclaimer last. */
@@ -24,8 +25,8 @@ export function SafetyReport({ ws }: { ws: Workspace }) {
           Formula Basis {active?.inci_name ?? '-'} <Badge tone={ws.analysis ? 'gradient' : 'grey'}>{ws.analysis ? 'Selesai' : 'Belum diprediksi'}</Badge>
         </p>
         <div className={`mt-[18px] flex gap-4 rounded-[10px] border px-4 py-4 ${c.bg}`}>
-          <span className="flex size-[56px] shrink-0 items-center justify-center rounded-[10px] border border-navy bg-white text-[32px]" aria-hidden="true">
-            {c.mark}
+          <span className={`flex size-[56px] shrink-0 items-center justify-center rounded-[10px] border border-navy bg-white ${c.text}`} aria-hidden="true">
+            <Icon name={c.mark} size={32} />
           </span>
           <div>
             <p className={`text-[16px] font-bold ${c.text}`}>{s.title}</p>

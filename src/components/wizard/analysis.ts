@@ -1,6 +1,7 @@
 import { api, describeError } from '@/lib/api'
 import type { HeadId, PredictRequest, PredictResponse } from '@/lib/api-types'
 import { productType } from '@/lib/catalog'
+import { parseRange } from '@/lib/insight'
 import type { Analysis, LineUI, Workspace } from '@/lib/store'
 
 /** Formula as the endpoint wants it; empty names are dropped, ids kept when known. */
@@ -16,6 +17,14 @@ export function toFormula(lines: LineUI[]): PredictRequest['formula'] {
   }
 }
 
+/** Midpoint of the QTPP pH target, the value rule R6 checks every pH window against. */
+export function targetPh(ws: Workspace): number | null {
+  const r = parseRange(ws.qtpp.ph)
+  if (r) return +((r[0] + r[1]) / 2).toFixed(2)
+  const one = parseFloat(String(ws.qtpp.ph ?? '').replace(',', '.'))
+  return Number.isFinite(one) && one > 0 && one < 14 ? one : null
+}
+
 /**
  * One click on "Prediksi" runs every head of the dosage form plus the rule
  * check, explanation and cost in parallel. A head that declines (503 without
@@ -25,7 +34,8 @@ export function toFormula(lines: LineUI[]): PredictRequest['formula'] {
 export async function runAnalysis(ws: Workspace): Promise<Analysis> {
   const pt = productType(ws.productType)
   const formula = toFormula(ws.formula)
-  const base = { formula, product_type: pt.apiType }
+  const ph = targetPh(ws)
+  const base = { formula, product_type: pt.apiType, ...(ph != null ? { conditions: { ph } } : {}) }
   const heads: Record<string, PredictResponse> = {}
   const problems: Record<string, string> = {}
 
@@ -37,7 +47,7 @@ export async function runAnalysis(ws: Workspace): Promise<Analysis> {
     }
   })
   const [verdict, explain, cost] = await Promise.all([
-    api.constraints(base).catch((e) => {
+    api.constraints({ ...base, ph }).catch((e) => {
       problems.constraints = describeError(e)
       return undefined
     }),

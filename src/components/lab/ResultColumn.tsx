@@ -60,11 +60,11 @@ export function ResultColumn({ ws }: { ws: Workspace }) {
       <h3 className="mt-[14px] text-[20px] font-bold">Estimasi Shelf Life</h3>
       <Box className="mt-[10px] h-[97px] px-[22px] pt-[10px]">
         <p className="flex items-baseline gap-2">
-          <span className="font-serif text-[40px] font-bold italic leading-none text-navy">{shelf ? fmt(shelf[0]) : '-'}</span>
-          <span className="text-[20px] font-semibold text-grey-text">{shelf ? unit : 'target belum diisi'}</span>
+          <span className={`font-serif text-[40px] font-bold italic leading-none ${p != null && p < 0.5 ? 'text-bad' : 'text-navy'}`}>{p != null && p < 0.5 ? 'Berisiko' : shelf ? fmt(shelf[0]) : '-'}</span>
+          <span className="text-[20px] font-semibold text-grey-text">{p != null && p < 0.5 ? `p(stabil) ${Math.round(p * 100)}%` : shelf ? unit : 'target belum diisi'}</span>
         </p>
         <p className="mt-2 text-[11px] font-semibold text-grey-text">
-          {traj && traj.kind === 'trajectory' ? `Aman hingga 25 °C sebelum TSI > 3` : p != null ? `Target QTPP · p(stabil) ${Math.round(p * 100)}% · konfirmasi ICH Q1A` : 'Target QTPP · konfirmasi uji dipercepat'}
+          {traj && traj.kind === 'trajectory' ? `Aman hingga 25 °C sebelum TSI > 3` : p != null && p < 0.5 ? `Target ${ws.qtpp.stabilitas || 'QTPP'} belum realistis, perbaiki sistem emulsi dulu` : p != null ? `Target QTPP · p(stabil) ${Math.round(p * 100)}% · konfirmasi ICH Q1A` : 'Target QTPP · konfirmasi uji dipercepat'}
         </p>
       </Box>
 

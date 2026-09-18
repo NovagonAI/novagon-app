@@ -12,7 +12,7 @@ const TEAM: Member[] = [
   {
     name: 'Muhammad Sultan Zidan',
     position: 'CEO | AI Engineer',
-    description: 'Computer Science, Universitas Indonesia',
+    description: 'Computer Science',
     photo: '/team/zidan.webp',
     linkedin: 'https://www.linkedin.com/in/muhammadsultanzidan/',
     instagram: 'https://www.instagram.com/zydanidn',
@@ -20,7 +20,7 @@ const TEAM: Member[] = [
   {
     name: 'Bryan Christopher K.',
     position: 'CFO | Business',
-    description: 'Information Systems, Universitas Indonesia',
+    description: 'Information Systems',
     photo: '/team/bryan.webp',
     linkedin: '#',
     instagram: '#',
@@ -28,7 +28,7 @@ const TEAM: Member[] = [
   {
     name: 'Felicia Theodora',
     position: 'COO | Business',
-    description: 'Pharmacy, Universitas Indonesia',
+    description: 'Pharmacy',
     photo: '/team/felicia.webp',
     linkedin: '#',
     instagram: '#',
@@ -36,7 +36,7 @@ const TEAM: Member[] = [
   {
     name: 'Rahma Madina Tutuko',
     position: 'CMO | Visual Design',
-    description: 'Communication, Universitas Indonesia',
+    description: 'Communication',
     photo: '/team/rahma.webp',
     linkedin: '#',
     instagram: '#',
@@ -76,8 +76,7 @@ export function MeetTheTeam() {
       const d = Math.abs(diff)
       const card = nodes[i]?.querySelector<HTMLElement>('[data-card]')
       if (card) {
-        card.style.transform = `scale(${Math.max(1 - d * 0.22, 0.78)})`
-        card.style.opacity = String(Math.max(1 - d * 1.2, 0.25))
+                card.style.opacity = String(Math.max(1 - d * 1.2, 0.25))
       }
     })
   }, [embla])
@@ -139,7 +138,11 @@ function TeamCard({ member }: { member: Member }) {
         <div className="flex w-full flex-col items-center gap-1">
           <p className="text-[20px] font-extrabold tracking-[0.01em]">{member.name}</p>
           <p className="text-[12px] font-semibold tracking-[0.01em] text-mist">{member.position}</p>
-          <p className="mt-1 line-clamp-3 text-[14px] tracking-[0.01em] text-white/80">{member.description}</p>
+          <p className="mt-1 text-[14px] tracking-[0.01em] text-white/80">
+            Major {member.description}
+            <br />
+            at Universitas Indonesia
+          </p>
         </div>
       </div>
       <div className="flex w-full gap-3">

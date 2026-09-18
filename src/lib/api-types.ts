@@ -299,12 +299,40 @@ export interface PredictRequest {
   image_b64?: string | null;
 }
 
+/** One scored factor of the emulsion rule set, with its source. */
+export interface EmulsionFactor {
+  key: string;
+  label: string;
+  score: number;
+  weight: number;
+  message: string;
+  source: string;
+  value?: number | null;
+}
+
+/** What the endpoint adds when the emulsion rule set answers for a cream. */
+export interface EmulsionAssessment {
+  p_stable: number;
+  lo: number;
+  hi: number;
+  method: string;
+  factors: EmulsionFactor[];
+  phases: Record<string, unknown> & { emulsifiers?: string[]; unclassified?: string[]; hlb_blend?: number | null; hlb_required?: number | null; hlb_mismatch?: number | null };
+  missing: string[];
+  viscosity_class: string;
+  viscosity_cp: { value: number; lo: number; hi: number };
+  viscosity_note: string;
+  summary: string;
+}
+
 export interface PredictResponse {
   head: HeadId;
   target?: { name: string; unit: string; condition?: string };
   prediction: Prediction;
   uncertainty: Uncertainty;
   provenance: Provenance;
+  /** Present when the emulsion rule set answered, the factors a formulator acts on. */
+  assessment?: EmulsionAssessment;
   verdict?: Verdict | null;
   /** Set when the router sent the input to a different head. Show this on screen. */
   routed_from?: HeadId | null;

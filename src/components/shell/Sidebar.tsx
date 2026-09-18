@@ -38,33 +38,43 @@ export function MobileNav() {
   const who = useWho()
   const { signOut } = useAuth()
   return (
-    <header className="sticky top-0 z-30 bg-sidebar-gradient px-4 pb-2 pt-3 text-white lg:hidden">
-      <div className="flex items-center justify-between">
-        <Link href="/" className="font-serif text-[24px] font-bold italic">
-          Novagon
-        </Link>
-        <span className="text-[12px] font-semibold text-white/80">
-          {who.name} · {who.role} ·{' '}
-          <button type="button" onClick={signOut} className="underline">
-            Keluar
-          </button>
-        </span>
-      </div>
-      <nav aria-label="Menu utama" className="-mx-4 mt-2 overflow-x-auto px-4">
-        <ul className="flex gap-5 whitespace-nowrap text-[14px] font-bold">
-          {nav.map((item) => {
-            const active = path === item.href || path.startsWith(item.href + '/')
-            return (
-              <li key={item.href}>
-                <Link href={item.href} aria-current={active ? 'page' : undefined} className={`flex items-center gap-2 py-1 ${active ? 'text-white' : 'text-grey-nav'}`}>
-                  <Icon name={item.icon} size={18} />
-                  {item.label}
-                </Link>
-              </li>
-            )
-          })}
-        </ul>
-      </nav>
+    <header className="sticky top-0 z-30 flex items-center justify-between bg-sidebar-gradient px-4 py-3 text-white lg:hidden">
+      <Link href="/" className="font-serif text-[24px] font-bold italic">
+        Novagon
+      </Link>
+      <details className="group">
+        <summary className="flex size-10 cursor-pointer list-none items-center justify-center rounded-full bg-white/15 [&::-webkit-details-marker]:hidden" aria-label="Menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true" className="group-open:hidden">
+            <path d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true" className="hidden group-open:block">
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </summary>
+        <nav aria-label="Menu utama" className="absolute inset-x-0 top-full bg-sidebar-gradient px-4 pb-4 pt-2 shadow-card" onClick={(e) => (e.currentTarget.parentElement as HTMLDetailsElement).removeAttribute('open')}>
+          <ul className="flex flex-col text-[15px] font-bold">
+            {nav.map((item) => {
+              const active = path === item.href || path.startsWith(item.href + '/')
+              return (
+                <li key={item.href}>
+                  <Link href={item.href} aria-current={active ? 'page' : undefined} className={`flex items-center gap-3 rounded-[12px] px-2 py-3 ${active ? 'bg-white/15 text-white' : 'text-grey-nav'}`}>
+                    <Icon name={item.icon} size={20} />
+                    {item.label}
+                  </Link>
+                </li>
+              )
+            })}
+          </ul>
+          <div className="mt-3 flex items-center justify-between border-t border-white/20 pt-3 text-[13px] font-semibold text-white/80">
+            <span>
+              {who.name} · {who.role}
+            </span>
+            <button type="button" onClick={signOut} className="underline">
+              Keluar
+            </button>
+          </div>
+        </nav>
+      </details>
     </header>
   )
 }

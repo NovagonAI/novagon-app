@@ -72,10 +72,10 @@ export function Landing() {
       </div>
 
       <div className="relative mx-auto max-w-[1440px] px-4 pb-[clamp(40px,6vw,90px)] pt-[clamp(20px,3.8vw,55px)] sm:px-8 lg:px-[66px]">
-        <header className="flex flex-wrap items-center justify-between gap-4">
+        <header className="relative flex items-center justify-between gap-4">
           <p className="font-serif text-[clamp(26px,2.5vw,36px)] font-bold italic leading-none text-navy">Novagon</p>
-          <nav aria-label="Navigasi utama" className="order-3 flex w-full flex-wrap items-center justify-center gap-x-[clamp(16px,4.5vw,65px)] gap-y-2 rounded-[100px] bg-white px-4 py-2 shadow-nav md:order-2 md:w-auto md:py-[6px] md:pl-[6px] md:pr-[52px]">
-            <Link href="/" aria-current="page" className="flex h-[44px] items-center justify-center rounded-[50px] bg-btn-gradient px-6 text-[clamp(14px,1.1vw,16px)] font-bold text-white md:h-[50px] md:w-[140px]">
+          <nav aria-label="Navigasi utama" className="hidden items-center gap-x-[clamp(16px,4.5vw,65px)] rounded-[100px] bg-white py-[6px] pl-[6px] pr-[52px] shadow-nav md:flex">
+            <Link href="/" aria-current="page" className="flex h-[50px] w-[140px] items-center justify-center rounded-[50px] bg-btn-gradient text-[clamp(14px,1.1vw,16px)] font-bold text-white">
               Home
             </Link>
             {NAV.map(([label, href]) => (
@@ -84,7 +84,35 @@ export function Landing() {
               </a>
             ))}
           </nav>
-          <SignInLink className="order-2 flex h-[clamp(44px,4.3vw,62px)] items-center justify-center rounded-[50px] border-[3px] border-sky bg-white/60 px-[clamp(20px,3vw,43px)] text-[clamp(14px,1.1vw,16px)] font-bold md:order-3" labelClassName="text-gradient" />
+          <SignInLink
+            className="hidden h-[clamp(44px,4.3vw,62px)] items-center justify-center rounded-[50px] border-[3px] border-sky bg-white/60 px-[clamp(20px,3vw,43px)] text-[clamp(14px,1.1vw,16px)] font-bold md:flex"
+            labelClassName="text-gradient"
+          />
+          <details className="group md:hidden">
+            <summary className="flex size-11 cursor-pointer list-none items-center justify-center rounded-full bg-white text-navy shadow-nav [&::-webkit-details-marker]:hidden" aria-label="Menu">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true" className="group-open:hidden">
+                <path d="M4 7h16M4 12h16M4 17h16" />
+              </svg>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true" className="hidden group-open:block">
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            </summary>
+            <nav
+              aria-label="Navigasi utama"
+              className="absolute inset-x-0 top-full z-40 mt-3 flex flex-col gap-1 rounded-[24px] bg-white p-3 shadow-nav"
+              onClick={(e) => (e.currentTarget.parentElement as HTMLDetailsElement).removeAttribute('open')}
+            >
+              <Link href="/" aria-current="page" className="flex h-[48px] items-center justify-center rounded-[50px] bg-btn-gradient text-[16px] font-bold text-white">
+                Home
+              </Link>
+              {NAV.map(([label, href]) => (
+                <a key={href} href={href} className="rounded-[50px] px-4 py-3 text-center text-[16px] font-bold text-navy hover:bg-mist">
+                  {label}
+                </a>
+              ))}
+              <SignInLink className="flex h-[48px] items-center justify-center rounded-[50px] border-[3px] border-sky text-[16px] font-bold" labelClassName="text-gradient" />
+            </nav>
+          </details>
         </header>
 
         <div className="mt-[clamp(36px,6vw,90px)] text-center" style={head}>
@@ -93,13 +121,23 @@ export function Landing() {
             <br />
             for The Greater Good
           </h1>
-          <p className="mx-auto mt-[clamp(14px,2vw,28px)] max-w-[840px] text-[clamp(15px,1.4vw,20px)] font-bold text-blue">
-            Feel good, be good and do good are things that are connected within ourselves.
-          </p>
+          <p className="mx-auto mt-[clamp(14px,2vw,28px)] max-w-[840px] text-[clamp(15px,1.4vw,20px)] font-bold text-blue">Feel good, be good and do good are things that are connected within ourselves.</p>
         </div>
 
         <div className="relative mt-[clamp(20px,4vw,50px)] grid grid-cols-2 items-end justify-items-center gap-x-4 gap-y-6 md:grid-cols-[1fr_auto_1fr] md:gap-x-[clamp(16px,3vw,60px)]">
-          <IngredientCard className="order-2 md:order-1 md:justify-self-end md:mb-[clamp(30px,5vw,64px)]" style={leftCard} image="/figma/card-niacinamide.png" crop={{ height: '164.25%', width: '142.86%', left: '-32.35%', top: '-31.4%' }} name="Niacinamide" text="Pencerah dan penguat barrier" />
+          <IngredientCard
+            className="order-2 md:order-1 md:justify-self-end md:mb-[clamp(30px,5vw,64px)]"
+            style={leftCard}
+            image="/figma/card-niacinamide.png"
+            crop={{
+              height: '164.25%',
+              width: '142.86%',
+              left: '-32.35%',
+              top: '-31.4%',
+            }}
+            name="Niacinamide"
+            text="Pencerah dan penguat barrier"
+          />
 
           {/* jar: gradient disc, jar photo in a circular mask, bubbles on top */}
           <div className="relative order-1 col-span-2 aspect-square w-[clamp(240px,34vw,487px)] md:order-2 md:col-span-1" style={jar}>
@@ -107,13 +145,35 @@ export function Landing() {
             <img alt="" src="/figma/hero-ellipse.svg" className="absolute left-[10%] top-[15.6%] w-[73.3%]" />
             <div className="absolute left-[3%] top-[8.6%] size-[87.3%] overflow-hidden rounded-full">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="Produk pelembab dengan niacinamide" src="/figma/hero-jar.png" className="absolute max-w-none" style={{ width: '111%', height: '138.6%', left: '-3.4%', top: '-24.9%' }} />
+              <img
+                alt="Produk pelembab dengan niacinamide"
+                src="/figma/hero-jar.png"
+                className="absolute max-w-none"
+                style={{
+                  width: '111%',
+                  height: '138.6%',
+                  left: '-3.4%',
+                  top: '-24.9%',
+                }}
+              />
             </div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img alt="" src="/figma/hero-bubbles.png" className="pointer-events-none absolute inset-0 size-full object-cover" />
           </div>
 
-          <IngredientCard className="order-3 md:justify-self-start md:-mb-[clamp(0px,1.5vw,24px)]" style={rightCard} image="/figma/card-ceramide.png" crop={{ height: '184.49%', width: '167.6%', left: '-36.31%', top: '-42.04%' }} name="Ceramide" text="Pemulih skin barrier" />
+          <IngredientCard
+            className="order-3 md:justify-self-start md:-mb-[clamp(0px,1.5vw,24px)]"
+            style={rightCard}
+            image="/figma/card-ceramide.png"
+            crop={{
+              height: '184.49%',
+              width: '167.6%',
+              left: '-36.31%',
+              top: '-42.04%',
+            }}
+            name="Ceramide"
+            text="Pemulih skin barrier"
+          />
         </div>
 
         <div aria-hidden="true" className="mt-[clamp(16px,3vw,40px)] flex flex-col items-center gap-1 transition-opacity duration-500" style={{ opacity: t < 0.04 ? 1 : 0 }}>
@@ -128,21 +188,7 @@ export function Landing() {
   )
 }
 
-function IngredientCard({
-  image,
-  crop,
-  name,
-  text,
-  className = '',
-  style,
-}: {
-  image: string
-  crop: React.CSSProperties
-  name: string
-  text: string
-  className?: string
-  style?: React.CSSProperties
-}) {
+function IngredientCard({ image, crop, name, text, className = '', style }: { image: string; crop: React.CSSProperties; name: string; text: string; className?: string; style?: React.CSSProperties }) {
   return (
     <article className={`w-[clamp(140px,18vw,258px)] overflow-hidden rounded-[20px] bg-white p-[4%] text-center text-blue shadow-hero ${className}`} style={style}>
       <div className="relative aspect-[238/207] overflow-hidden rounded-[16px]">

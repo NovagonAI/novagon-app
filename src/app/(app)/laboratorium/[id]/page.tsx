@@ -80,7 +80,7 @@ export default function WorkspacePage() {
           <Panel bodyClassName="pt-[18px] pb-[26px]">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h2 className="text-[20px] font-bold text-navy">Formula dengan Basis {active?.inci_name ?? '—'}</h2>
+                <h2 className="text-[20px] font-bold text-navy">Formula dengan Basis {active?.inci_name ?? '-'}</h2>
                 <p className="mt-2 flex items-center gap-[7px] text-[20px] font-bold text-grey-text">
                   Versi:
                   {ws.versions.length === 0 && <span className="rounded-[24px] bg-blue px-[16px] py-[3px] text-[20px] text-white">draft</span>}
@@ -131,7 +131,7 @@ export default function WorkspacePage() {
                 <>
                   <p className="mt-2 flex flex-wrap items-baseline gap-x-6">
                     <span className="font-serif text-[70px] font-bold italic leading-none text-navy">{fmt(h.value)}</span>
-                    <span className="text-[20px] font-semibold text-grey-text">CI {Math.round(h.raw.uncertainty.level * 100)}%: [{fmt(h.lo)} – {fmt(h.hi)}]</span>
+                    <span className="text-[20px] font-semibold text-grey-text">CI {Math.round(h.raw.uncertainty.level * 100)}%: [{fmt(h.lo)} - {fmt(h.hi)}]</span>
                   </p>
                   <div className="mt-[14px]">
                     <RangeBar value={h.value} min={h.scale[0]} max={h.scale[1]} ariaLabel="Nilai prediksi" />
@@ -157,7 +157,7 @@ export default function WorkspacePage() {
             >
               {contributions(ws.analysis?.explain).length ? <ContributionBars rows={contributions(ws.analysis?.explain)} /> : <p className="py-4 text-[16px] font-semibold text-grey-text">Kontribusi belum dihitung.</p>}
               <Box muted className="mt-[24px] px-[17px] py-[13px] text-[16px] font-semibold text-grey-text">
-                Nilai positif menandakan kontribusi meningkatkan performa prediksi; nilai negatif menurunkan. Dihitung dengan permutation importance pada model {ws.analysis?.explain?.head ?? 'H1'}.
+                Nilai positif menandakan kontribusi meningkatkan performa prediksi, nilai negatif menurunkan. Dihitung dengan permutation importance pada model {ws.analysis?.explain?.head ?? 'H1'}.
               </Box>
             </Panel>
             <div className="mt-[18px] grid gap-[21px] xl:grid-cols-[minmax(0,1fr)_295px]">

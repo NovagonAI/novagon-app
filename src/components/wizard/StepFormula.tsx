@@ -110,7 +110,7 @@ export function StepFormula({ ws, update, next, back }: StepProps) {
         </div>
         {Math.abs(total - 100) > 0.5 && (
           <p className="mt-2 text-[14px] font-semibold text-warn-dark">
-            {total > 100 ? 'Total melebihi 100%: kurangi salah satu bahan.' : `Sisa ${fmt(100 - total)}% belum ditentukan; model menormalisasi ke komposisi tertutup.`}
+            {total > 100 ? 'Total melebihi 100%: kurangi salah satu bahan.' : `Sisa ${fmt(100 - total)}% belum ditentukan, model menormalisasi ke komposisi tertutup.`}
           </p>
         )}
       </Panel>
@@ -157,7 +157,7 @@ function DatasetPicker({ onAdd, onExample }: { onAdd: (l: LineUI) => void; onExa
               if (e.target.value) onAdd(toLine(e.target.value, 5))
             }}
           >
-            <option value="">— pilih bahan baku —</option>
+            <option value="">- pilih bahan baku -</option>
             {dataset.ingredients.map((i) => (
               <option key={i.trade} value={i.trade}>
                 {titleCase(i.inci)} · {i.trade} ({i.type ?? i.function})
@@ -178,7 +178,7 @@ function DatasetPicker({ onAdd, onExample }: { onAdd: (l: LineUI) => void; onExa
               onExample([{ ...newLine('Aqua', +(100 - used).toFixed(2)), ing_id: SERVER_RESOLVES, function_class: ['solvent'] }, ...lines])
             }}
           >
-            <option value="">— pilih sampel dataset —</option>
+            <option value="">- pilih sampel dataset -</option>
             {dataset.examples.map((x) => (
               <option key={x.sample_id} value={x.sample_id}>
                 Sampel #{x.sample_id} · {x.stable ? 'stabil' : 'tidak stabil'}{x.viscosity_class !== 'nan' && x.viscosity_class !== 'None' ? ` · viskositas ${x.viscosity_class.toLowerCase()}` : ''} · {x.lines.length} bahan

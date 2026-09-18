@@ -25,7 +25,7 @@ export function ContributionBars({ rows, max }: { rows: Contribution[]; max?: nu
                 )}
               </div>
               <span className={`text-right text-[16px] font-bold ${pos && r.effect !== 0 ? 'text-blue' : 'text-grey-bar'}`}>
-                {r.effect === 0 ? (r.matched ? '0' : '—') : `${pos ? '+' : ''}${fmt(r.effect)}`}
+                {r.effect === 0 ? (r.matched ? '0' : '-') : `${pos ? '+' : ''}${fmt(r.effect)}`}
               </span>
             </div>
           )

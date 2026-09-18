@@ -36,11 +36,11 @@ export default function LabPage() {
                 <div className="px-[22px] pt-[12px]">
                   <p className="text-[20px] font-bold text-black">QTPP</p>
                   <p className="mt-[6px] w-[262px] text-[15px] font-semibold leading-snug text-grey-text">
-                    Penampilan: {w.qtpp.warna || '—'}
+                    Penampilan: {w.qtpp.warna || '-'}
                     <br />
-                    pH: {w.qtpp.ph || '—'}
+                    pH: {w.qtpp.ph || '-'}
                     <br />
-                    Viskositas: {w.qtpp.viskositas || '—'}…
+                    Viskositas: {w.qtpp.viskositas || '-'}…
                   </p>
                 </div>
                 <button type="button" onClick={() => open(w.id)} className="absolute bottom-[23px] right-[27px] text-navy hover:text-blue" aria-label={`Buka ${w.name}`}>

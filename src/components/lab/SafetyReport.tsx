@@ -21,7 +21,7 @@ export function SafetyReport({ ws }: { ws: Workspace }) {
       <Panel bodyClassName="pt-[18px] pb-[26px]">
         <h2 className="text-[20px] font-bold text-navy">Uji Keamanan</h2>
         <p className="mt-1 flex items-center gap-3 text-[16px] font-semibold text-grey-text">
-          Formula Basis {active?.inci_name ?? '—'} <Badge tone={ws.analysis ? 'gradient' : 'grey'}>{ws.analysis ? 'Selesai' : 'Belum diprediksi'}</Badge>
+          Formula Basis {active?.inci_name ?? '-'} <Badge tone={ws.analysis ? 'gradient' : 'grey'}>{ws.analysis ? 'Selesai' : 'Belum diprediksi'}</Badge>
         </p>
         <div className={`mt-[18px] flex gap-4 rounded-[10px] border px-4 py-4 ${c.bg}`}>
           <span className="flex size-[56px] shrink-0 items-center justify-center rounded-[10px] border border-navy bg-white text-[32px]" aria-hidden="true">

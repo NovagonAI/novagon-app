@@ -10,7 +10,7 @@ export function PrintReport({ ws }: { ws: Workspace }) {
   const screen = safetyScreen(ws.formula.filter((l) => l.inci_name), ws.analysis)
   return (
     <article className="hidden print:block text-[12px] leading-snug text-black">
-      <h1 className="font-serif text-[24px] font-bold italic text-navy">Laporan Formulasi — {ws.name}</h1>
+      <h1 className="font-serif text-[24px] font-bold italic text-navy">Laporan Formulasi, {ws.name}</h1>
       <p>
         {pt.label} {pt.sub} · dibuat {new Date().toLocaleString('id-ID')}
       </p>
@@ -49,7 +49,7 @@ export function PrintReport({ ws }: { ws: Workspace }) {
       <h2 className="mt-4 text-[16px] font-bold">3. Prediksi</h2>
       {h ? (
         <p>
-          {h.label}: <strong>{fmt(h.value)}</strong> (interval {fmt(h.lo)}–{fmt(h.hi)}). {provenanceLine(h.raw)}
+          {h.label}: <strong>{fmt(h.value)}</strong> (interval {fmt(h.lo)} - {fmt(h.hi)}). {provenanceLine(h.raw)}
         </p>
       ) : (
         <p>Belum ada prediksi.</p>
@@ -59,7 +59,7 @@ export function PrintReport({ ws }: { ws: Workspace }) {
           <li key={t}>{t}</li>
         ))}
       </ul>
-      <h2 className="mt-4 text-[16px] font-bold">4. Skrining keamanan in silico — {screen.title}</h2>
+      <h2 className="mt-4 text-[16px] font-bold">4. Skrining keamanan in silico, {screen.title}</h2>
       <ul>
         {screen.tests.map((t) => (
           <li key={t.name}>

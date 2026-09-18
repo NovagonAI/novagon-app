@@ -51,16 +51,16 @@ export function StepContribution({ ws, update, next, back }: StepProps) {
         {rows.length ? (
           <ContributionBars rows={rows} />
         ) : (
-          <p className="py-6 text-[16px] font-semibold text-grey-text">{ws.analysis?.problems.explain ?? 'Kontribusi belum dihitung; jalankan prediksi terlebih dahulu.'}</p>
+          <p className="py-6 text-[16px] font-semibold text-grey-text">{ws.analysis?.problems.explain ?? 'Kontribusi belum dihitung, jalankan prediksi terlebih dahulu.'}</p>
         )}
         <Box muted className="mt-[24px] px-[17px] py-[13px] text-[16px] font-semibold text-grey-text">
-          Nilai positif menandakan kontribusi meningkatkan stabilitas dari sediaan; nilai negatif menurunkan. Dihitung dengan permutation importance (efek menghilangkan satu bahan) pada model {ws.analysis?.explain?.head ?? 'H1'}; bahan abu-abu tidak dikenali model.
+          Nilai positif menandakan kontribusi meningkatkan stabilitas dari sediaan, nilai negatif menurunkan. Dihitung dengan permutation importance (efek menghilangkan satu bahan) pada model {ws.analysis?.explain?.head ?? 'H1'}, bahan abu-abu tidak dikenali model.
         </Box>
         {ws.analysis?.explain?.substitutions?.length ? (
           <ul className="mt-3 space-y-2">
             {ws.analysis.explain.substitutions.map((s) => (
               <li key={s.with_ing_id} className="rounded-[10px] border border-line bg-white px-4 py-3 text-[14px] font-semibold text-navy">
-                Ganti {s.replace_ing_id} dengan {s.with_inci_name}: Δ {s.predicted_delta > 0 ? '+' : ''}{s.predicted_delta.toFixed(3)} — {s.rationale}
+                Ganti {s.replace_ing_id} dengan {s.with_inci_name}: Δ {s.predicted_delta > 0 ? '+' : ''}{s.predicted_delta.toFixed(3)}, {s.rationale}
               </li>
             ))}
           </ul>

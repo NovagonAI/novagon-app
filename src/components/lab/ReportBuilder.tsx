@@ -25,7 +25,7 @@ export function ReportBuilder({ ws }: { ws: Workspace }) {
     ...ws.versions.map((v, i) => ({ id: `v${i}`, title: `Formula ${v.label}`, sub: v.score != null ? `Skor ${fmt(v.score)}` : v.note, tag: v.label })),
     ...(ws.candidates ?? []).map((c, i) => ({ id: `c${i}`, title: `Kandidat C${i + 1}`, sub: (() => {
       const s = h ? candidateScore(c, h.head) : null
-      return s ? `Skor ${fmt(s.value * (h?.unit === 'skor 0–100' ? 100 : 1))}` : 'Usulan optimiser'
+      return s ? `Skor ${fmt(s.value * (h?.unit === 'skor 0-100' ? 100 : 1))}` : 'Usulan optimiser'
     })() })),
   ]
   const [checked, setChecked] = useState<Set<string>>(() => new Set(items.map((i) => i.id)))

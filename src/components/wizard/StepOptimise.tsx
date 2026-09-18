@@ -18,7 +18,7 @@ export function StepOptimise({ ws, update, back }: StepProps) {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const h = headline(ws.analysis, ws.productType)
-  const scale = h?.unit === 'skor 0–100' ? 100 : 1
+  const scale = h?.unit === 'skor 0-100' ? 100 : 1
   const cands = ws.candidates ?? []
 
   const iterate = async () => {
@@ -66,7 +66,7 @@ export function StepOptimise({ ws, update, back }: StepProps) {
                   </p>
                   <p className="text-right">
                     <span className="block text-[13px] font-bold text-black">Prediksi</span>
-                    <span className="block font-serif text-[32px] font-bold italic leading-none text-navy">{s ? fmt(s.value * scale) : '—'}</span>
+                    <span className="block font-serif text-[32px] font-bold italic leading-none text-navy">{s ? fmt(s.value * scale) : '-'}</span>
                   </p>
                 </div>
                 <dl className="mt-[22px] space-y-[12px]">

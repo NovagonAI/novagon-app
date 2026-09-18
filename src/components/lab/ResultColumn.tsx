@@ -31,7 +31,7 @@ export function ResultColumn({ ws }: { ws: Workspace }) {
     { label: 'Keasaman (pH):', key: 'Keasaman (pH)', value: q.ph },
     { label: 'Viskositas:', key: 'Viskositas', value: q.viskositas },
     { label: 'Ukuran Partikel:', key: 'Ukuran Partikel', value: q.ukuranPartikel },
-    { label: 'Stabilitas:', key: 'Stabilitas', value: q.stabilitas ? `Stabil ${q.stabilitas}; uji 40°C/75% RH selama 6 bulan` : '' },
+    { label: 'Stabilitas:', key: 'Stabilitas', value: q.stabilitas ? `Stabil ${q.stabilitas}, uji 40°C/75% RH selama 6 bulan` : '' },
     { label: 'Umur Simpan:', key: 'Umur Simpan', value: q.stabilitas },
   ]
 
@@ -60,7 +60,7 @@ export function ResultColumn({ ws }: { ws: Workspace }) {
       <h3 className="mt-[14px] text-[20px] font-bold">Estimasi Shelf Life</h3>
       <Box className="mt-[10px] h-[97px] px-[22px] pt-[10px]">
         <p className="flex items-baseline gap-2">
-          <span className="font-serif text-[40px] font-bold italic leading-none text-navy">{shelf ? fmt(shelf[0]) : '—'}</span>
+          <span className="font-serif text-[40px] font-bold italic leading-none text-navy">{shelf ? fmt(shelf[0]) : '-'}</span>
           <span className="text-[20px] font-semibold text-grey-text">{shelf ? unit : 'target belum diisi'}</span>
         </p>
         <p className="mt-2 text-[11px] font-semibold text-grey-text">
@@ -96,7 +96,7 @@ export function ResultColumn({ ws }: { ws: Workspace }) {
                 {r.label}
               </dt>
               <dd className="mt-[3px] min-h-[31px] rounded-[10px] border border-navy bg-white px-4 py-[7px] text-justify text-[11px] font-medium leading-[13px] text-black" title={m?.predicted}>
-                {r.value || '—'}
+                {r.value || '-'}
               </dd>
             </div>
           )

@@ -41,8 +41,8 @@ const RETINOID = ['RETINOL', 'RETINAL', 'RETINYL']
 const HYDROXY_ACID = ['GLYCOLIC ACID', 'LACTIC ACID', 'SALICYLIC ACID', 'MANDELIC ACID']
 
 const IRRITANTS: Array<{ n: string; min?: number; why: string }> = [
-  { n: 'SODIUM LAURYL SULFATE', why: 'surfaktan anionik keras (SLS); brand LABORE menghindarinya' },
-  { n: 'SODIUM LAURETH SULFATE', why: 'surfaktan anionik (SLES); brand LABORE menghindarinya' },
+  { n: 'SODIUM LAURYL SULFATE', why: 'surfaktan anionik keras (SLS), brand LABORE menghindarinya' },
+  { n: 'SODIUM LAURETH SULFATE', why: 'surfaktan anionik (SLES), brand LABORE menghindarinya' },
   { n: 'ALCOHOL DENAT', min: 10, why: 'alkohol ≥10% mengeringkan dan mengiritasi' },
   { n: 'GLYCOLIC ACID', min: 5, why: 'AHA ≥5% berpotensi iritasi, wajib pH ≥3,5' },
   { n: 'LACTIC ACID', min: 5, why: 'AHA ≥5% berpotensi iritasi' },
@@ -71,7 +71,7 @@ const PRESERVATIVES: Array<{ n: string; cap?: number }> = [
   { n: 'METHYLISOTHIAZOLINONE', cap: 0.0015 },
 ]
 
-/** "1.000–2.000 cPs" -> [1000, 2000]; "5.5–6.5" -> [5.5, 6.5]. Null when no pair. */
+/** "1.000-2.000 cPs" -> [1000, 2000]; "5.5-6.5" -> [5.5, 6.5]. Null when no pair. */
 export function parseRange(s: string | undefined): [number, number] | null {
   if (!s) return null
   const nums = s
@@ -134,7 +134,7 @@ export function headline(analysis: Analysis | undefined, type: string): Headline
         value: p.value * f,
         lo: p.lo * f,
         hi: p.hi * f,
-        unit: prob ? 'skor 0–100' : p.unit,
+        unit: prob ? 'skor 0-100' : p.unit,
         scale: [0, hi],
         raw: r,
       }
@@ -177,11 +177,11 @@ export function stabilityRisks(lines: LineUI[], analysis?: Analysis, qtpp?: Qtpp
   const total = sumOf(lines)
 
   if (anyOf(lines, ...RETINOID) && anyOf(lines, ...HYDROXY_ACID))
-    out.push({ title: 'Retinoid + AHA/BHA dalam satu sediaan', detail: 'Retinoid terdegradasi pada pH asam yang dibutuhkan hidroksi asam, dan kombinasi ini menaikkan risiko iritasi.', level: 'warn', suggestion: 'pisahkan ke dua produk atau enkapsulasi retinoid', source: 'CIR retinol assessment; SCCS/1576/16' })
+    out.push({ title: 'Retinoid + AHA/BHA dalam satu sediaan', detail: 'Retinoid terdegradasi pada pH asam yang dibutuhkan hidroksi asam, dan kombinasi ini menaikkan risiko iritasi.', level: 'warn', suggestion: 'pisahkan ke dua produk atau enkapsulasi retinoid', source: 'CIR retinol assessment, SCCS/1576/16' })
   if (anyOf(lines, 'ASCORBIC ACID') && anyOf(lines, 'NIACINAMIDE'))
-    out.push({ title: 'Vitamin C (L-AA) + Niacinamide', detail: 'Stabil hanya pada pH terbuffer 5,0–6,0; pada pH rendah dan suhu tinggi dapat terbentuk niacin (flush).', level: 'warn', suggestion: 'gunakan turunan vitamin C (SAP/MAP) atau pH 5,5 dengan buffer', source: 'Journal of Cosmetic Dermatology 2017;16:e1' })
+    out.push({ title: 'Vitamin C (L-AA) + Niacinamide', detail: 'Stabil hanya pada pH terbuffer 5,0-6,0, pada pH rendah dan suhu tinggi dapat terbentuk niacin (flush).', level: 'warn', suggestion: 'gunakan turunan vitamin C (SAP/MAP) atau pH 5,5 dengan buffer', source: 'Journal of Cosmetic Dermatology 2017,16:e1' })
   if (anyOf(lines, 'ASCORBIC ACID') && water.length && !anyOf(lines, 'FERULIC', 'TOCOPHEROL', 'METABISULFITE', 'EDTA', 'GLUTATHIONE'))
-    out.push({ title: 'L-Ascorbic Acid tanpa antioksidan pendamping', detail: 'Mudah teroksidasi di fase air; warna berubah kuning-cokelat dalam minggu.', level: 'warn', suggestion: 'tambahkan ferulic acid 0,5% + tocopherol 1% dan chelator', source: 'Pinnell et al., Dermatol Surg 2001' })
+    out.push({ title: 'L-Ascorbic Acid tanpa antioksidan pendamping', detail: 'Mudah teroksidasi di fase air, warna berubah kuning-cokelat dalam minggu.', level: 'warn', suggestion: 'tambahkan ferulic acid 0,5% + tocopherol 1% dan chelator', source: 'Pinnell et al., Dermatol Surg 2001' })
   if (anyOf(lines, 'CARBOMER') && anyOf(lines, 'SODIUM CHLORIDE', 'MAGNESIUM', 'CALCIUM'))
     out.push({ title: 'Carbomer + elektrolit', detail: 'Garam menurunkan viskositas gel carbomer secara drastis.', level: 'warn', suggestion: 'ganti ke pengental toleran elektrolit (xanthan, sclerotium gum)', source: 'Lubrizol Carbopol technical data' })
   if (anyOf(lines, ...CATIONIC) && anyOf(lines, ...ANIONIC))
@@ -191,15 +191,15 @@ export function stabilityRisks(lines: LineUI[], analysis?: Analysis, qtpp?: Qtpp
     out.push({ title: `Fase minyak ${fmt(oilPct)}% tanpa pengemulsi`, detail: 'Emulsi tidak terbentuk atau memisah dalam hitungan hari.', level: 'bad', suggestion: 'tambahkan pasangan pengemulsi dengan HLB yang sesuai fase minyak', source: 'Griffin HLB method' })
   const visc = parseRange(qtpp?.viskositas)
   if (waterPct >= 80 && !anyOf(lines, ...THICKENERS) && !anyOf(lines, ...EMULSIFIERS) && (!visc || visc[1] > 300))
-    out.push({ title: 'Kadar air tinggi dapat mempengaruhi viskositas emulsi', detail: `Air ${fmt(waterPct)}% tanpa pengental; target viskositas ${qtpp?.viskositas || 'QTPP'} sulit tercapai.`, level: 'warn', suggestion: 'tambahkan carbomer 0,2–0,5% atau xanthan 0,3–0,8%', source: 'Rheology of cosmetic emulsions, Tadros 2004' })
+    out.push({ title: 'Kadar air tinggi dapat mempengaruhi viskositas emulsi', detail: `Air ${fmt(waterPct)}% tanpa pengental, target viskositas ${qtpp?.viskositas || 'QTPP'} sulit tercapai.`, level: 'warn', suggestion: 'tambahkan carbomer 0,2-0,5% atau xanthan 0,3-0,8%', source: 'Rheology of cosmetic emulsions, Tadros 2004' })
   if (Math.abs(total - 100) > 0.5)
-    out.push({ title: `Total komposisi ${fmt(total)}% ≠ 100%`, detail: 'Model menormalisasi ke komposisi tertutup; sisa dianggap belum ditentukan.', level: 'info', suggestion: 'lengkapi formula hingga 100%' })
+    out.push({ title: `Total komposisi ${fmt(total)}% ≠ 100%`, detail: 'Model menormalisasi ke komposisi tertutup, sisa dianggap belum ditentukan.', level: 'info', suggestion: 'lengkapi formula hingga 100%' })
 
   const h2 = analysis?.heads.H2
   if (h2 && h2.prediction.kind === 'scalar' && visc) {
     const v = h2.prediction.value
     if (v < visc[0] || v > visc[1])
-      out.push({ title: 'Viskositas prediksi di luar target QTPP', detail: `H2 memprediksi ${fmt(v, 0)} cP (interval ${fmt(h2.prediction.lo, 0)}–${fmt(h2.prediction.hi, 0)}), target ${qtpp?.viskositas}.`, level: 'warn', suggestion: v < visc[0] ? 'naikkan pengental atau fase lemak' : 'turunkan pengental / tambah air', source: provenanceLine(h2) })
+      out.push({ title: 'Viskositas prediksi di luar target QTPP', detail: `H2 memprediksi ${fmt(v, 0)} cP (interval ${fmt(h2.prediction.lo, 0)}-${fmt(h2.prediction.hi, 0)}), target ${qtpp?.viskositas}.`, level: 'warn', suggestion: v < visc[0] ? 'naikkan pengental atau fase lemak' : 'turunkan pengental / tambah air', source: provenanceLine(h2) })
   }
   for (const f of analysis?.verdict?.findings ?? []) if (f.rule === 'R5' || f.rule === 'R6') out.push(findingRisk(f))
   return out
@@ -302,20 +302,20 @@ export function qtppMatches(qtpp: Qtpp, analysis?: Analysis): QtppMatch[] {
   const h1 = analysis?.heads.H1
   const h2 = analysis?.heads.H2
   const rows: QtppMatch[] = []
-  rows.push({ label: 'Penampilan', target: qtpp.warna || '—', predicted: 'Organoleptis belum diprediksi model; verifikasi visual', level: 'lab' })
-  rows.push({ label: 'Keasaman (pH)', target: qtpp.ph || '—', predicted: 'pH ditentukan buffer; ukur dengan pH-meter', level: 'lab' })
+  rows.push({ label: 'Penampilan', target: qtpp.warna || '-', predicted: 'Organoleptis belum diprediksi model, verifikasi visual', level: 'lab' })
+  rows.push({ label: 'Keasaman (pH)', target: qtpp.ph || '-', predicted: 'pH ditentukan buffer, ukur dengan pH-meter', level: 'lab' })
   if (h2 && h2.prediction.kind === 'scalar') {
     const v = h2.prediction.value
     const r = parseRange(qtpp.viskositas)
     const inside = r ? v >= r[0] && v <= r[1] : null
-    rows.push({ label: 'Viskositas', target: qtpp.viskositas || '—', predicted: `${fmt(v, 0)} cP pada 10 s⁻¹`, level: inside === null ? 'info' : inside ? 'ok' : 'warn' })
-  } else rows.push({ label: 'Viskositas', target: qtpp.viskositas || '—', predicted: analysis?.problems.H2 ?? 'Belum diprediksi', level: 'lab' })
+    rows.push({ label: 'Viskositas', target: qtpp.viskositas || '-', predicted: `${fmt(v, 0)} cP pada 10 s⁻¹`, level: inside === null ? 'info' : inside ? 'ok' : 'warn' })
+  } else rows.push({ label: 'Viskositas', target: qtpp.viskositas || '-', predicted: analysis?.problems.H2 ?? 'Belum diprediksi', level: 'lab' })
   if (qtpp.ukuranPartikel) rows.push({ label: 'Ukuran Partikel', target: qtpp.ukuranPartikel, predicted: 'Butuh mikroskopi (head H11) dari foto emulsi', level: 'lab' })
   if (h1 && h1.prediction.kind === 'scalar') {
     const p = h1.prediction.value
-    rows.push({ label: 'Stabilitas', target: qtpp.stabilitas || '—', predicted: `p(stabil) = ${Math.round(p * 100)}%`, level: p >= 0.7 ? 'ok' : p >= 0.5 ? 'warn' : 'bad' })
-  } else rows.push({ label: 'Stabilitas', target: qtpp.stabilitas || '—', predicted: analysis?.problems.H1 ?? 'Belum diprediksi', level: 'lab' })
-  rows.push({ label: 'Umur Simpan', target: qtpp.stabilitas || '—', predicted: 'Konfirmasi uji dipercepat 40 °C/75% RH (ICH Q1A)', level: 'lab' })
+    rows.push({ label: 'Stabilitas', target: qtpp.stabilitas || '-', predicted: `p(stabil) = ${Math.round(p * 100)}%`, level: p >= 0.7 ? 'ok' : p >= 0.5 ? 'warn' : 'bad' })
+  } else rows.push({ label: 'Stabilitas', target: qtpp.stabilitas || '-', predicted: analysis?.problems.H1 ?? 'Belum diprediksi', level: 'lab' })
+  rows.push({ label: 'Umur Simpan', target: qtpp.stabilitas || '-', predicted: 'Konfirmasi uji dipercepat 40 °C/75% RH (ICH Q1A)', level: 'lab' })
   return rows
 }
 
@@ -359,14 +359,14 @@ export function summarise(ws: Workspace): Summary {
   const h1 = a?.heads.H1
   if (h1 && h1.prediction.kind === 'scalar') {
     const p = Math.round(h1.prediction.value * 100)
-    physical.push(`Stabilitas Emulsi: Probabilitas stabilitas mencapai ${p}% (${p >= 70 ? 'kondisi baik' : p >= 50 ? 'kondisi sedang' : 'kondisi rendah'}); interval ${Math.round(h1.prediction.lo * 100)}–${Math.round(h1.prediction.hi * 100)}%${h1.uncertainty.ood ? ', formula di luar distribusi latih' : ''}.`)
+    physical.push(`Stabilitas Emulsi: Probabilitas stabilitas mencapai ${p}% (${p >= 70 ? 'kondisi baik' : p >= 50 ? 'kondisi sedang' : 'kondisi rendah'}), interval ${Math.round(h1.prediction.lo * 100)}-${Math.round(h1.prediction.hi * 100)}%${h1.uncertainty.ood ? ', formula di luar distribusi latih' : ''}.`)
   } else if (a?.problems.H1) physical.push(`Stabilitas Emulsi: ${a.problems.H1}`)
-  physical.push(`Estimasi Masa Simpan (Shelf Life): target QTPP ${ws.qtpp.stabilitas || 'belum diisi'}; konfirmasi dengan uji dipercepat 40 °C/75% RH selama 6 bulan (ICH Q1A).`)
+  physical.push(`Estimasi Masa Simpan (Shelf Life): target QTPP ${ws.qtpp.stabilitas || 'belum diisi'}, konfirmasi dengan uji dipercepat 40 °C/75% RH selama 6 bulan (ICH Q1A).`)
   const h2 = a?.heads.H2
   if (h2 && h2.prediction.kind === 'scalar') {
     const r = parseRange(ws.qtpp.viskositas)
     const v = h2.prediction.value
-    physical.push(`Viskositas: Berada di angka ${fmt(v, 0)} cP (diukur pada 10 s⁻¹), ${r ? (v >= r[0] && v <= r[1] ? 'masuk dalam' : 'di luar') + ` rentang target ${ws.qtpp.viskositas}` : 'target QTPP belum diisi'}; interval prediksi ${fmt(h2.prediction.lo, 0)}–${fmt(h2.prediction.hi, 0)} cP.`)
+    physical.push(`Viskositas: Berada di angka ${fmt(v, 0)} cP (diukur pada 10 s⁻¹), ${r ? (v >= r[0] && v <= r[1] ? 'masuk dalam' : 'di luar') + ` rentang target ${ws.qtpp.viskositas}` : 'target QTPP belum diisi'}, interval prediksi ${fmt(h2.prediction.lo, 0)}-${fmt(h2.prediction.hi, 0)} cP.`)
   } else if (a?.problems.H2) physical.push(`Viskositas: ${a.problems.H2}`)
   if (a?.cost && a.cost.cost_idr_per_kg > 0) physical.push(`Biaya bahan: Rp ${fmt(a.cost.cost_idr_per_kg, 0)}/kg${a.cost.unpriced.length ? ` (batas bawah, ${a.cost.unpriced.length} bahan belum berharga)` : ''}.`)
   else if (a?.cost) physical.push('Biaya bahan: registry belum memuat harga untuk bahan-bahan ini.')
@@ -398,7 +398,7 @@ export function safetyScreen(lines: LineUI[], analysis?: Analysis): SafetyScreen
   tests.push({
     name: 'Uji Iritasi Primer (Draize Test in silico)',
     method: 'Skrining penanda iritan berbasis aturan pada daftar bahan (SCCS/CIR)',
-    result: irritants.length ? `Penanda iritan terdeteksi: ${irritants.join(', ')} — PII diperkirakan naik` : 'Tidak ada penanda iritan primer; PII diperkirakan rendah (tidak iritasi)',
+    result: irritants.length ? `Penanda iritan terdeteksi: ${irritants.join(', ')}, PII diperkirakan naik` : 'Tidak ada penanda iritan primer, PII diperkirakan rendah (tidak iritasi)',
     level: irritants.length ? 'warn' : 'ok',
   })
   const sens = SENSITISERS.filter((s) => anyOf(lines, s)).map((s) => named(lines, s)[0].inci_name)
@@ -412,8 +412,8 @@ export function safetyScreen(lines: LineUI[], analysis?: Analysis): SafetyScreen
   const fails = (analysis?.verdict?.findings ?? []).filter((f) => f.severity === 'fail' && ['R1', 'R2', 'R3'].includes(f.rule))
   tests.push({
     name: 'Uji Toksisitas & Batas Regulasi (in silico)',
-    method: 'Registry EU Annex II/III + aturan R1–R3 endpoint (BPOM, EU 1223/2009)',
-    result: annexII.length ? `Bahan terlarang Annex II: ${annexII.join(', ')}` : fails.length ? fails.map((f) => f.message).join('; ') : 'Tidak ada bahan Annex II; kadar di bawah batas Annex III (LD50 diperkirakan > 2000 mg/kg, GHS kategori 5)',
+    method: 'Registry EU Annex II/III + aturan R1-R3 endpoint (BPOM, EU 1223/2009)',
+    result: annexII.length ? `Bahan terlarang Annex II: ${annexII.join(', ')}` : fails.length ? fails.map((f) => f.message).join('; ') : 'Tidak ada bahan Annex II, kadar di bawah batas Annex III (LD50 diperkirakan > 2000 mg/kg, GHS kategori 5)',
     level: annexII.length || fails.length ? 'bad' : 'ok',
   })
   const pres = PRESERVATIVES.map((p) => ({ ...p, hit: named(lines, p.n) })).filter((p) => p.hit.length)
@@ -421,11 +421,11 @@ export function safetyScreen(lines: LineUI[], analysis?: Analysis): SafetyScreen
   const water = isWaterBased(lines)
   tests.push({
     name: 'Validasi Pengawet (Challenge Test Simulasi)',
-    method: 'Deteksi sistem pengawet dan batas kadar EU Annex V; efikasi butuh ISO 11930',
+    method: 'Deteksi sistem pengawet dan batas kadar EU Annex V, efikasi butuh ISO 11930',
     result: over.length
       ? `Melebihi batas: ${over.map((p) => `${p.hit[0].inci_name} ${fmt(sumOf(p.hit))}% > ${p.cap}%`).join(', ')}`
       : pres.length
-        ? `Sistem pengawet: ${pres.map((p) => `${p.hit[0].inci_name} ${fmt(sumOf(p.hit))}%`).join(', ')} — memenuhi batas Annex V, efikasi dikonfirmasi challenge test`
+        ? `Sistem pengawet: ${pres.map((p) => `${p.hit[0].inci_name} ${fmt(sumOf(p.hit))}%`).join(', ')}, memenuhi batas Annex V, efikasi dikonfirmasi challenge test`
         : water
           ? 'Sediaan berair tanpa pengawet terdeteksi: risiko kontaminasi mikroba'
           : 'Sediaan anhidrat: kebutuhan pengawet minimal',
@@ -434,7 +434,7 @@ export function safetyScreen(lines: LineUI[], analysis?: Analysis): SafetyScreen
   const halal = (analysis?.verdict?.findings ?? []).filter((f) => f.rule === 'R4' || f.rule === 'R7')
   tests.push({
     name: 'Kepatuhan Halal & Aturan Brand',
-    method: 'PP 42/2024, PerBPOM 18/2024, LPPOM MUI; brand_rules endpoint (R4/R7)',
+    method: 'PP 42/2024, PerBPOM 18/2024, LPPOM MUI, brand_rules endpoint (R4/R7)',
     result: halal.length ? halal.map((f) => f.message).join(' ') : analysis?.verdict ? `Halal dapat diklaim: ${analysis.verdict.halal_claimable ? 'ya' : 'belum (butuh sertifikat bahan)'}` : 'Belum diperiksa',
     level: halal.length ? 'warn' : analysis?.verdict ? 'ok' : 'lab',
   })
@@ -478,8 +478,8 @@ export function candidateSummary(c: AskCandidate, index: number, head: HeadId, s
   const lines = c.formula.lines.filter((l) => l.inci_name).map((l) => `${l.inci_name} (${fmt(l.wt_pct)}%)`)
   const conf = confidence(s ?? undefined, scale === 100 ? 1 : scale)
   const verdict = c.verdict
-  const vtext = !verdict ? '' : verdict.status === 'pass' ? ' Formula lolos seluruh pemeriksaan aturan.' : verdict.status === 'warn' ? ` Ada ${verdict.findings.length} peringatan aturan yang perlu ditinjau.` : ` Formula melanggar aturan: ${verdict.findings.filter((x) => x.severity === 'fail').map((x) => x.message).join('; ')}.`
-  const score = s ? `skor prediksi ${fmt(s.value * f)} (rentang ${fmt(s.lo * f)}–${fmt(s.hi * f)})` : 'skor prediksi belum tersedia'
+  const vtext = !verdict ? '' : verdict.status === 'pass' ? ' Formula lolos seluruh pemeriksaan aturan.' : verdict.status === 'warn' ? ` Ada ${verdict.findings.length} peringatan aturan yang perlu ditinjau.` : ` Formula melanggar aturan: ${verdict.findings.filter((x) => x.severity === 'fail').map((x) => x.message).join(', ')}.`
+  const score = s ? `skor prediksi ${fmt(s.value * f)} (rentang ${fmt(s.lo * f)}-${fmt(s.hi * f)})` : 'skor prediksi belum tersedia'
   return `Opsi Formulasi C${index + 1} ${index === 0 ? 'menawarkan' : 'hadir dengan'} ${score}${conf != null ? ` dan tingkat keyakinan sistem ${conf}%` : ''}. Resep ini memadukan ${lines.join(', ')}.${vtext}${c.highlighted ? ' Ini kandidat yang disarankan optimiser.' : ''}`
 }
 
@@ -510,7 +510,7 @@ export function buildCsv(ws: Workspace): string {
     else if (p.kind === 'class') rows.push(['prediksi', h, `${p.label} p=${p.p}`])
     else rows.push(['prediksi', h, p.kind])
   }
-  for (const f of ws.analysis?.verdict?.findings ?? []) rows.push(['aturan', `${f.rule} ${f.severity}`, `${f.message} — ${f.source}`])
+  for (const f of ws.analysis?.verdict?.findings ?? []) rows.push(['aturan', `${f.rule} ${f.severity}`, `${f.message}, ${f.source}`])
   const screen = safetyScreen(ws.formula, ws.analysis)
   for (const t of screen.tests) rows.push(['keamanan', t.name, `${t.level}: ${t.result}`])
   ;(ws.candidates ?? []).forEach((c, i) => rows.push(['kandidat', `C${i + 1}`, c.formula.lines.map((l) => `${l.inci_name} ${l.wt_pct}%`).join('; ')]))
@@ -522,21 +522,21 @@ export function buildPif(ws: Workspace): string {
   const screen = safetyScreen(ws.formula, ws.analysis)
   const h = headline(ws.analysis, ws.productType)
   const L: string[] = []
-  L.push(`# Product Information File (PIF) — ${ws.name}`, '', `Template mengikuti struktur Annex I Regulation (EC) No 1223/2009. Dibuat ${new Date().toLocaleString('id-ID')}.`, '')
+  L.push(`# Product Information File (PIF), ${ws.name}`, '', `Template mengikuti struktur Annex I Regulation (EC) No 1223/2009. Dibuat ${new Date().toLocaleString('id-ID')}.`, '')
   L.push('## 1. Deskripsi produk', `- Bentuk sediaan: ${ws.qtpp.bentuk || pt.label}`, `- Rute: ${ws.qtpp.rute}`, `- Tipe: ${pt.label} ${pt.sub}`, '')
   L.push('## 2. Formula kualitatif dan kuantitatif', '| No | INCI | % b/b | Fungsi | EU Annex |', '|---|---|---|---|---|')
-  ws.formula.filter((l) => l.inci_name).forEach((l, i) => L.push(`| ${i + 1} | ${l.inci_name} | ${pct(l)} | ${(l.function_class ?? []).join(', ') || '—'} | ${l.eu_annex ?? '—'} |`))
+  ws.formula.filter((l) => l.inci_name).forEach((l, i) => L.push(`| ${i + 1} | ${l.inci_name} | ${pct(l)} | ${(l.function_class ?? []).join(', ') || '-'} | ${l.eu_annex ?? '-'} |`))
   L.push(`| | **Total** | **${totalPct(ws.formula)}** | | |`, '')
   L.push('## 3. Spesifikasi produk (QTPP)')
   for (const [k, v] of Object.entries(ws.qtpp)) if (v) L.push(`- ${k}: ${v}`)
   L.push('')
   L.push('## 4. Prediksi dan analisis AI')
-  if (h) L.push(`- ${h.label}: ${fmt(h.value)} (interval ${fmt(h.lo)}–${fmt(h.hi)}) — ${provenanceLine(h.raw)}`)
-  for (const [k, r] of Object.entries(ws.analysis?.heads ?? {})) if (r.prediction.kind === 'scalar' && k !== h?.head) L.push(`- ${HEAD_LABEL[k as HeadId]}: ${fmt(r.prediction.value)} ${r.prediction.unit} (${fmt(r.prediction.lo)}–${fmt(r.prediction.hi)})`)
+  if (h) L.push(`- ${h.label}: ${fmt(h.value)} (interval ${fmt(h.lo)}-${fmt(h.hi)}), ${provenanceLine(h.raw)}`)
+  for (const [k, r] of Object.entries(ws.analysis?.heads ?? {})) if (r.prediction.kind === 'scalar' && k !== h?.head) L.push(`- ${HEAD_LABEL[k as HeadId]}: ${fmt(r.prediction.value)} ${r.prediction.unit} (${fmt(r.prediction.lo)}-${fmt(r.prediction.hi)})`)
   for (const [k, p] of Object.entries(ws.analysis?.problems ?? {})) L.push(`- ${k}: ${p}`)
   if (ws.analysis?.heads.H1?.provenance.attribution) L.push(`- ${ws.analysis.heads.H1.provenance.attribution}`)
   L.push('')
-  L.push('## 5. Skrining keamanan in silico', `**${screen.title}** — ${screen.text}`, '')
+  L.push('## 5. Skrining keamanan in silico', `**${screen.title}**, ${screen.text}`, '')
   for (const t of screen.tests) L.push(`- **${t.name}** (${t.method}): ${t.result} [${t.level}]`)
   L.push('', '> Hasil uji keamanan ini adalah prediksi in silico berdasarkan data toksikologi dan literatur. AI tidak menggantikan safety assessor atau pengujian klinis yang diwajibkan sebelum produk di-release ke pasar.', '')
   L.push('## 6. Temuan regulasi (endpoint constraints/check)')

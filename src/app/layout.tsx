@@ -16,7 +16,7 @@ const montserrat = Montserrat({
 })
 
 export const metadata: Metadata = {
-  title: 'Novagon — AI Riset & Prediksi Formulasi',
+  title: 'Novagon, AI Riset & Prediksi Formulasi',
   description:
     'Platform AI untuk formulator kosmetik: QTPP, analisis formula, prediksi stabilitas, kontribusi bahan, skrining keamanan in silico, dan laporan regulatori.',
 }

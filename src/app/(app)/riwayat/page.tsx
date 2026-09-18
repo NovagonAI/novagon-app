@@ -25,7 +25,7 @@ export default function HistoryPage() {
               <Link href={`/laboratorium/${e.workspaceId}?tab=prediksi`} className="min-w-[200px] flex-1 text-[16px] font-bold text-navy hover:underline">
                 {e.name}
               </Link>
-              <span className="font-serif text-[24px] font-bold italic text-navy">{e.score != null ? fmt(e.score) : '—'}</span>
+              <span className="font-serif text-[24px] font-bold italic text-navy">{e.score != null ? fmt(e.score) : '-'}</span>
               <Badge tone={TONE[e.status as keyof typeof TONE] ?? 'grey'}>{e.status === 'pass' ? 'Lolos aturan' : e.status === 'warn' ? 'Ada peringatan' : e.status === 'fail' ? 'Melanggar aturan' : e.status}</Badge>
             </li>
           ))}

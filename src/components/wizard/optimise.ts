@@ -27,7 +27,7 @@ export async function runOptimiser(ws: Workspace, q = 2): Promise<Pick<Workspace
   const out = await api.ask({ space, q, product_type: pt.apiType, state: ws.optimiserState ?? null, seed: ws.candidates?.length ? Date.now() % 10_000 : 0 })
   const h = headline(ws.analysis, ws.productType)
   const head: HeadId = h?.head ?? pt.heads[0]
-  const scale = h?.unit === 'skor 0–100' ? 100 : 1
+  const scale = h?.unit === 'skor 0-100' ? 100 : 1
   const fixed = named.filter((l) => !inSpace.includes(l) && !isWater(l))
   const water = named.find(isWater)
 

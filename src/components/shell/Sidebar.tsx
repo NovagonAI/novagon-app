@@ -1,6 +1,5 @@
 'use client'
 
-import { Logo } from '@/components/ui/Logo'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Icon } from '@/components/ui/Icon'
@@ -38,8 +37,8 @@ export function MobileNav() {
   return (
     <header className="sticky top-0 z-30 bg-sidebar-gradient px-4 pb-2 pt-3 text-white lg:hidden">
       <div className="flex items-center justify-between">
-        <Link href="/" aria-label="Novagon">
-          <Logo size={24} />
+        <Link href="/" className="font-serif text-[24px] font-bold italic">
+          Novagon
         </Link>
         <span className="text-[12px] font-semibold text-white/80">
           {who.name} · {who.role} ·{' '}
@@ -75,8 +74,8 @@ export function Sidebar() {
   const { signOut } = useAuth()
   return (
     <aside className="sticky top-0 hidden h-screen w-[290px] shrink-0 flex-col bg-sidebar-gradient text-white lg:flex">
-      <Link href="/" aria-label="Novagon" className="mt-[64px] px-[66px]">
-        <Logo size={36} />
+      <Link href="/" className="mt-[64px] px-[66px] font-serif text-[36px] font-bold italic leading-none">
+        Novagon
       </Link>
       <nav aria-label="Menu utama" className="mt-[68px]">
         <ul>

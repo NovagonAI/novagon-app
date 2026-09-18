@@ -101,10 +101,10 @@ export function MeetTheTeam() {
           <h2 className="mt-2 font-serif text-[clamp(28px,3vw,40px)] font-bold italic text-navy">Meet the Team</h2>
         </Reveal>
         <Reveal className="relative mt-[clamp(20px,3vw,40px)]">
-          <div ref={viewportRef} className="mx-auto max-w-[1150px] overflow-hidden" aria-roledescription="carousel">
+          <div ref={viewportRef} className="overflow-hidden" aria-roledescription="carousel">
             <div className="flex touch-pan-y">
               {[...TEAM, ...TEAM].map((m, i) => (
-                <div key={i} className="min-w-0 shrink-0 basis-[85vw] px-4 md:basis-1/3">
+                <div key={i} className="min-w-0 shrink-0 basis-[85vw] px-3 md:basis-1/3 xl:basis-1/5">
                   <div data-card className="transition-[transform,opacity] duration-300 ease-out will-change-transform">
                     <TeamCard member={m} />
                   </div>

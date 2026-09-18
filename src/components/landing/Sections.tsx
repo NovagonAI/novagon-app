@@ -123,17 +123,21 @@ export function BrandsSection() {
           <h2 className="mt-2 font-serif text-[clamp(28px,3vw,40px)] font-bold italic text-navy">Aturan tiap brand ikut diperiksa</h2>
         </Reveal>
       </div>
-      <div className="overflow-hidden pb-[clamp(48px,7vw,96px)]">
-        <ul
-          className="flex w-max items-center motion-safe:[animation:marquee-right_30s_linear_infinite]"
-          aria-label="Brand yang didukung"
-        >
-          {[...BRANDS, ...BRANDS].map(([name, src], i) => (
-            <li key={i} aria-hidden={i >= BRANDS.length || undefined} className="shrink-0 pr-[clamp(40px,6vw,96px)]">
-              <img src={src} alt={i < BRANDS.length ? name : ''} className="h-12 w-auto object-contain sm:h-16" loading="lazy" />
-            </li>
-          ))}
-        </ul>
+      <div className="space-y-8 overflow-hidden pb-[clamp(48px,7vw,96px)]">
+        {(['marquee-right', 'marquee-left'] as const).map((anim) => (
+          <ul
+            key={anim}
+            className={`flex w-max items-center motion-safe:[animation:var(--marquee)_30s_linear_infinite]`}
+            style={{ '--marquee': anim } as React.CSSProperties}
+            aria-hidden={anim === 'marquee-left' || undefined}
+          >
+            {[...BRANDS, ...BRANDS].map(([name, src], i) => (
+              <li key={i} aria-hidden={i >= BRANDS.length || undefined} className="shrink-0 pr-[clamp(40px,6vw,96px)]">
+                <img src={src} alt={i < BRANDS.length && anim === 'marquee-right' ? name : ''} className="h-12 w-auto object-contain sm:h-16" loading="lazy" />
+              </li>
+            ))}
+          </ul>
+        ))}
       </div>
       <Wave fill="#e2f0ff" />
     </section>

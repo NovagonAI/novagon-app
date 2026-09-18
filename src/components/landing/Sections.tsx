@@ -24,7 +24,7 @@ const MISSION = [
 const VALUES = [
   ['Terukur', 'Angka datang dari model yang diukur, bukan dari perkiraan.', 'bg-blue text-white'],
   ['Transparan', 'Sumber, batas aturan, dan tingkat keyakinan selalu terlihat.', 'bg-sky text-navy'],
-  ['Aman', 'Skrining keamanan mendahului uji laboratorium, bukan menggantikannya.', 'bg-mist text-navy'],
+  ['Aman', 'Skrining keamanan mendahului uji laboratorium, bukan menggantikannya.', 'bg-white text-navy'],
 ] as const
 
 const BRANDS = [
@@ -118,7 +118,7 @@ export function ServiceSection() {
 export function AboutSection() {
   return (
     <section id="about-us" className="scroll-mt-4 bg-navy text-white">
-      <div className={`${container} pb-[clamp(48px,7vw,96px)] pt-[clamp(24px,4vw,56px)]`}>
+      <div className={`${container} pt-[clamp(24px,4vw,56px)]`}>
         <Reveal className="text-center">
           <p className="text-[13px] font-bold uppercase tracking-[0.2em] text-sky">About Us</p>
           <h2 className="mt-2 font-serif text-[clamp(28px,3.4vw,44px)] font-bold italic">
@@ -144,19 +144,20 @@ export function AboutSection() {
             </Reveal>
           ))}
         </div>
-        <div className="mt-[clamp(28px,4vw,56px)]">
-          {VALUES.map(([title, text, tone], i) => (
-            <Reveal key={title} delay={i * 80} className={i ? '-mt-4' : ''}>
-              <div className={`rounded-[24px] px-6 py-5 shadow-card sm:px-8 ${tone}`} style={{ position: 'relative', zIndex: i + 1 }}>
+      </div>
+      <div className="mt-[clamp(28px,4vw,56px)]">
+        {VALUES.map(([title, text, tone], i) => (
+          <Reveal key={title} delay={i * 80} className={`relative ${['z-30', 'z-20', 'z-10'][i]} ${i ? '-mt-6' : ''}`}>
+            <div className={`rounded-t-[32px] pb-11 pt-6 shadow-card ${tone}`}>
+              <div className={container}>
                 <p className="text-[12px] font-bold uppercase tracking-[0.2em] opacity-80">Nilai kami</p>
                 <p className="font-serif text-[clamp(22px,2.4vw,30px)] font-bold italic">{title}</p>
                 <p className="text-[15px] font-medium">{text}</p>
               </div>
-            </Reveal>
-          ))}
-        </div>
+            </div>
+          </Reveal>
+        ))}
       </div>
-      <Wave fill="#ffffff" />
     </section>
   )
 }

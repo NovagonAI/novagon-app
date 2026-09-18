@@ -17,7 +17,7 @@ import { Panel, Box } from '@/components/ui/Panel'
 import { runAnalysis } from '@/components/wizard/analysis'
 import { describeError } from '@/lib/api'
 import { productType } from '@/lib/catalog'
-import { compositionNodes, contributions, fmt, headline, pct, pickActive, provenanceLine, totalPct } from '@/lib/insight'
+import { compositionNodes, contributions, fmt, headline, pct, pickCentre, provenanceLine, totalPct } from '@/lib/insight'
 import { relativeDate, useStore } from '@/lib/store'
 
 const TABS = ['Formula', 'Prediksi', 'Uji Keamanan', 'Laporan'] as const
@@ -45,7 +45,7 @@ export default function WorkspacePage() {
   const pt = productType(ws.productType)
   const lines = ws.formula.filter((l) => l.inci_name)
   const h = headline(ws.analysis, ws.productType)
-  const active = pickActive(lines)
+  const active = pickCentre(lines)
   const version = ws.versions[ws.versions.length - 1]
   const edit = () => {
     store.select(ws.id)

@@ -8,7 +8,7 @@ import { SummaryPanel } from '@/components/lab/SummaryPanel'
 import { Icon } from '@/components/ui/Icon'
 import { Panel, Box } from '@/components/ui/Panel'
 import { describeError } from '@/lib/api'
-import { compositionNodes, contributions, pickActive } from '@/lib/insight'
+import { compositionNodes, contributions, pickCentre } from '@/lib/insight'
 import type { StepProps } from './Wizard'
 import { runOptimiser } from './optimise'
 
@@ -19,7 +19,7 @@ export function StepContribution({ ws, update, next, back }: StepProps) {
   const lines = ws.formula.filter((l) => l.inci_name)
   const rows = contributions(ws.analysis?.explain)
   const nodes = compositionNodes(lines, ws.analysis)
-  const activeLine = pickActive(lines)
+  const activeLine = pickCentre(lines)
   const active = nodes.find((n) => n.line === activeLine)
 
   const propose = async () => {

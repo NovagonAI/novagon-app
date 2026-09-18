@@ -271,12 +271,15 @@ export function contributions(explain: ExplainOut | undefined, scale = 100): Con
 const ACTIVE_HINTS = ['NIACINAMIDE', 'RETIN', 'ASCORB', 'SALICYLIC', 'GLYCOLIC', 'LACTIC', 'PEPTIDE', 'CERAMIDE', 'CENTELLA', 'HYALURON', 'PANTHENOL', 'ALLANTOIN', 'ARBUTIN', 'TRANEXAMIC', 'AZELAIC', 'KOJIC', 'BAKUCHIOL', 'ZINC', 'TITANIUM DIOXIDE', 'OXYBENZONE', 'AVOBENZONE', 'HOMOSALATE', 'OCTOCRYLENE', 'OCTINOXATE', 'EXTRACT', 'FERMENT', 'PIROCTONE', 'CLIMBAZOLE', 'KETOCONAZOLE', 'SELENIUM', 'POLYQUATERNIUM', 'BISABOLOL', 'TOCOPHEROL']
 const CARRIERS = ['AQUA', 'WATER', 'GLYCERIN', 'PROPANEDIOL', 'BUTYLENE GLYCOL', 'PROPYLENE GLYCOL']
 
-/** The main active: an ingredient whose name carries an active-hint, else the largest non-carrier line. */
+/** The main active, when a name carries an active hint. A base with no active returns undefined. */
 export function pickActive(lines: LineUI[]): LineUI | undefined {
+  return lines.filter((l) => l.inci_name).find((l) => ACTIVE_HINTS.some((h) => U(l.inci_name).includes(h)))
+}
+
+/** The line to put at the centre of the map: the active, else the largest non-carrier line. */
+export function pickCentre(lines: LineUI[]): LineUI | undefined {
   const named = lines.filter((l) => l.inci_name)
-  const byHint = named.find((l) => ACTIVE_HINTS.some((h) => U(l.inci_name).includes(h)))
-  if (byHint) return byHint
-  return [...named].filter((l) => !CARRIERS.some((c) => U(l.inci_name).includes(c))).sort((a, b) => pct(b) - pct(a))[0] ?? named[0]
+  return pickActive(lines) ?? [...named].filter((l) => !CARRIERS.some((c) => U(l.inci_name).includes(c))).sort((a, b) => pct(b) - pct(a))[0] ?? named[0]
 }
 
 export interface Node {
@@ -362,6 +365,7 @@ export function summarise(ws: Workspace): Summary {
   const list = (lvl: Node['level']) => nodes.filter((n) => n.level === lvl).map((n) => `${n.line.inci_name} (${fmt(pct(n.line))}%)`)
   const safety: string[] = []
   if (active) safety.push(`Zat Aktif Utama: ${active.inci_name} ${fmt(pct(active))}%.`)
+  else safety.push('Tidak ada zat aktif: sediaan ini basis (fase minyak dan emolien bukan zat aktif).')
   if (list('ok').length) safety.push(`Bahan Aman (Hijau): ${list('ok').join(', ')}.`)
   if (list('warn').length) safety.push(`Bahan Peringatan (Oranye): ${list('warn').join(', ')}.`)
   if (list('bad').length) safety.push(`Bahan Pelanggaran (Merah): ${list('bad').join(', ')}.`)

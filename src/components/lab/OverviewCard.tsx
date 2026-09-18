@@ -1,7 +1,7 @@
 import { Icon } from '@/components/ui/Icon'
 import { Panel, Box } from '@/components/ui/Panel'
 import { productType } from '@/lib/catalog'
-import { pickActive, fmt, pct } from '@/lib/insight'
+import { pickActive, pickCentre, fmt, pct } from '@/lib/insight'
 import type { Workspace } from '@/lib/store'
 
 /** Four icon tiles (warna, pH, kekentalan, stabilitas) and one sentence, the lab "Overview". */
@@ -15,7 +15,7 @@ export function OverviewCard({ ws }: { ws: Workspace }) {
     { icon: 'drop', title: 'Kekentalan', value: q.viskositas || '-' },
     { icon: 'clock-lg', title: 'Stabilitas & Masa Simpan', value: q.stabilitas || '-' },
   ]
-  const sentence = `Formulasi ini berpenampilan ${q.warna ? q.warna.toLowerCase() : 'sesuai target QTPP'}${q.aroma ? `, ${q.aroma.toLowerCase()}` : ''}, bahan aktif target ${q.bahanAktif || (active ? `${active.inci_name} ${fmt(pct(active))}%` : 'belum ditentukan')}. Sediaan ${q.bentuk || pt.label} untuk rute ${q.rute.toLowerCase()}, target stabil ${q.stabilitas || '-'}${q.keamanan ? `; target keamanan: ${q.keamanan.toLowerCase()}` : ''}.`
+  const sentence = `Formulasi ini berpenampilan ${q.warna ? q.warna.toLowerCase() : 'sesuai target QTPP'}${q.aroma ? `, ${q.aroma.toLowerCase()}` : ''}, ${q.bahanAktif ? `bahan aktif target ${q.bahanAktif}` : active ? `bahan aktif target ${active.inci_name} ${fmt(pct(active))}%` : 'tanpa zat aktif, sediaan basis'}. Sediaan ${q.bentuk || pt.label} untuk rute ${q.rute.toLowerCase()}, target stabil ${q.stabilitas || '-'}${q.keamanan ? `; target keamanan: ${q.keamanan.toLowerCase()}` : ''}.`
   return (
     <Panel bodyClassName="pt-[18px] pb-[26px]">
       <h2 className="text-[20px] font-bold text-navy">Overview</h2>

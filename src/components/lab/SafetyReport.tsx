@@ -1,7 +1,7 @@
 import { Badge, LEVEL_LABEL } from '@/components/ui/Badge'
 import { Icon } from '@/components/ui/Icon'
 import { Panel } from '@/components/ui/Panel'
-import { pickActive, safetyScreen } from '@/lib/insight'
+import { pickCentre, safetyScreen } from '@/lib/insight'
 import type { Workspace } from '@/lib/store'
 import { Note } from './SummaryPanel'
 
@@ -15,7 +15,7 @@ const CONCLUSION = {
 export function SafetyReport({ ws }: { ws: Workspace }) {
   const lines = ws.formula.filter((l) => l.inci_name)
   const s = safetyScreen(lines, ws.analysis)
-  const active = pickActive(lines)
+  const active = pickCentre(lines)
   const c = CONCLUSION[s.level]
   return (
     <>

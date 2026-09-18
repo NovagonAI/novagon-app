@@ -52,7 +52,7 @@ export function StepFormula({ ws, update, next, back }: StepProps) {
     >
       {!confirmed && <DatasetPicker leaveOn={productType(ws.productType).apiType !== 'rinse_off'} onAdd={(l) => update((w) => ({ formula: [...w.formula.filter((x) => x.inci_name.trim()), l], confirmed: false }))} onExample={(ls) => update({ formula: ls, confirmed: false })} />}
       <Panel title={confirmed ? 'Konfirmasi Bahan Formula' : 'Daftar Bahan'} bodyClassName="pt-[16px] pb-[26px]">
-        <div className="grid grid-cols-[minmax(0,1fr)_190px_36px] items-center gap-x-[18px] text-[20px] font-bold text-navy">
+        <div className="grid grid-cols-[minmax(0,1fr)_96px_36px] items-center gap-x-2 text-[16px] sm:grid-cols-[minmax(0,1fr)_190px_36px] sm:gap-x-[18px] sm:text-[20px] font-bold text-navy">
           <span>Nama Bahan</span>
           <span className="text-center">Persentase (%)</span>
           <span />
@@ -60,7 +60,7 @@ export function StepFormula({ ws, update, next, back }: StepProps) {
         <ul className="mt-[14px] space-y-[16px]">
           {lines.map((l, i) => (
             <li key={l.id}>
-              <div className="grid grid-cols-[minmax(0,1fr)_190px_36px] items-center gap-x-[18px]">
+              <div className="grid grid-cols-[minmax(0,1fr)_96px_36px] items-center gap-x-2 sm:grid-cols-[minmax(0,1fr)_190px_36px] sm:gap-x-[18px]">
                 <IngredientInput line={l} index={i} disabled={confirmed} onChange={(p) => setLine(l.id, p)} />
                 <input
                   aria-label={`Persentase ${l.inci_name || `bahan ${i + 1}`}`}

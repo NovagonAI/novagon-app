@@ -52,8 +52,8 @@ function StepCarousel() {
   }, [paused, n])
 
   return (
-    <div className="mt-[clamp(20px,3vw,40px)]" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-      <ol className="relative mx-auto aspect-video w-full max-w-[720px] [perspective:1400px]" aria-live="polite">
+    <div className="mt-[clamp(20px,3vw,40px)] overflow-hidden [--cf:34%] md:[--cf:58%]" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+      <ol className="relative mx-auto my-4 aspect-video w-[86%] max-w-[720px] [perspective:1400px] md:w-full" aria-live="polite">
         {STEPS.map(([title, src], i) => {
           let off = i - active
           if (off > n / 2) off -= n
@@ -64,7 +64,7 @@ function StepCarousel() {
               key={title}
               className="absolute inset-0 transition-[transform,opacity] duration-700 ease-out motion-reduce:transition-none"
               style={{
-                transform: `translateX(${off * 58}%) translateZ(${-Math.abs(off) * 220}px) rotateY(${-off * 32}deg)`,
+                transform: `translateX(calc(${off} * var(--cf))) translateZ(${-Math.abs(off) * 220}px) rotateY(${-off * 32}deg)`,
                 opacity: hidden ? 0 : 1 - Math.abs(off) * 0.3,
                 zIndex: 10 - Math.abs(off),
                 pointerEvents: hidden ? 'none' : 'auto',

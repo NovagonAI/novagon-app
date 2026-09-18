@@ -104,9 +104,9 @@ export default function ProfilePage() {
               <p className="mt-1 text-right text-[12px] font-semibold text-grey-text">{bio.length}/280</p>
 
               <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                <div>
+                <div className="min-w-0">
                   <span className="label">Email</span>
-                  <p className="field flex items-center bg-pale text-[16px] text-grey-text">{profile.email}</p>
+                  <p className="field flex items-center break-all bg-pale text-[16px] text-grey-text">{profile.email}</p>
                 </div>
                 <div>
                   <span className="label">Peran</span>

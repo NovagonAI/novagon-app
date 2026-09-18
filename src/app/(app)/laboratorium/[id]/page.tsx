@@ -96,13 +96,13 @@ export default function WorkspacePage() {
               </button>
             </div>
             <Box className="mt-[14px] bg-pale px-5 py-3 text-[16px] font-semibold text-black">{version?.note ?? 'Formula belum diprediksi'}{version ? ` · ${new Date(version.at).toLocaleString('id-ID')}` : ''}</Box>
-            <div className="mt-[24px] grid grid-cols-[minmax(0,1fr)_190px] gap-x-[13px] text-[20px] font-bold text-navy">
+            <div className="mt-[24px] grid grid-cols-[minmax(0,1fr)_96px] gap-x-[13px] text-[16px] sm:grid-cols-[minmax(0,1fr)_190px] sm:text-[20px] font-bold text-navy">
               <span>Nama Bahan (Inci)</span>
               <span className="text-center">Persentase (%)</span>
             </div>
             <ul className="mt-[14px] space-y-[15px]">
               {lines.map((l) => (
-                <li key={l.id} className="grid grid-cols-[minmax(0,1fr)_190px] gap-x-[13px]">
+                <li key={l.id} className="grid grid-cols-[minmax(0,1fr)_96px] gap-x-[13px] sm:grid-cols-[minmax(0,1fr)_190px]">
                   <Box className="flex min-h-[56px] items-center px-4 text-[20px] font-semibold">{l.inci_name}</Box>
                   <Box className="flex min-h-[56px] items-center justify-center text-[20px] font-semibold">{fmt(pct(l))}</Box>
                 </li>

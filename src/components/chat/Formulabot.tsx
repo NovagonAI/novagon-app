@@ -109,7 +109,7 @@ export function Formulabot() {
   if (!ready) return null;
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 print:hidden">
+    <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-3 print:hidden sm:bottom-6 sm:right-6">
       {open && (
         <section
           className="panel flex h-[560px] max-h-[80vh] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden shadow-card"

@@ -9,6 +9,11 @@
   --mist: #e2f0ff;
 }
 
+html,
+body {
+  overflow-x: clip;
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 24px;

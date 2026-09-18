@@ -10,7 +10,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <div className="flex min-h-screen flex-col bg-white lg:flex-row">
           <Sidebar />
           <MobileNav />
-          <main className="min-w-0 flex-1">{children}</main>
+          <main className="min-w-0 flex-1 pb-24 lg:pb-0">{children}</main>
         </div>
         <Formulabot />
       </StoreProvider>

@@ -117,18 +117,21 @@ export function AboutSection() {
 export function BrandsSection() {
   return (
     <section id="brands" className="scroll-mt-4 bg-white">
-      <div className={`${container} pb-[clamp(48px,7vw,96px)] pt-[clamp(16px,3vw,40px)]`}>
+      <div className={`${container} pb-[clamp(20px,3vw,40px)] pt-[clamp(16px,3vw,40px)]`}>
         <Reveal className="text-center">
           <p className="text-[13px] font-bold uppercase tracking-[0.2em] text-blue">Brands</p>
           <h2 className="mt-2 font-serif text-[clamp(28px,3vw,40px)] font-bold italic text-navy">Aturan tiap brand ikut diperiksa</h2>
         </Reveal>
-        <ul className="mt-[clamp(20px,3vw,40px)] grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {BRANDS.map(([name, src], i) => (
-            <Reveal key={name} delay={i * 50}>
-              <li className="panel flex h-full items-center justify-center p-6">
-                <img src={src} alt={name} className="max-h-16 w-auto object-contain" loading="lazy" />
-              </li>
-            </Reveal>
+      </div>
+      <div className="overflow-hidden pb-[clamp(48px,7vw,96px)]">
+        <ul
+          className="flex w-max items-center motion-safe:[animation:marquee-right_30s_linear_infinite]"
+          aria-label="Brand yang didukung"
+        >
+          {[...BRANDS, ...BRANDS].map(([name, src], i) => (
+            <li key={i} aria-hidden={i >= BRANDS.length || undefined} className="shrink-0 pr-[clamp(40px,6vw,96px)]">
+              <img src={src} alt={i < BRANDS.length ? name : ''} className="h-12 w-auto object-contain sm:h-16" loading="lazy" />
+            </li>
           ))}
         </ul>
       </div>

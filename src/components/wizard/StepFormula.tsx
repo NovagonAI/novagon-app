@@ -145,11 +145,11 @@ function DatasetPicker({ onAdd, onExample }: { onAdd: (l: LineUI) => void; onExa
   return (
     <Panel title="Pilih dari dataset model" className="mb-[18px]" bodyClassName="pt-[14px] pb-[20px]">
       <p className="text-[14px] font-semibold text-grey-text">
-        H1 (stabilitas) dan H2 (viskositas) dilatih pada 812 formula sampo dengan 18 bahan baku ini. Bahan di luar daftar tetap bisa diinput, tetapi model mengabaikannya.
+        H1 (stabilitas) dan H2 (viskositas) dilatih pada 812 formula sampo dengan 18 bahan baku ini, sebagian besar surfaktan (anionik, amfoterik, non-ionik) ditambah polimer conditioning dan pengental. Bahan di luar daftar tetap bisa diinput, tetapi model mengabaikannya.
       </p>
       <div className="mt-3 grid gap-3 sm:grid-cols-2">
         <label className="block">
-          <span className="label">Tambah bahan dataset:</span>
+          <span className="label">Tambah surfaktan / bahan dataset:</span>
           <select
             className="field text-[16px]"
             value=""
@@ -157,7 +157,7 @@ function DatasetPicker({ onAdd, onExample }: { onAdd: (l: LineUI) => void; onExa
               if (e.target.value) onAdd(toLine(e.target.value, 5))
             }}
           >
-            <option value="">- pilih bahan baku -</option>
+            <option value="">- pilih surfaktan atau bahan lain -</option>
             {dataset.ingredients.map((i) => (
               <option key={i.trade} value={i.trade}>
                 {titleCase(i.inci)} · {i.trade} ({i.type ?? i.function})

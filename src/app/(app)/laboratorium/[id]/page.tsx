@@ -164,7 +164,7 @@ export default function WorkspacePage() {
               <Panel title="Analisis Formulasi" right={<OrbitalLegend />} bodyClassName="py-6">
                 <OrbitalMap active={compositionNodes(lines, ws.analysis).find((n) => n.line === active)} nodes={compositionNodes(lines, ws.analysis)} />
               </Panel>
-              <Panel bodyClassName="px-[18px] py-[18px]" className="xl:max-h-[1026px] xl:overflow-y-auto xl:self-start">
+              <Panel bodyClassName="px-[18px] py-[18px]" className="xl:h-0 xl:min-h-full xl:overflow-y-auto">
                 <ResultColumn ws={ws} />
               </Panel>
             </div>

@@ -1,3 +1,4 @@
+import { Icon } from '@/components/ui/Icon'
 import { Panel, Box } from '@/components/ui/Panel'
 import { summarise } from '@/lib/insight'
 import type { Workspace } from '@/lib/store'
@@ -39,7 +40,9 @@ export function Note({ className = 'mt-[18px]' }: { className?: string }) {
   return (
     <Panel className={className} bodyClassName="py-[22px]">
       <div className="rounded-[10px] border border-warn-deep bg-warn-bg px-5 py-4">
-        <p className="text-[16px] font-bold text-warn-dark">ℹ️ Catatan:</p>
+        <p className="flex items-center gap-2 text-[16px] font-bold text-warn-dark">
+          <Icon name="danger" size={20} /> Catatan:
+        </p>
         <p className="mt-2 text-justify text-[14px] font-semibold text-black">{NOTE}</p>
       </div>
     </Panel>

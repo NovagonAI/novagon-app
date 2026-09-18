@@ -15,6 +15,7 @@ export type ProductTypeId =
   | 'shampoo'
   | 'facewash'
   | 'powder'
+  | 'foundation'
   | 'serum'
   | 'bodywash'
   | 'sunscreen'
@@ -88,6 +89,16 @@ export const PRODUCT_TYPES: ProductType[] = [
     qtpp: { bentuk: 'Serbuk tabur', warna: 'Serbuk halus homogen, translucent', viskositas: '- (serbuk)', ph: '- (anhidrat)', stabilitas: '2 tahun', ukuranPartikel: '5-20 mikrometer' },
   },
   {
+    id: 'foundation',
+    label: 'Foundation',
+    sub: '(Liquid, Cream, Powder, Cushion)',
+    image: '/figma/type-foundation.png',
+    apiType: 'face_leave_on',
+    heads: ['H1', 'H2', 'H5'],
+    forms: ['Liquid', 'Cream', 'Powder', 'Cushion'],
+    qtpp: { bentuk: 'Emulsi pigmen (liquid / cream)', warna: 'Emulsi opak homogen sesuai shade', viskositas: '8.000-20.000 cPs', ph: '6.0-7.0', stabilitas: '2 tahun', ukuranPartikel: 'Pigmen < 10 mikrometer' },
+  },
+  {
     id: 'serum',
     label: 'Serum Wajah',
     sub: '(Water-based, Oil-based, Emulsion-based)',
@@ -101,7 +112,7 @@ export const PRODUCT_TYPES: ProductType[] = [
     id: 'bodywash',
     label: 'Body Wash',
     sub: '(Liquid Gel, Cream Soap, Bar Soap)',
-    image: '/figma/type-bottle.png',
+    image: '/figma/type-bodywash.png',
     apiType: 'rinse_off',
     heads: ['H1', 'H2', 'H6'],
     forms: ['Liquid Gel', 'Cream Soap', 'Bar Soap'],
@@ -121,7 +132,7 @@ export const PRODUCT_TYPES: ProductType[] = [
     id: 'scrub',
     label: 'Body Scrub',
     sub: '(Krim, Gel, Paste)',
-    image: '/figma/type-bottle.png',
+    image: '/figma/type-scrub.png',
     apiType: 'rinse_off',
     heads: ['H1', 'H2'],
     forms: ['Krim', 'Gel', 'Paste'],

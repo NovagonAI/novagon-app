@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { Avatar } from '@/components/ui/Avatar'
 import { Icon } from '@/components/ui/Icon'
 import { ROLE_LABEL, useAuth } from '@/lib/auth'
 
@@ -10,6 +11,7 @@ const NAV = [
   { href: '/analisis', label: 'Analisis Formulasi', icon: 'command' },
   { href: '/laboratorium', label: 'Laboratorium', icon: 'folder-open' },
   { href: '/riwayat', label: 'Riwayat', icon: 'clock' },
+  { href: '/profil', label: 'Profil', icon: 'user' },
 ]
 const STAFF_NAV = { href: '/admin', label: 'Akun', icon: 'document-text' }
 
@@ -25,6 +27,7 @@ function useWho() {
   return {
     name: profile?.full_name || profile?.email || (loading ? 'Memuat…' : 'Tamu'),
     role: profile ? ROLE_LABEL[profile.role] : 'Belum masuk',
+    avatar: profile?.avatar_url ?? null,
   }
 }
 
@@ -97,15 +100,15 @@ export function Sidebar() {
         </ul>
       </nav>
       <div className="mt-auto mb-[210px] ml-[28px] w-[233px]">
-        <div className="flex h-[59px] items-center gap-[17px] rounded-[50px] border-2 border-sky bg-white pl-[9px] text-blue">
-          <span className="h-12 w-12 shrink-0 rounded-full bg-grey-track" aria-hidden="true" />
+        <Link href="/profil" className="flex h-[59px] items-center gap-[17px] rounded-[50px] border-2 border-sky bg-white pl-[9px] text-blue hover:bg-pale">
+          <Avatar src={who.avatar} name={who.name} size={48} />
           <span className="min-w-0 leading-tight">
             <span className="block truncate text-[16px] font-bold" title={who.name}>
               {who.name}
             </span>
             <span className="block truncate text-[14px] font-semibold">{who.role}</span>
           </span>
-        </div>
+        </Link>
         <button type="button" onClick={signOut} className="mt-2 w-full text-center text-[13px] font-semibold text-white/80 hover:text-white">
           Keluar
         </button>

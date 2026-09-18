@@ -95,16 +95,16 @@ export function MeetTheTeam() {
 
   return (
     <section id="team" className="scroll-mt-4 bg-white">
-      <div className="mx-auto max-w-[1150px] px-4 pb-[clamp(48px,7vw,96px)] pt-[clamp(16px,3vw,40px)] sm:px-8">
-        <Reveal className="text-center">
+      <div className="pb-[clamp(48px,7vw,96px)] pt-[clamp(16px,3vw,40px)]">
+        <Reveal className="px-4 text-center">
           <p className="text-[13px] font-bold uppercase tracking-[0.2em] text-blue">Team</p>
           <h2 className="mt-2 font-serif text-[clamp(28px,3vw,40px)] font-bold italic text-navy">Meet the Team</h2>
         </Reveal>
-        <Reveal className="relative mt-[clamp(20px,3vw,40px)] max-md:-mx-4">
+        <Reveal className="relative mt-[clamp(20px,3vw,40px)]">
           <div ref={viewportRef} className="overflow-hidden" aria-roledescription="carousel">
             <div className="flex touch-pan-y">
-              {TEAM.map((m) => (
-                <div key={m.photo} className="min-w-0 shrink-0 basis-[85vw] pl-4 md:basis-[335px]">
+              {[...TEAM, ...TEAM].map((m, i) => (
+                <div key={i} className="min-w-0 shrink-0 basis-[85vw] pl-4 md:basis-[335px]">
                   <div data-card className="transition-[transform,opacity] duration-300 ease-out will-change-transform">
                     <TeamCard member={m} />
                   </div>
@@ -112,10 +112,10 @@ export function MeetTheTeam() {
               ))}
             </div>
           </div>
-          <button type="button" onClick={() => embla?.scrollPrev()} aria-label="Sebelumnya" className="absolute left-2 top-1/2 z-10 flex size-10 -translate-y-1/2 items-center justify-center rounded-full border border-blue bg-blue/20 text-navy transition-colors hover:bg-blue/40">
+          <button type="button" onClick={() => embla?.scrollPrev()} aria-label="Sebelumnya" className="absolute left-4 sm:left-8 top-1/2 z-10 flex size-10 -translate-y-1/2 items-center justify-center rounded-full border border-blue bg-blue/20 text-navy transition-colors hover:bg-blue/40">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
           </button>
-          <button type="button" onClick={() => embla?.scrollNext()} aria-label="Berikutnya" className="absolute right-2 top-1/2 z-10 flex size-10 -translate-y-1/2 items-center justify-center rounded-full border border-blue bg-blue/20 text-navy transition-colors hover:bg-blue/40">
+          <button type="button" onClick={() => embla?.scrollNext()} aria-label="Berikutnya" className="absolute right-4 sm:right-8 top-1/2 z-10 flex size-10 -translate-y-1/2 items-center justify-center rounded-full border border-blue bg-blue/20 text-navy transition-colors hover:bg-blue/40">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
           </button>
         </Reveal>

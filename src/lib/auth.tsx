@@ -12,6 +12,8 @@ export interface Profile {
   email: string
   full_name: string
   role: Role
+  avatar_url?: string | null
+  bio?: string | null
   created_at?: string
 }
 
@@ -56,6 +58,8 @@ interface AuthApi {
   createManager: (email: string, password: string, full_name: string) => Promise<Profile>
   listUsers: () => Promise<Profile[]>
   deleteUser: (id: string) => Promise<void>
+  updateProfile: (patch: { full_name?: string; bio?: string | null; avatar_url?: string | null }) => Promise<void>
+  uploadAvatar: (file: File) => Promise<string>
 }
 
 const Ctx = createContext<AuthApi | null>(null)
@@ -69,7 +73,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const loadProfile = useCallback(async (u: User | null) => {
     setUser(u)
     if (!u) return setProfile(null)
-    const { data } = await supabase().from('profiles').select('id, email, full_name, role, created_at').eq('id', u.id).maybeSingle()
+    const { data } = await supabase().from('profiles').select('id, email, full_name, role, avatar_url, bio, created_at').eq('id', u.id).maybeSingle()
     setProfile(
       (data as Profile | null) ?? {
         id: u.id,
@@ -107,6 +111,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       listUsers: async () => (await adminUsers<{ users: Profile[] }>({ action: 'list' })).users,
       deleteUser: async (id) => {
         await adminUsers({ action: 'delete', id })
+      },
+      updateProfile: async (patch) => {
+        if (!user) throw new Error('Belum masuk')
+        const { error } = await supabase().from('profiles').update(patch).eq('id', user.id)
+        if (error) throw new Error(error.message)
+        setProfile((p) => (p ? { ...p, ...patch } : p))
+      },
+      uploadAvatar: async (file) => {
+        if (!user) throw new Error('Belum masuk')
+        if (file.size > 2 * 1024 * 1024) throw new Error('Foto maksimal 2 MB')
+        const ext = file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg'
+        const path = `${user.id}/avatar.${ext}`
+        const sb = supabase()
+        const { error } = await sb.storage.from('avatars').upload(path, file, { upsert: true, contentType: file.type })
+        if (error) throw new Error(error.message)
+        // cache-bust so the new photo shows without a hard reload
+        return `${sb.storage.from('avatars').getPublicUrl(path).data.publicUrl}?v=${Date.now()}`
       },
     }),
     [user, profile, loading, router],

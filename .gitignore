@@ -4,3 +4,6 @@ node_modules/
 tsconfig.tsbuildinfo
 .vercel
 .env*
+
+# jupyter
+.ipynb_checkpoints/

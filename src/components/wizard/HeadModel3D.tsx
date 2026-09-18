@@ -9,7 +9,7 @@ import { loadThree } from '@/lib/three'
  * under a soft three-point rig with sRGB output, so the tint reads as the
  * hex given instead of washing out. Drag to orbit, it springs back.
  */
-export function HeadModel3D({ hex = '#E0C9B4', height = 311 }: { hex?: string; height?: number }) {
+export function HeadModel3D({ hex = '#E0C9B4', height = 520 }: { hex?: string; height?: number }) {
   const mount = useRef<HTMLDivElement>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const meshRef = useRef<any>(null)

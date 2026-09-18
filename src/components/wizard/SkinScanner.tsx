@@ -240,7 +240,7 @@ export function SkinScanner({ ws, update }: { ws: Workspace; update: (p: Partial
         <p className="text-[20px] font-semibold text-navy">
           {v ? `Warna model ${v.skin_hex_measured ? 'diukur langsung dari wajah pada pindaian' : `mengikuti tipe Fitzpatrick ${v.fitzpatrick.label}`} (${v.skin_hex ?? v.fitzpatrick.hex}). Putar untuk melihat dari berbagai sisi.` : 'Interaksi langsung dengan model 3D untuk mengecek area fokus kulitmu dari berbagai sisi!'}
         </p>
-        <div className="mx-auto mt-[24px] max-w-[420px]">
+        <div className="mt-[24px]">
           <HeadModel3D hex={v?.skin_hex ?? v?.fitzpatrick.hex ?? '#E0C9B4'} />
         </div>
       </Panel>

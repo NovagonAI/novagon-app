@@ -18,7 +18,7 @@ const TEAM: Member[] = [
     instagram: 'https://www.instagram.com/zydanidn',
   },
   {
-    name: 'Bryan Christopher K.',
+    name: 'Bryan\nChristopher K.',
     position: 'CFO | Business',
     description: 'Information Systems',
     photo: '/team/bryan.webp',
@@ -26,7 +26,7 @@ const TEAM: Member[] = [
     instagram: '#',
   },
   {
-    name: 'Felicia Theodora',
+    name: 'Felicia\nTheodora',
     position: 'COO | Business',
     description: 'Pharmacy',
     photo: '/team/felicia.webp',
@@ -34,7 +34,7 @@ const TEAM: Member[] = [
     instagram: '#',
   },
   {
-    name: 'Rahma Madina Tutuko',
+    name: 'Rahma\nMadina Tutuko',
     position: 'CMO | Visual Design',
     description: 'Communication',
     photo: '/team/rahma.webp',

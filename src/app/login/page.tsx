@@ -12,7 +12,8 @@ type Tab = 'masuk' | 'daftar'
 function LoginForm() {
   const router = useRouter()
   const params = useSearchParams()
-  const next = params.get('next') || '/overview'
+  const rawNext = params.get('next')
+  const next = rawNext?.startsWith('/') && !rawNext.startsWith('//') ? rawNext : '/overview'
   const [tab, setTab] = useState<Tab>('masuk')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -28,6 +29,8 @@ function LoginForm() {
       if (tab === 'daftar') await signUpFormulator(email, password, name)
       else await signInWithPassword(email, password)
       router.replace(next)
+      // Drop RSC payloads prefetched while signed out: they hold the middleware's redirect to /login.
+      router.refresh()
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err))
     } finally {

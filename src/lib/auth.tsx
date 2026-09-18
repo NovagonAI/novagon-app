@@ -103,6 +103,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       signOut: async () => {
         await supabase().auth.signOut()
         router.push('/login')
+        router.refresh()
       },
       createManager: async (email, password, full_name) => {
         const out = await adminUsers<{ user: Profile }>({ action: 'create', email, password, full_name, role: 'manager' })

@@ -136,7 +136,7 @@ export default function OverviewPage() {
             {heads.heads.map((h) => (
               <li key={h.head} className="flex flex-col items-center rounded-[12px] border border-line bg-white px-3 py-5 text-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt="" src="/figma/formulabot.svg" width={72} height={72} className="size-[72px] object-contain" />
+                <img alt="" src="/figma/head-bot.webp" width={90} height={72} className="h-[72px] w-auto object-contain" />
                 <p className="mt-3 text-[15px] font-bold leading-tight text-navy">
                   <span className="block text-[12px] font-semibold text-grey-text">{h.head}</span>
                   {HEAD_LABEL[h.head] ?? h.name}

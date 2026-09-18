@@ -107,7 +107,7 @@ export function HeadModels() {
                 ))}
                 <div key={id} className="panel-white relative flex h-full flex-col items-center p-5 text-center motion-safe:[animation:deal_.5s_ease-out_both]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img alt="" src="/figma/formulabot.svg" width={64} height={64} className="size-16" />
+                  <img alt="" src="/figma/head-bot.webp" width={80} height={65} className="h-16 w-auto" />
                   <p className="mt-3 text-[13px] font-bold uppercase tracking-[0.15em] text-blue">{id}</p>
                   <p className="text-[18px] font-bold leading-tight text-navy">{HEAD_LABEL[id]}</p>
                   <p className="mt-1 min-h-[40px] text-[13px] font-medium text-grey-text">{ABOUT[id]}</p>

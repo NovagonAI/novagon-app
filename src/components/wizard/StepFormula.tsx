@@ -8,7 +8,6 @@ import { Panel } from '@/components/ui/Panel'
 import { fmt, headline, titleCase, totalPct } from '@/lib/insight'
 import { type LineUI, newLine, useStore } from '@/lib/store'
 import dataset from '@/lib/dataset.json'
-import { productType } from '@/lib/catalog'
 import type { StepProps } from './Wizard'
 import { runAnalysis } from './analysis'
 
@@ -50,10 +49,10 @@ export function StepFormula({ ws, update, next, back }: StepProps) {
         else predict()
       }}
     >
-      {!confirmed && <DatasetPicker leaveOn={productType(ws.productType).apiType !== 'rinse_off'} onAdd={(l) => update((w) => ({ formula: [...w.formula.filter((x) => x.inci_name.trim()), l], confirmed: false }))} onExample={(ls) => update({ formula: ls, confirmed: false })} />}
-      <Panel title={confirmed ? 'Konfirmasi Bahan Formula' : 'Daftar Bahan'} bodyClassName="pt-[16px] pb-[26px]">
+      {!confirmed && <DatasetPicker onAdd={(l) => update((w) => ({ formula: [...w.formula.filter((x) => x.inci_name.trim()), l], confirmed: false }))} onExample={(ls) => update({ formula: ls, confirmed: false })} />}
+      <Panel title={confirmed ? 'Konfirmasi Bahan Formula' : 'Daftar Bahan Aktif'} bodyClassName="pt-[16px] pb-[26px]">
         <div className="grid grid-cols-[minmax(0,1fr)_190px_36px] items-center gap-x-[18px] text-[20px] font-bold text-navy">
-          <span>Nama Bahan</span>
+          <span>Nama Bahan (Inci)</span>
           <span className="text-center">Persentase (%)</span>
           <span />
         </div>
@@ -137,22 +136,20 @@ export function StepFormula({ ws, update, next, back }: StepProps) {
  * study, 812 samples) and six measured formulas from that table. Picking
  * from here guarantees the model recognises every line.
  */
-function DatasetPicker({ onAdd, onExample, leaveOn }: { onAdd: (l: LineUI) => void; onExample: (ls: LineUI[]) => void; leaveOn: boolean }) {
+function DatasetPicker({ onAdd, onExample }: { onAdd: (l: LineUI) => void; onExample: (ls: LineUI[]) => void }) {
   const byTrade = new Map(dataset.ingredients.map((i) => [i.trade, i]))
   const toLine = (trade: string, wt: number): LineUI => {
     const i = byTrade.get(trade)!
     return { ...newLine(i.inci, wt), ing_id: i.ing_id, function_class: [i.function, i.type].filter(Boolean) }
   }
   return (
-    <Panel title={leaveOn ? 'Bahan baku surfaktan dari dataset sampo (opsional)' : 'Pilih dari dataset model'} className="mb-[18px]" bodyClassName="pt-[14px] pb-[20px]">
+    <Panel title="Pilih dari dataset model" className="mb-[18px]" bodyClassName="pt-[14px] pb-[20px]">
       <p className="text-[14px] font-semibold text-grey-text">
-        {leaveOn
-          ? 'Untuk krim, lotion dan serum, tulis bahan langsung di daftar bawah dengan nama INCI atau nama dagang (Tween 80, Carbopol 940, Lanette O). Sistem mengenali kelas fungsinya dan menilai emulsi dari HLB, rasio pengemulsi, dan jaringan gel. Daftar ini berisi 18 bahan baku BASF dari dataset sampo, mayoritas surfaktan, dan jarang dipakai di sediaan leave-on.'
-          : 'Dataset model sampo: 18 bahan baku BASF, mayoritas surfaktan (anionik, amfoterik, non-ionik) ditambah polimer conditioning dan pengental. Bahan di luar daftar tetap bisa diinput, model menandainya sebagai belum dikenali.'}
+        H1 (stabilitas) dan H2 (viskositas) dilatih pada 812 formula sampo dengan 18 bahan baku ini, sebagian besar surfaktan (anionik, amfoterik, non-ionik) ditambah polimer conditioning dan pengental. Bahan di luar daftar tetap bisa diinput, tetapi model mengabaikannya.
       </p>
       <div className="mt-3 grid gap-3 sm:grid-cols-2">
         <label className="block">
-          <span className="label">Tambah surfaktan dataset (mayoritas surfaktan):</span>
+          <span className="label">Tambah surfaktan / bahan dataset:</span>
           <select
             className="field text-[16px]"
             value=""
@@ -160,7 +157,7 @@ function DatasetPicker({ onAdd, onExample, leaveOn }: { onAdd: (l: LineUI) => vo
               if (e.target.value) onAdd(toLine(e.target.value, 5))
             }}
           >
-            <option value="">- pilih surfaktan -</option>
+            <option value="">- pilih surfaktan atau bahan lain -</option>
             {dataset.ingredients.map((i) => (
               <option key={i.trade} value={i.trade}>
                 {titleCase(i.inci)} · {i.trade} ({i.type ?? i.function})
@@ -169,7 +166,7 @@ function DatasetPicker({ onAdd, onExample, leaveOn }: { onAdd: (l: LineUI) => vo
           </select>
         </label>
         <label className="block">
-          <span className="label">Muat contoh formula terukur (hanya yang stabil):</span>
+          <span className="label">Muat contoh formula terukur:</span>
           <select
             className="field text-[16px]"
             value=""
@@ -182,9 +179,9 @@ function DatasetPicker({ onAdd, onExample, leaveOn }: { onAdd: (l: LineUI) => vo
             }}
           >
             <option value="">- pilih sampel dataset -</option>
-            {dataset.examples.filter((x) => x.stable).map((x) => (
+            {dataset.examples.map((x) => (
               <option key={x.sample_id} value={x.sample_id}>
-                Sampel #{x.sample_id} · stabil{x.viscosity_class !== 'nan' && x.viscosity_class !== 'None' ? ` · viskositas ${x.viscosity_class.toLowerCase()}` : ''} · {x.lines.length} bahan
+                Sampel #{x.sample_id} · {x.stable ? 'stabil' : 'tidak stabil'}{x.viscosity_class !== 'nan' && x.viscosity_class !== 'None' ? ` · viskositas ${x.viscosity_class.toLowerCase()}` : ''} · {x.lines.length} bahan
               </option>
             ))}
           </select>
@@ -274,7 +271,7 @@ function IngredientInput({ line, index, disabled, onChange }: { line: LineUI; in
         value={line.inci_name}
         readOnly={disabled}
         autoComplete="off"
-        placeholder="Nama bahan, INCI atau nama dagang, mis. Niacinamide atau Tween 80"
+        placeholder="Nama INCI, mis. Niacinamide"
         aria-autocomplete="list"
         aria-controls={listId}
         aria-expanded={open && options.length > 0}

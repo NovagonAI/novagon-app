@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import type { CostResponse, PredictResponse, Verdict } from './api-types'
-import type { AskCandidate, ExplainOut, RecommendOut } from './api'
+import type { AskCandidate, ExplainOut } from './api'
 import { EMPTY_QTPP, type ProductTypeId, type Qtpp, productType } from './catalog'
 
 export interface LineUI {
@@ -60,8 +60,6 @@ export interface Workspace {
   analysis?: Analysis
   candidates?: AskCandidate[]
   optimiserState?: string | null
-  /** Structural recommendation from /v1/recommend, kept so step 6 survives a reload. */
-  recommendation?: RecommendOut
   candidateSummary?: string[]
 }
 

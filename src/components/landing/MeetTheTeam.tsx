@@ -10,7 +10,7 @@ type Member = { name: string; position: string; description: string; photo: stri
 /** Zidan first, so the loop opens on the CEO in the centre. */
 const TEAM: Member[] = [
   {
-    name: 'M. Sultan Zidan',
+    name: 'Muhammad\nSultan Zidan',
     position: 'CEO | AI Engineer',
     description: 'Computer Science',
     photo: '/team/zidan.webp',
@@ -136,7 +136,7 @@ function TeamCard({ member }: { member: Member }) {
           <img src={member.photo} alt={member.name} className="absolute inset-0 size-full object-cover object-[50%_15%]" draggable={false} />
         </div>
         <div className="flex w-full flex-col items-center gap-1">
-          <p className="text-[20px] font-extrabold tracking-[0.01em]">{member.name}</p>
+          <p className="whitespace-pre-line text-[20px] font-extrabold tracking-[0.01em]">{member.name}</p>
           <p className="text-[12px] font-semibold tracking-[0.01em] text-mist">{member.position}</p>
           <p className="mt-1 text-[14px] tracking-[0.01em] text-white/80">
             Major {member.description}

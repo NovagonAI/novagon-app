@@ -149,9 +149,8 @@ export function headline(analysis: Analysis | undefined, type: string): Headline
 export function provenanceLine(r: PredictResponse): string {
   const pv = r.provenance
   const u = r.uncertainty
-  const rules = !pv.train_rows && /rules/i.test(pv.model_version ?? '')
   const bits = [
-    rules ? `Aturan formulasi (${pv.data?.[0]?.name ?? 'rule set'}), bukan model terlatih` : pv.train_rows ? `Dataset empiris (n=${pv.train_rows.toLocaleString('id-ID')})` : 'Dataset empiris',
+    pv.train_rows ? `Dataset empiris (n=${pv.train_rows.toLocaleString('id-ID')})` : 'Dataset empiris',
     pv.split ? `split ${pv.split}` : null,
     u.method !== 'none' ? `${u.method.replace(/_/g, ' ')} ${Math.round(u.level * 100)}%` : null,
     pv.model_version ? `model ${pv.model_version}` : null,
@@ -176,22 +175,19 @@ export function stabilityRisks(lines: LineUI[], analysis?: Analysis, qtpp?: Qtpp
   const water = named(lines, 'AQUA', 'WATER')
   const waterPct = sumOf(water)
   const total = sumOf(lines)
-  // The endpoint's rule R6 and the emulsion assessment cover these pairs with
-  // a source each. The client copies only stand in when no verdict came back.
-  const offline = !analysis?.verdict
 
-  if (offline && anyOf(lines, ...RETINOID) && anyOf(lines, ...HYDROXY_ACID))
+  if (anyOf(lines, ...RETINOID) && anyOf(lines, ...HYDROXY_ACID))
     out.push({ title: 'Retinoid + AHA/BHA dalam satu sediaan', detail: 'Retinoid terdegradasi pada pH asam yang dibutuhkan hidroksi asam, dan kombinasi ini menaikkan risiko iritasi.', level: 'warn', suggestion: 'pisahkan ke dua produk atau enkapsulasi retinoid', source: 'CIR retinol assessment, SCCS/1576/16' })
-  if (offline && anyOf(lines, 'ASCORBIC ACID') && anyOf(lines, 'NIACINAMIDE'))
+  if (anyOf(lines, 'ASCORBIC ACID') && anyOf(lines, 'NIACINAMIDE'))
     out.push({ title: 'Vitamin C (L-AA) + Niacinamide', detail: 'Stabil hanya pada pH terbuffer 5,0-6,0, pada pH rendah dan suhu tinggi dapat terbentuk niacin (flush).', level: 'warn', suggestion: 'gunakan turunan vitamin C (SAP/MAP) atau pH 5,5 dengan buffer', source: 'Journal of Cosmetic Dermatology 2017,16:e1' })
-  if (offline && anyOf(lines, 'ASCORBIC ACID') && water.length && !anyOf(lines, 'FERULIC', 'TOCOPHEROL', 'METABISULFITE', 'EDTA', 'GLUTATHIONE'))
+  if (anyOf(lines, 'ASCORBIC ACID') && water.length && !anyOf(lines, 'FERULIC', 'TOCOPHEROL', 'METABISULFITE', 'EDTA', 'GLUTATHIONE'))
     out.push({ title: 'L-Ascorbic Acid tanpa antioksidan pendamping', detail: 'Mudah teroksidasi di fase air, warna berubah kuning-cokelat dalam minggu.', level: 'warn', suggestion: 'tambahkan ferulic acid 0,5% + tocopherol 1% dan chelator', source: 'Pinnell et al., Dermatol Surg 2001' })
-  if (offline && anyOf(lines, 'CARBOMER') && anyOf(lines, 'SODIUM CHLORIDE', 'MAGNESIUM', 'CALCIUM'))
+  if (anyOf(lines, 'CARBOMER') && anyOf(lines, 'SODIUM CHLORIDE', 'MAGNESIUM', 'CALCIUM'))
     out.push({ title: 'Carbomer + elektrolit', detail: 'Garam menurunkan viskositas gel carbomer secara drastis.', level: 'warn', suggestion: 'ganti ke pengental toleran elektrolit (xanthan, sclerotium gum)', source: 'Lubrizol Carbopol technical data' })
-  if (offline && anyOf(lines, ...CATIONIC) && anyOf(lines, ...ANIONIC))
+  if (anyOf(lines, ...CATIONIC) && anyOf(lines, ...ANIONIC))
     out.push({ title: 'Surfaktan kationik + anionik', detail: 'Membentuk kompleks tak larut yang mengendap dan mengeruhkan sediaan.', level: 'warn', suggestion: 'gunakan polimer kationik kompatibel atau surfaktan amfoter', source: 'Rieger, Surfactants in Cosmetics' })
   const oilPct = sumOf(named(lines, ...OIL_PHASE))
-  if ((offline || !analysis?.heads.H1?.assessment) && water.length && oilPct >= 5 && !anyOf(lines, ...EMULSIFIERS))
+  if (water.length && oilPct >= 5 && !anyOf(lines, ...EMULSIFIERS))
     out.push({ title: `Fase minyak ${fmt(oilPct)}% tanpa pengemulsi`, detail: 'Emulsi tidak terbentuk atau memisah dalam hitungan hari.', level: 'bad', suggestion: 'tambahkan pasangan pengemulsi dengan HLB yang sesuai fase minyak', source: 'Griffin HLB method' })
   const visc = parseRange(qtpp?.viskositas)
   if (waterPct >= 80 && !anyOf(lines, ...THICKENERS) && !anyOf(lines, ...EMULSIFIERS) && (!visc || visc[1] > 300))
@@ -206,11 +202,6 @@ export function stabilityRisks(lines: LineUI[], analysis?: Analysis, qtpp?: Qtpp
       out.push({ title: 'Viskositas prediksi di luar target QTPP', detail: `H2 memprediksi ${fmt(v, 0)} cP (interval ${fmt(h2.prediction.lo, 0)}-${fmt(h2.prediction.hi, 0)}), target ${qtpp?.viskositas}.`, level: 'warn', suggestion: v < visc[0] ? 'naikkan pengental atau fase lemak' : 'turunkan pengental / tambah air', source: provenanceLine(h2) })
   }
   for (const f of analysis?.verdict?.findings ?? []) if (f.rule === 'R5' || f.rule === 'R6') out.push(findingRisk(f))
-  const ea = analysis?.heads.H1?.assessment
-  for (const f of ea?.factors ?? []) {
-    if (f.score >= 0.7) continue
-    out.push({ title: `${f.label}: skor ${Math.round(f.score * 100)}%`, detail: f.message, level: f.score < 0.3 ? 'bad' : 'warn', source: f.source, suggestion: ea?.missing.length ? `lengkapi: ${ea.missing.join(', ')}` : undefined })
-  }
   return out
 }
 
@@ -324,9 +315,7 @@ export function qtppMatches(qtpp: Qtpp, analysis?: Analysis): QtppMatch[] {
     const p = h1.prediction.value
     rows.push({ label: 'Stabilitas', target: qtpp.stabilitas || '-', predicted: `p(stabil) = ${Math.round(p * 100)}%`, level: p >= 0.7 ? 'ok' : p >= 0.5 ? 'warn' : 'bad' })
   } else rows.push({ label: 'Stabilitas', target: qtpp.stabilitas || '-', predicted: analysis?.problems.H1 ?? 'Belum diprediksi', level: 'lab' })
-  if (h1 && h1.prediction.kind === 'scalar' && h1.prediction.value < 0.5)
-    rows.push({ label: 'Umur Simpan', target: qtpp.stabilitas || '-', predicted: `Target belum realistis: p(stabil) ${Math.round(h1.prediction.value * 100)}%, perbaiki sistem emulsi dulu`, level: 'bad' })
-  else rows.push({ label: 'Umur Simpan', target: qtpp.stabilitas || '-', predicted: 'Konfirmasi uji dipercepat 40 °C/75% RH (ICH Q1A)', level: 'lab' })
+  rows.push({ label: 'Umur Simpan', target: qtpp.stabilitas || '-', predicted: 'Konfirmasi uji dipercepat 40 °C/75% RH (ICH Q1A)', level: 'lab' })
   return rows
 }
 
@@ -352,7 +341,7 @@ export function summarise(ws: Workspace): Summary {
     const unmatched = contributions(a?.explain).filter((x) => !x.matched).map((x) => x.name)
     contributionsText.push(
       unmatched.length
-        ? `Model belum mengenali ${unmatched.join(', ')} sebagai fitur latih, sehingga kontribusi per bahan tidak dapat dihitung. Gunakan nama INCI atau nama dagang yang dikenali registry, atau latih head H13 dengan data internal.`
+        ? `Model belum mengenali ${unmatched.join(', ')} sebagai fitur latih (dilatih pada sistem surfaktan sampo), sehingga kontribusi per bahan tidak dapat dihitung. Gunakan bahan dari registry yang dikenali model atau latih head H13 dengan data internal.`
         : 'Kontribusi per bahan belum dihitung.',
     )
   }
@@ -372,12 +361,7 @@ export function summarise(ws: Workspace): Summary {
     const p = Math.round(h1.prediction.value * 100)
     physical.push(`Stabilitas Emulsi: Probabilitas stabilitas mencapai ${p}% (${p >= 70 ? 'kondisi baik' : p >= 50 ? 'kondisi sedang' : 'kondisi rendah'}), interval ${Math.round(h1.prediction.lo * 100)}-${Math.round(h1.prediction.hi * 100)}%${h1.uncertainty.ood ? ', formula di luar distribusi latih' : ''}.`)
   } else if (a?.problems.H1) physical.push(`Stabilitas Emulsi: ${a.problems.H1}`)
-  const pStable = a?.heads.H1?.prediction.kind === 'scalar' ? a.heads.H1.prediction.value : null
-  physical.push(
-    pStable != null && pStable < 0.5
-      ? `Estimasi Masa Simpan (Shelf Life): target QTPP ${ws.qtpp.stabilitas || 'belum diisi'} belum realistis karena p(stabil) hanya ${Math.round(pStable * 100)}%, perbaiki sistem emulsi sebelum uji dipercepat.`
-      : `Estimasi Masa Simpan (Shelf Life): target QTPP ${ws.qtpp.stabilitas || 'belum diisi'}, konfirmasi dengan uji dipercepat 40 °C/75% RH selama 6 bulan (ICH Q1A).`,
-  )
+  physical.push(`Estimasi Masa Simpan (Shelf Life): target QTPP ${ws.qtpp.stabilitas || 'belum diisi'}, konfirmasi dengan uji dipercepat 40 °C/75% RH selama 6 bulan (ICH Q1A).`)
   const h2 = a?.heads.H2
   if (h2 && h2.prediction.kind === 'scalar') {
     const r = parseRange(ws.qtpp.viskositas)

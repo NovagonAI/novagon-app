@@ -40,7 +40,7 @@ function Arc({ value }: { value: number | null }) {
   const half = Math.PI * r
   const d = `M 10 52 A ${r} ${r} 0 0 1 90 52`
   return (
-    <svg viewBox="0 0 100 56" className="w-full max-w-[160px]" aria-hidden="true">
+    <svg viewBox="0 0 100 56" className="mx-auto block w-full max-w-[160px]" aria-hidden="true">
       <path d={d} fill="none" stroke="#d9d9d9" strokeWidth="9" strokeLinecap="round" />
       {value != null && <path d={d} fill="none" stroke="#1a5ba1" strokeWidth="9" strokeLinecap="round" strokeDasharray={`${half * value} ${half}`} />}
     </svg>

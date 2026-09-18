@@ -10,7 +10,7 @@ type Member = { name: string; position: string; description: string; photo: stri
 /** Zidan first, so the loop opens on the CEO in the centre. */
 const TEAM: Member[] = [
   {
-    name: 'Muhammad Sultan Zidan',
+    name: 'M. Sultan Zidan',
     position: 'CEO | AI Engineer',
     description: 'Computer Science',
     photo: '/team/zidan.webp',

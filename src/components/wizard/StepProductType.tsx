@@ -57,7 +57,7 @@ export function StepProductType({ ws, update, next }: StepProps) {
             </option>
           ))}
         </datalist>
-        <div className="mt-6 grid grid-cols-2 gap-[26px] sm:grid-cols-3 lg:grid-cols-4" role="radiogroup" aria-label="Tipe produk">
+        <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-[26px] lg:grid-cols-4" role="radiogroup" aria-label="Tipe produk">
           {PRODUCT_TYPES.map((p) => {
             const active = p.id === ws.productType
             return (
@@ -67,7 +67,7 @@ export function StepProductType({ ws, update, next }: StepProps) {
                 role="radio"
                 aria-checked={active}
                 onClick={() => choose(p.id)}
-                className={`panel flex h-[241px] flex-col items-center overflow-hidden pt-[21px] text-center transition ${active ? 'ring-4 ring-blue ring-offset-2' : 'hover:brightness-[0.98]'}`}
+                className={`panel flex min-h-[241px] flex-col items-center overflow-hidden px-2 pb-4 pt-[21px] text-center transition ${active ? 'ring-4 ring-blue ring-offset-2' : 'hover:brightness-[0.98]'}`}
               >
                 <span className="flex size-[130px] items-center justify-center overflow-hidden rounded-[20px] bg-white shadow-tile">
                   {/* eslint-disable-next-line @next/next/no-img-element */}

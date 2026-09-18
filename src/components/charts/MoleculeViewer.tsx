@@ -52,11 +52,18 @@ export function MoleculeViewer({ name, size = 240, className = '' }: { name: str
   const [status, setStatus] = useState<Status>('idle')
   const [style, setStyle] = useState<'stick' | 'sphere'>('stick')
 
+  // the last ingredient's model stays drawn otherwise and shows under the fallback note
+  const blank = () => {
+    viewer.current?.clear()
+    viewer.current?.render()
+  }
+
   useEffect(() => {
     let dead = false
     const run = async () => {
       if (!box.current || !name) return
       setStatus('loading')
+      blank()
       try {
         await load3Dmol()
         const cid = await lookupCid(name)
@@ -94,7 +101,7 @@ export function MoleculeViewer({ name, size = 240, className = '' }: { name: str
 
   return (
     <div className={`relative overflow-hidden rounded-full bg-[#f5f5f5] ${className}`} style={{ width: size, height: size }}>
-      <div ref={box} className="absolute inset-0" style={{ width: size, height: size }} />
+      <div ref={box} className={`absolute inset-0 ${status === 'done' || status === 'flat' ? '' : 'invisible'}`} style={{ width: size, height: size }} />
       {status !== 'done' && status !== 'flat' && (
         <p className="absolute inset-0 flex items-center justify-center px-4 text-center text-[11px] font-semibold text-grey-text">
           {status === 'loading' ? 'Memuat struktur 3D dari PubChem' : status === 'no-structure' ? 'PubChem tidak punya struktur 3D untuk nama ini' : status === 'error' ? 'Struktur 3D gagal dimuat' : ''}

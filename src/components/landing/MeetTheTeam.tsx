@@ -44,7 +44,7 @@ const TEAM: Member[] = [
   {
     name: 'Cornelius\nHenry Wibowo',
     position: 'CTO | Web Developer',
-    description: '',
+    description: 'Computer Science',
     photo: '/team/cornelius.webp',
     linkedin: 'https://www.linkedin.com/in/corneliushw/',
     instagram: 'https://www.instagram.com/h.w.cornelius/',

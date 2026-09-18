@@ -47,10 +47,15 @@ function Arc({ value }: { value: number | null }) {
   )
 }
 
-/** Item 4: one card per head with its metric against the threshold, read live from the endpoint. */
+const FRONT = 3
+const STEP_MS = 4000
+
+/** Item 4: one card per head, dealt three at a time from a stack. The two cards behind each front card are the next in its queue. */
 export function HeadModels() {
   const [heads, setHeads] = useState<Record<string, HeadStatus>>({})
   const [offline, setOffline] = useState(false)
+  const [start, setStart] = useState(0)
+  const [paused, setPaused] = useState(false)
 
   useEffect(() => {
     let alive = true
@@ -63,6 +68,14 @@ export function HeadModels() {
     }
   }, [])
 
+  useEffect(() => {
+    if (paused) return
+    const t = setInterval(() => setStart((n) => (n + FRONT) % HEADS.length), STEP_MS)
+    return () => clearInterval(t)
+  }, [paused])
+
+  const at = (n: number) => HEADS[n % HEADS.length]
+
   return (
     <section id="innovation" className="scroll-mt-4 bg-mist">
       <div className="mx-auto max-w-[1150px] px-4 pb-[clamp(48px,7vw,96px)] pt-[clamp(16px,3vw,40px)] sm:px-8">
@@ -73,30 +86,57 @@ export function HeadModels() {
             Satu endpoint, tiga belas kepala prediksi. Tiap kartu menunjukkan metrik model saat ini terhadap ambang yang ditetapkan.
           </p>
         </Reveal>
-        <ul className="mt-[clamp(20px,3vw,40px)] grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {HEADS.map((id, i) => {
+        <ul
+          className="mt-[clamp(20px,3vw,40px)] grid gap-4 pt-6 sm:grid-cols-3"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          aria-live="polite"
+        >
+          {Array.from({ length: FRONT }, (_, col) => {
+            const id = at(start + col)
             const h = heads[id]
-            const r = ratio(h)
             return (
-              <Reveal key={id} delay={(i % 4) * 60}>
-                <li className="panel-white flex h-full flex-col items-center p-5 text-center">
+              <li key={col} className="relative">
+                {[2, 1].map((depth) => (
+                  <div
+                    key={depth}
+                    aria-hidden="true"
+                    className="panel-white absolute inset-x-0 bottom-0 top-0 transition-transform duration-500"
+                    style={{ transform: `translateY(-${depth * 10}px) scale(${1 - depth * 0.04})`, opacity: 1 - depth * 0.25 }}
+                  />
+                ))}
+                <div key={id} className="panel-white relative flex h-full flex-col items-center p-5 text-center motion-safe:[animation:deal_.5s_ease-out_both]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img alt="" src="/figma/formulabot.svg" width={64} height={64} className="size-16" />
                   <p className="mt-3 text-[13px] font-bold uppercase tracking-[0.15em] text-blue">{id}</p>
                   <p className="text-[18px] font-bold leading-tight text-navy">{HEAD_LABEL[id]}</p>
                   <p className="mt-1 min-h-[40px] text-[13px] font-medium text-grey-text">{ABOUT[id]}</p>
                   <div className="mt-3 w-full">
-                    <Arc value={r} />
+                    <Arc value={ratio(h)} />
                   </div>
                   <p className="-mt-1 text-[16px] font-bold text-navy">
                     {h && h.value != null ? `${fmt(h.value, 3)} / ${h.threshold ?? '-'}` : offline ? 'belum terhubung' : h ? 'belum diukur' : '...'}
                   </p>
                   {h?.metric && <p className="text-[11px] font-semibold text-grey-text">{h.metric}</p>}
-                </li>
-              </Reveal>
+                </div>
+              </li>
             )
           })}
         </ul>
+        <ol className="mt-5 flex flex-wrap justify-center gap-2" aria-label="Pilih kelompok head">
+          {Array.from({ length: Math.ceil(HEADS.length / FRONT) }, (_, g) => (
+            <li key={g}>
+              <button
+                type="button"
+                onClick={() => setStart(g * FRONT)}
+                aria-current={g === Math.floor(start / FRONT) || undefined}
+                className="size-2.5 rounded-full bg-navy/25 transition-colors aria-[current]:bg-blue"
+              >
+                <span className="sr-only">Kelompok {g + 1}</span>
+              </button>
+            </li>
+          ))}
+        </ol>
       </div>
       <Wave fill="#ffffff" />
     </section>

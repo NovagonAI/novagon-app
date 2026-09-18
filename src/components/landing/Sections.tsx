@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Reveal, Wave } from './Motion'
+import { Reveal, Wave, SignInLink } from './Motion'
 
 const STEPS = [
   ['Tipe Produk', 'Pilih bentuk sediaan, dari pelembab sampai sampo.'],
@@ -152,7 +152,7 @@ export function Footer() {
           <a href="#brands">Brands</a>
           <a href="#innovation">Innovation</a>
           <a href="#team">Team</a>
-          <Link href="/login">Sign In</Link>
+          <SignInLink />
         </nav>
       </div>
     </footer>

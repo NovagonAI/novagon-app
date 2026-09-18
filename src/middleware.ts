@@ -2,7 +2,11 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 import { SUPABASE_ANON_KEY, SUPABASE_URL } from '@/lib/supabase'
 
-/** App pages need a session. The landing page, login and the API proxies stay open. */
+/**
+ * App pages need a session, and /login is skipped when one already exists,
+ * so Sign In on the landing lands in the app for a signed-in visitor.
+ * The landing page and the API proxies stay open.
+ */
 export async function middleware(req: NextRequest) {
   let res = NextResponse.next({ request: req })
   const sb = createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
@@ -18,7 +22,15 @@ export async function middleware(req: NextRequest) {
   const {
     data: { user },
   } = await sb.auth.getUser()
-  if (!user) {
+  const atLogin = req.nextUrl.pathname === '/login'
+  if (user && atLogin) {
+    const url = req.nextUrl.clone()
+    const next = req.nextUrl.searchParams.get('next')
+    url.pathname = next && next.startsWith('/') ? next : '/overview'
+    url.search = ''
+    return NextResponse.redirect(url)
+  }
+  if (!user && !atLogin) {
     const url = req.nextUrl.clone()
     url.pathname = '/login'
     url.search = `?next=${encodeURIComponent(req.nextUrl.pathname)}`
@@ -28,5 +40,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/overview/:path*', '/analisis/:path*', '/laboratorium/:path*', '/riwayat/:path*', '/admin/:path*'],
+  matcher: ['/login', '/overview/:path*', '/analisis/:path*', '/laboratorium/:path*', '/riwayat/:path*', '/admin/:path*'],
 }

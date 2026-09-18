@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
+import { SignInLink } from './Motion'
 
 const NAV = [
   ['Service', '#service'],
@@ -83,9 +84,7 @@ export function Landing() {
               </a>
             ))}
           </nav>
-          <Link href="/login" className="order-2 flex h-[clamp(44px,4.3vw,62px)] items-center justify-center rounded-[50px] border-[3px] border-sky bg-white/60 px-[clamp(20px,3vw,43px)] text-[clamp(14px,1.1vw,16px)] font-bold md:order-3">
-            <span className="text-gradient">Sign In</span>
-          </Link>
+          <SignInLink className="order-2 flex h-[clamp(44px,4.3vw,62px)] items-center justify-center rounded-[50px] border-[3px] border-sky bg-white/60 px-[clamp(20px,3vw,43px)] text-[clamp(14px,1.1vw,16px)] font-bold md:order-3" labelClassName="text-gradient" />
         </header>
 
         <div className="mt-[clamp(36px,6vw,90px)] text-center" style={head}>

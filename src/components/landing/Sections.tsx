@@ -3,12 +3,12 @@ import Link from 'next/link'
 import { Reveal, Wave, SignInLink } from './Motion'
 
 const STEPS = [
-  ['Tipe Produk', 'Pilih bentuk sediaan, dari pelembab sampai sampo.'],
-  ['Spesifikasi Produk', 'Isi QTPP dan pindai kulit dengan kamera.'],
-  ['Input Formulasi', 'Susun bahan INCI beserta persentasenya.'],
-  ['Analisis Formulasi', 'Prediksi stabilitas lengkap dengan interval kepercayaan.'],
-  ['Kontribusi Bahan', 'Lihat peran tiap bahan dan risiko keamanannya.'],
-  ['Optimasi', 'Terima usulan formula baru dan laporan siap ekspor.'],
+  ['Tipe Produk', '/screens/step1-tipe-produk.webp'],
+  ['Spesifikasi Produk', '/screens/step2-spesifikasi.webp'],
+  ['Input Formulasi', '/screens/step3-formulasi.webp'],
+  ['Analisis Formulasi', '/screens/step4-analisis.webp'],
+  ['Kontribusi Bahan', '/screens/step5-kontribusi.webp'],
+  ['Optimasi', '/screens/step6-optimasi.webp'],
 ] as const
 
 const MISSION = [
@@ -45,15 +45,16 @@ export function ServiceSection() {
           <p className="text-[13px] font-bold uppercase tracking-[0.2em] text-blue">Service</p>
           <h2 className="mt-2 font-serif text-[clamp(28px,3vw,40px)] font-bold italic text-navy">Enam langkah dari ide ke formula</h2>
         </Reveal>
-        <ol className="mt-[clamp(20px,3vw,40px)] grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {STEPS.map(([title, text], i) => (
+        <ol className="mt-[clamp(20px,3vw,40px)] grid gap-6 md:grid-cols-2">
+          {STEPS.map(([title, src], i) => (
             <Reveal key={title} delay={i * 60}>
-              <li className="panel-white flex h-full gap-4 p-5">
-                <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-btn-gradient font-serif text-[20px] font-bold italic text-white">{i + 1}</span>
-                <span>
-                  <span className="block text-[18px] font-bold text-navy">{title}</span>
-                  <span className="mt-1 block text-[15px] font-medium text-black">{text}</span>
-                </span>
+              <li>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={src} alt={`Tangkapan layar langkah ${i + 1}: ${title}`} width={1920} height={1080} loading={i ? 'lazy' : 'eager'} className="aspect-video w-full rounded-[20px] border-4 border-blue/40 object-cover shadow-card" />
+                <p className="mt-3 flex items-center gap-3 text-[18px] font-bold text-navy">
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-btn-gradient font-serif text-[17px] italic text-white">{i + 1}</span>
+                  {title}
+                </p>
               </li>
             </Reveal>
           ))}

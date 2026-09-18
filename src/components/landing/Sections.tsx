@@ -11,10 +11,10 @@ const STEPS = [
 ] as const
 
 const MISSION = [
-  ['Prediksi bersumber', 'Setiap angka membawa interval dan asal datanya.'],
-  ['Aturan tercantum', 'Setiap larangan menyebut pasal BPOM atau EU 1223/2009.'],
-  ['Halal by design', 'Status halal bahan ikut diperiksa sejak formula disusun.'],
-  ['Eksperimen lebih sedikit', 'Optimiser memilih percobaan berikutnya yang paling informatif.'],
+  ['Interval, bukan angka tunggal', 'Prediksi stabilitas dan viskositas keluar dengan rentang kepercayaan dan dataset asalnya.'],
+  ['Pasal, bukan peringatan umum', 'Bahan yang dilarang atau dibatasi dirujuk ke lampiran Peraturan BPOM dan Annex EU 1223/2009.'],
+  ['Halal sejak bahan pertama', 'Sumber tiap bahan (nabati, sintetik, hewani) dicek saat formula disusun, bukan setelah jadi.'],
+  ['Percobaan lab lebih sedikit', 'Optimiser Bayesian memilih titik uji berikutnya, sehingga DoE selesai dalam iterasi lebih singkat.'],
 ] as const
 
 const VALUES = [
@@ -86,12 +86,12 @@ export function AboutSection() {
             </p>
           </div>
         </Reveal>
-        <div className="mt-[clamp(20px,3vw,40px)] grid gap-4 md:grid-cols-4">
+        <p className="mt-[clamp(20px,3vw,40px)] text-[13px] font-bold uppercase tracking-[0.2em] text-sky">Misi</p>
+        <div className="mt-3 grid gap-4 md:grid-cols-4">
           {MISSION.map(([title, text], i) => (
             <Reveal key={title} delay={i * 60}>
               <div className="h-full rounded-[20px] bg-white p-5 text-navy shadow-card">
-                <p className="text-[13px] font-bold uppercase tracking-[0.15em] text-blue">Misi</p>
-                <p className="mt-2 text-[18px] font-bold">{title}</p>
+                <p className="text-[18px] font-bold">{title}</p>
                 <p className="mt-1 text-[14px] font-medium text-black">{text}</p>
               </div>
             </Reveal>

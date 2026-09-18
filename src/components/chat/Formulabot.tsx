@@ -87,7 +87,7 @@ export function Formulabot() {
         <section className="panel flex h-[560px] max-h-[80vh] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden shadow-card" aria-label="Formulabot">
           <header className="flex items-center gap-3 border-b-2 border-line px-4 py-3">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/figma/formulabot.png" alt="" width={36} height={36} className="rounded-full" />
+            <img src="/figma/formulabot.svg" alt="" width={36} height={36} className="rounded-full" />
             <div className="min-w-0 flex-1">
               <p className="text-[16px] font-bold leading-tight text-navy">Formulabot</p>
               <p className="truncate text-[11px] font-semibold text-grey-text">{ws ? `konteks: ${ws.name}, langkah ${ws.step}` : 'konteks: belum ada workspace'}</p>
@@ -174,7 +174,7 @@ export function Formulabot() {
         className="flex items-center gap-2 rounded-full border-2 border-sky bg-white py-1 pl-1 pr-4 shadow-card transition hover:brightness-[0.98]"
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/figma/formulabot.png" alt="" width={56} height={56} className="rounded-full" />
+        <img src="/figma/formulabot.svg" alt="" width={56} height={56} className="rounded-full" />
         <span className="text-[14px] font-bold text-navy">Formulabot</span>
       </button>
     </div>

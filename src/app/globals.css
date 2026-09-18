@@ -125,3 +125,17 @@ body {
   background: linear-gradient(#003369, #003369) center / 4px var(--thumb-h, 30px) no-repeat, #aad3ff;
 }
 .range-pill:focus-visible::-webkit-slider-thumb { outline: 3px solid #1a5ba1; outline-offset: 2px; }
+
+/* Landing scroll reveal: hidden until the section enters the viewport. */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 600ms ease, transform 600ms ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}

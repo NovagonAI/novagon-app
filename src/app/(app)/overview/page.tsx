@@ -4,8 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { BandHeader } from '@/components/shell/PageHeader'
-import { Badge } from '@/components/ui/Badge'
-import { Panel, Box } from '@/components/ui/Panel'
+import { Panel } from '@/components/ui/Panel'
 import { api, apiBase, describeError, setApiBase } from '@/lib/api'
 import type { Health, Scoreboard } from '@/lib/api-types'
 import { HEAD_LABEL, productType } from '@/lib/catalog'
@@ -48,7 +47,7 @@ export default function OverviewPage() {
       <div className="mt-[37px] grid gap-[13px] sm:grid-cols-3">
         <Stat label="Workspace" value={store.workspaces.length} hint="formulasi tersimpan" />
         <Stat label="Sudah diprediksi" value={analysed} hint="formula dengan hasil model" />
-        <Stat label="Head tersedia" value={heads ? `${available}/13` : '—'} hint={health ? `resident ${health.resident_head ?? '—'} · registry ${health.registry_version}` : ''} />
+        <Stat label="Head tersedia" value={heads ? `${available}/13` : '-'} hint={health ? `resident ${health.resident_head ?? '-'} · registry ${health.registry_version}` : ''} />
       </div>
 
       <div className="mt-[18px] grid gap-[18px] lg:grid-cols-2">
@@ -121,36 +120,36 @@ export default function OverviewPage() {
               Reset
             </button>
           </div>
-          <p className="mt-2 text-[13px] font-medium text-grey-text">Default <code>/api/v1</code> diproxy Vercel ke endpoint di instance Cloudeka. Isi alamat lain hanya untuk uji lokal (https, atau http saat app juga http); Reset mengembalikan default.</p>
+          <p className="mt-2 text-[13px] font-medium text-grey-text">Default <code>/api/v1</code> diproxy Vercel ke endpoint di instance Cloudeka. Isi alamat lain hanya untuk uji lokal (https, atau http saat app juga http), Reset mengembalikan default.</p>
           {err && <p className="mt-2 text-[14px] font-semibold text-bad">{err}</p>}
           {health && (
             <p className="mt-2 text-[13px] font-medium text-grey-text">
-              build {health.endpoint_build} · uptime {Math.round(health.uptime_s / 3600)} jam · auth {String((health as unknown as { auth?: string }).auth ?? '—')}
+              build {health.endpoint_build} · uptime {Math.round(health.uptime_s / 3600)} jam · auth {String((health as unknown as { auth?: string }).auth ?? '-')}
             </p>
           )}
         </Panel>
       </div>
 
-      <Panel title="Model (13 head)" className="mt-[18px]" bodyClassName="pt-[10px] pb-[22px]">
+      <Panel title="Model (13 head)" className="mt-[18px]" bodyClassName="pt-[18px] pb-[26px]">
         {heads ? (
-          <ul className="divide-y divide-line">
+          <ul className="grid grid-cols-2 gap-[14px] sm:grid-cols-3 lg:grid-cols-4">
             {heads.heads.map((h) => (
-              <li key={h.head} className="flex flex-wrap items-center gap-x-4 gap-y-1 py-[10px]">
-                <span className="w-[44px] text-[16px] font-bold text-navy">{h.head}</span>
-                <span className="min-w-[220px] flex-1 text-[16px] font-semibold text-black">{HEAD_LABEL[h.head] ?? h.name}</span>
-                <span className="text-[13px] font-medium text-grey-text">
-                  {h.metric ?? '—'} {h.value != null ? fmt(h.value, 3) : ''} {h.threshold != null ? `(gerbang ${h.threshold})` : ''} · {h.train_rows ?? '—'} baris
-                </span>
-                <Badge tone={!h.available ? 'grey' : h.gate === 'pass' ? 'ok' : h.gate === 'fail' ? 'warn' : 'info'}>{!h.available ? 'tidak ada artefak' : h.gate === 'pass' ? 'lolos gerbang' : h.gate === 'fail' ? 'di bawah gerbang' : 'belum diukur'}</Badge>
+              <li key={h.head} className="flex flex-col items-center rounded-[12px] border border-line bg-white px-3 py-5 text-center">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img alt="" src="/figma/formulabot.png" width={72} height={72} className="size-[72px] object-contain" />
+                <p className="mt-3 text-[15px] font-bold leading-tight text-navy">
+                  <span className="block text-[12px] font-semibold text-grey-text">{h.head}</span>
+                  {HEAD_LABEL[h.head] ?? h.name}
+                </p>
+                <p className="mt-2 font-serif text-[22px] font-bold italic leading-none text-navy">
+                  {h.value != null ? fmt(h.value, 3) : '-'} / {h.threshold != null ? fmt(h.threshold, 2) : '-'}
+                </p>
               </li>
             ))}
           </ul>
         ) : (
-          <p className="py-4 text-[16px] font-semibold text-grey-text">{err ?? 'Memuat scoreboard…'}</p>
+          <p className="py-4 text-[16px] font-semibold text-grey-text">{err ?? 'Memuat scoreboard'}</p>
         )}
-        <Box muted className="mt-3 px-4 py-3 text-[13px] font-medium text-grey-text">
-          Head di bawah gerbang tetap dilayani; nilainya ditampilkan bersama interval dan catatan asal data. Head tanpa artefak menjawab 503 dan dua belas lainnya tetap berjalan.
-        </Box>
       </Panel>
       </div>
     </div>

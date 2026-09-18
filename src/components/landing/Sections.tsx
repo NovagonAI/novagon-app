@@ -1,5 +1,8 @@
+'use client'
+
 import { Logo } from '@/components/ui/Logo'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { Reveal, Wave, SignInLink } from './Motion'
 
 const STEPS = [
@@ -36,6 +39,61 @@ const BRANDS = [
 
 const container = 'mx-auto max-w-[1150px] px-4 sm:px-8'
 
+/** Coverflow: the active shot faces front, neighbours turn away and fade. Click a side card to bring it forward. */
+function StepCarousel() {
+  const [active, setActive] = useState(0)
+  const [paused, setPaused] = useState(false)
+  const n = STEPS.length
+
+  useEffect(() => {
+    if (paused) return
+    const t = setInterval(() => setActive((a) => (a + 1) % n), 4500)
+    return () => clearInterval(t)
+  }, [paused, n])
+
+  return (
+    <div className="mt-[clamp(20px,3vw,40px)]" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+      <ol className="relative mx-auto aspect-video w-full max-w-[720px] [perspective:1400px]" aria-live="polite">
+        {STEPS.map(([title, src], i) => {
+          let off = i - active
+          if (off > n / 2) off -= n
+          if (off < -n / 2) off += n
+          const hidden = Math.abs(off) > 2
+          return (
+            <li
+              key={title}
+              className="absolute inset-0 transition-[transform,opacity] duration-700 ease-out motion-reduce:transition-none"
+              style={{
+                transform: `translateX(${off * 58}%) translateZ(${-Math.abs(off) * 220}px) rotateY(${-off * 32}deg)`,
+                opacity: hidden ? 0 : 1 - Math.abs(off) * 0.3,
+                zIndex: 10 - Math.abs(off),
+                pointerEvents: hidden ? 'none' : 'auto',
+              }}
+              aria-hidden={off !== 0 || undefined}
+            >
+              <button type="button" onClick={() => setActive(i)} className="block h-full w-full cursor-pointer text-left" tabIndex={off === 0 ? -1 : 0}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={src} alt={`Tangkapan layar langkah ${i + 1}: ${title}`} width={1920} height={1080} loading={i ? 'lazy' : 'eager'} className="aspect-video w-full rounded-[20px] border-4 border-blue/40 bg-white object-cover shadow-card" />
+              </button>
+            </li>
+          )
+        })}
+      </ol>
+      <p className="mt-5 flex items-center justify-center gap-3 text-[18px] font-bold text-navy">
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-btn-gradient font-serif text-[17px] italic text-white">{active + 1}</span>
+        {STEPS[active][0]}
+      </p>
+      <div className="mt-3 flex justify-center gap-2">
+        {STEPS.map(([title], i) => (
+          <button key={title} type="button" onClick={() => setActive(i)} aria-current={i === active || undefined} className="size-2.5 rounded-full bg-navy/25 transition-colors aria-[current]:bg-blue">
+            <span className="sr-only">Langkah {i + 1}: {title}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export function ServiceSection() {
   return (
     <section id="service" className="scroll-mt-4 bg-mist">
@@ -45,20 +103,7 @@ export function ServiceSection() {
           <p className="text-[13px] font-bold uppercase tracking-[0.2em] text-blue">Service</p>
           <h2 className="mt-2 font-serif text-[clamp(28px,3vw,40px)] font-bold italic text-navy">Enam langkah dari ide ke formula</h2>
         </Reveal>
-        <ol className="mt-[clamp(20px,3vw,40px)] grid gap-6 md:grid-cols-2">
-          {STEPS.map(([title, src], i) => (
-            <Reveal key={title} delay={i * 60}>
-              <li>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={src} alt={`Tangkapan layar langkah ${i + 1}: ${title}`} width={1920} height={1080} loading={i ? 'lazy' : 'eager'} className="aspect-video w-full rounded-[20px] border-4 border-blue/40 object-cover shadow-card" />
-                <p className="mt-3 flex items-center gap-3 text-[18px] font-bold text-navy">
-                  <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-btn-gradient font-serif text-[17px] italic text-white">{i + 1}</span>
-                  {title}
-                </p>
-              </li>
-            </Reveal>
-          ))}
-        </ol>
+        <StepCarousel />
         <Reveal className="mt-[clamp(24px,3vw,40px)] flex justify-center">
           <Link href="/analisis" className="btn-primary">
             Mulai Analisis Formulasi

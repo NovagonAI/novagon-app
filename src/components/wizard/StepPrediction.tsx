@@ -10,7 +10,6 @@ import type { StepProps } from './Wizard'
 import { useState } from 'react'
 import { runAnalysis } from './analysis'
 import { HandViz } from './HandViz'
-import { AssessmentPanel } from './AssessmentPanel'
 import { describeError } from '@/lib/api'
 
 /** Step 4: the headline number with its interval, then the three risk cards. */
@@ -21,7 +20,7 @@ export function StepPrediction({ ws, update, next, back }: StepProps) {
     setBusy(true)
     setErr(null)
     try {
-      update({ analysis: await runAnalysis(ws), candidates: undefined, candidateSummary: undefined, optimiserState: null, recommendation: undefined })
+      update({ analysis: await runAnalysis(ws), candidates: undefined, candidateSummary: undefined, optimiserState: null })
     } catch (e) {
       setErr(describeError(e))
     } finally {
@@ -61,8 +60,6 @@ export function StepPrediction({ ws, update, next, back }: StepProps) {
           </Box>
         )}
       </Panel>
-
-      {a?.heads.H1?.assessment && <AssessmentPanel a={a.heads.H1.assessment} />}
 
       {a && (
         <Panel title="Visualisasi Efek pada Kulit" className="mt-[22px]" bodyClassName="pt-[16px] pb-[22px]">

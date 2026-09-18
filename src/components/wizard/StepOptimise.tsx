@@ -11,7 +11,6 @@ import { candidateScore, confidence, fmt, headline } from '@/lib/insight'
 import { newLine } from '@/lib/store'
 import type { StepProps } from './Wizard'
 import { runOptimiser } from './optimise'
-import { RecommendPanel } from './RecommendPanel'
 
 /** Step 6: two candidate cards, their narrative, the report builder. */
 export function StepOptimise({ ws, update, back }: StepProps) {
@@ -46,7 +45,6 @@ export function StepOptimise({ ws, update, back }: StepProps) {
 
   return (
     <div>
-      <RecommendPanel ws={ws} update={update} />
       {cands.length === 0 ? (
         <Panel bodyClassName="py-6">
           <p className="text-[16px] font-semibold text-grey-text">{error ?? 'Belum ada kandidat. Jalankan optimiser untuk mendapatkan usulan formula.'}</p>

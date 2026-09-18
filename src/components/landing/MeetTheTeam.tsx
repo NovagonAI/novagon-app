@@ -14,32 +14,40 @@ const TEAM: Member[] = [
     position: 'CEO | AI Engineer',
     description: 'Computer Science',
     photo: '/team/zidan.webp',
-    linkedin: 'https://www.linkedin.com/in/muhammadsultanzidan/',
-    instagram: 'https://www.instagram.com/zydanidn',
+    linkedin: 'https://id.linkedin.com/in/muhammadsultanzidan',
+    instagram: 'https://www.instagram.com/zydanidn/',
   },
   {
     name: 'Bryan\nChristopher K.',
     position: 'CFO | Business',
     description: 'Information Systems',
     photo: '/team/bryan.webp',
-    linkedin: '#',
-    instagram: '#',
+    linkedin: 'https://id.linkedin.com/in/bryanchristopherkurniadi',
+    instagram: 'https://www.instagram.com/bryan.ck_/',
   },
   {
     name: 'Felicia\nTheodora',
     position: 'COO | Business',
     description: 'Pharmacy',
     photo: '/team/felicia.webp',
-    linkedin: '#',
-    instagram: '#',
+    linkedin: 'https://id.linkedin.com/in/felicia-theodora-797a65316',
+    instagram: 'https://www.instagram.com/feliciatheodora/',
   },
   {
     name: 'Rahma\nMadina Tutuko',
     position: 'CMO | Visual Design',
     description: 'Communication',
     photo: '/team/rahma.webp',
-    linkedin: '#',
-    instagram: '#',
+    linkedin: 'https://www.linkedin.com/in/raraadays/',
+    instagram: 'https://www.instagram.com/raraadays/',
+  },
+  {
+    name: 'Cornelius\nHenry Wibowo',
+    position: 'Advisor',
+    description: '',
+    photo: '/team/cornelius.webp',
+    linkedin: 'https://www.linkedin.com/in/corneliushw/',
+    instagram: 'https://www.instagram.com/h.w.cornelius/',
   },
 ]
 
@@ -139,11 +147,13 @@ function TeamCard({ member }: { member: Member }) {
         <div className="flex w-full flex-col items-center gap-1">
           <p className="whitespace-pre-line text-[20px] font-extrabold tracking-[0.01em]">{member.name}</p>
           <p className="text-[12px] font-semibold tracking-[0.01em] text-mist">{member.position}</p>
-          <p className="mt-1 text-[14px] tracking-[0.01em] text-white/80">
-            Major {member.description}
-            <br />
-            at Universitas Indonesia
-          </p>
+          {member.description && (
+            <p className="mt-1 text-[14px] tracking-[0.01em] text-white/80">
+              Major {member.description}
+              <br />
+              at Universitas Indonesia
+            </p>
+          )}
         </div>
       </div>
       <div className="flex w-full gap-3">

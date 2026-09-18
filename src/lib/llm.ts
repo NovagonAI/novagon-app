@@ -1,4 +1,4 @@
-import { productType } from './catalog'
+import { HEAD_LABEL, productType } from './catalog'
 import { complianceRisks, fmt, headline, safetyRisks, stabilityRisks } from './insight'
 import type { Workspace } from './store'
 
@@ -34,11 +34,15 @@ Jawab dalam paragraf pendek atau daftar bernomor, maksimal sekitar 200 kata kecu
 
 const lim = <T,>(xs: T[] | undefined, n: number) => (xs ?? []).slice(0, n)
 
+/* The catalogue is fixed, so it is stated once: without it the model invents heads. */
+const HEADS = 'Head model Novagon (13, tetap): ' + Object.entries(HEAD_LABEL).map(([k, v]) => `${k} ${v}`).join(', ') + '. Jangan menyebut head lain di luar daftar ini.'
+
+
 /** Everything the model may cite, trimmed to roughly 3000 tokens. */
 export function buildSystemPrompt(ws: Workspace | null): string {
-  if (!ws) return `${PERSONA}\n\nBelum ada workspace aktif. Bantu pengguna memulai analisis formulasi.`
+  if (!ws) return `${PERSONA}\n\n${HEADS}\n\nBelum ada workspace aktif. Bantu pengguna memulai analisis formulasi.`
   const pt = productType(ws.productType)
-  const parts: string[] = [PERSONA, '', `KONTEKS WORKSPACE "${ws.name}" (langkah ${ws.step} dari 6)`, `Tipe produk: ${pt.label} ${pt.sub}`]
+  const parts: string[] = [PERSONA, '', HEADS, '', `KONTEKS WORKSPACE "${ws.name}" (langkah ${ws.step} dari 6)`, `Tipe produk: ${pt.label} ${pt.sub}`]
 
   const q = Object.entries(ws.qtpp).filter(([, v]) => v)
   if (q.length) parts.push('QTPP: ' + q.map(([k, v]) => `${k}=${v}`).join(', '))

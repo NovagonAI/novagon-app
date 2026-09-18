@@ -77,7 +77,7 @@ export function MeetTheTeam() {
       const card = nodes[i]?.querySelector<HTMLElement>('[data-card]')
       if (card) {
         card.style.transform = `scale(${Math.max(1 - d * 0.22, 0.78)})`
-        card.style.opacity = String(Math.max(1 - d * 0.5, 0.45))
+        card.style.opacity = String(Math.max(1 - d * 1.2, 0.25))
       }
     })
   }, [embla])
